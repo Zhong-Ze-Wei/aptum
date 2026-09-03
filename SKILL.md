@@ -5,9 +5,9 @@ description: >-
   right information reaches the actual reader in a form suited to their task and
   delivery context. Use for user-facing answers, README/ADR/RFC/spec/product docs,
   architecture and code explanations, issues/PRs, plans, and Agent handoffs,
-  especially when audience knowledge, hidden context, terminology, information
-  density, or visual structure matters. Aptum preserves technical truth and does
-  not replace source verification or an explicit house style.
+  especially when project-specific names, audience knowledge, hidden context,
+  terminology, information density, or visual structure matters. Aptum preserves
+  technical truth and does not replace source verification or an explicit house style.
 metadata:
   short-description: 适其人，适其事，适其言
 ---
@@ -60,7 +60,11 @@ Aptum 不是在成稿末尾套一层“润色”。它是在选择、组织和�
 
 ## 术语要降低歧义，不要抬高门槛
 
-普通语言能准确表达时，直接说。真实术语若承载精确含义、接口名称或团队约定，就保留，并在目标读者可能陌生的第一次出现处顺手解释当前含义，例如：`DLQ`（死信队列，保存最终处理失败的任务）。随后正常使用 `DLQ`。
+术语不是信息本身。一个技术名词或内部代号只有在帮助读者定位代码、检索资料、执行操作、参与协作或保持精确语义时，才值得出现在正文里；删掉它不影响当前理解或行动，就用普通语言直接说明。
+
+面向当前用户或项目外读者，先给可观察结果和因果，再按需落到真实术语，不要让组件名和缩写承担解释工作。例如先说“新实例启动时的缓存加载被误当成业务压力，触发了连锁扩容”，需要继续讨论配置时再引入 `HPA`。内部代号第一次出现时说明职责，如 `Atlas`（负责发票对账的内部服务）；后文不再使用的代号可以省略。
+
+真实术语若承载精确含义、接口名称或团队约定，就保留，并在目标读者可能陌生的第一次出现处顺手解释它在当前场景中的作用，例如：`DLQ`（死信队列，保存最终处理失败的任务）。随后正常使用 `DLQ`。通用表达不等于模糊表达：数字、条件、接口语义和失败边界仍需保留。
 
 不要把一次局部解释扩展成百科教学，也不要用同义词轮换真实名称。类比只用于快速建立 mental model；一句建立直觉后尽快回到真实组件、机制和限制。类比不能替代边界说明。
 

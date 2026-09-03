@@ -45,6 +45,25 @@ cases:
       - Dense unexplained infrastructure jargon
       - Omitting unverified capacity or missing recovery/alerts
 
+  - id: audience-current-user-jargon
+    category: audience_adaptation
+    prompt: |
+      Explain this to the current user, who understands software architecture but
+      not Kubernetes autoscaling: checkout scales at 50% CPU; each new Pod spends
+      90 seconds loading a 1.2 GB local cache at high CPU; HPA treats that startup
+      work as request load and adds more Pods. During one spike replicas went
+      8→42→11 in 20 minutes and p95 rose from 280 ms to 1.9 s. Proposed changes:
+      scale on request queue depth, use a five-minute stabilization window, and
+      preload from a shared cache snapshot.
+    must_enable:
+      - Understand the feedback loop before encountering Kubernetes terminology
+      - See the measured impact and the tradeoffs of the proposed changes
+      - Retain exact terms only where they support later configuration or discussion
+    common_failures:
+      - Organizing the explanation around HPA, Pod, scale-up, and metric-pipeline jargon
+      - Removing the measurements, proposed controls, or response-speed tradeoff
+      - Explaining Kubernetes autoscaling from first principles
+
   - id: audience-project-engineer
     category: audience_adaptation
     fixture: async_email_facts
@@ -73,6 +92,23 @@ cases:
       - Starting with component names before saying what the service does
       - Recounting the entire migration history
       - Drawing a decorative diagram that omits the API/worker boundary
+
+  - id: audience-outsider-codenames
+    category: audience_adaptation
+    prompt: |
+      Write a standalone progress update for an engineer from another team. Atlas
+      is the internal invoice-reconciliation service. Janus sends settlement
+      events. A shadow read compares balances calculated by LedgerV2 and LedgerV1
+      without affecting real payments. Mismatch is 0.7%; 82% comes from timezone
+      cutoffs. Writes switch only after mismatch stays below 0.1% for seven days.
+    must_enable:
+      - Understand what the system does and that real payments are unchanged
+      - Understand the measured gap, its main cause, and the release gate
+      - Map any retained internal name to its role on first use
+    common_failures:
+      - Treating Atlas, Janus, shadow read, or LedgerV2 as self-explanatory
+      - Replacing exact thresholds with a generic statement that validation continues
+      - Recounting project history that does not affect the gate
 
   - id: readme-first-success
     category: readme
