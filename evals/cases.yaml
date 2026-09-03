@@ -1,0 +1,189 @@
+version: 1
+skill: aptum
+scoring: "See rubric.md; evaluate meaning and task success, not exact wording."
+
+shared_fixtures:
+  async_email_facts: |
+    The notification API used to call the email provider synchronously. Provider
+    latency occupied API workers and raised p95 to 2.4 seconds. The new code
+    enqueues to notification-jobs and returns 202. EmailWorker sends later,
+    retries after 10, 30, and 90 seconds, and moves final failures to email-dlq.
+    A Redis idempotency key lasts 24 hours. 202 now means accepted, not delivered.
+    Eighteen integration tests pass. Production capacity is not verified. DLQ
+    replay and queue age/depth alerts are not implemented.
+
+cases:
+  - id: audience-agent-handoff
+    category: audience_adaptation
+    fixture: async_email_facts
+    prompt: |
+      Write a handoff for another coding Agent that will continue this migration
+      in a fresh conversation. It may edit code but has no deployment authority.
+      Relevant files are api/notifications.ts, workers/email.ts, and
+      infra/queues.ts.
+    must_enable:
+      - Resume work without reconstructing prior conversation
+      - Distinguish completed, remaining, verified, and unknown work
+      - Preserve the no-deploy authorization boundary
+    common_failures:
+      - Explaining queues at tutorial depth
+      - Omitting files, evidence, remaining work, or stop condition
+      - Calling production capacity verified
+
+  - id: audience-current-user
+    category: audience_adaptation
+    fixture: async_email_facts
+    prompt: |
+      Explain the result to the current user. They understand software architecture
+      and Agents but have not worked deeply with message queues.
+    must_enable:
+      - Understand what changed and why p95 is affected
+      - Notice that 202 no longer confirms delivery
+      - Understand DLQ once, plus launch risks and tradeoffs
+    common_failures:
+      - A queueing tutorial
+      - Dense unexplained infrastructure jargon
+      - Omitting unverified capacity or missing recovery/alerts
+
+  - id: audience-project-engineer
+    category: audience_adaptation
+    fixture: async_email_facts
+    prompt: |
+      Write a concise engineering update for maintainers of the notification
+      service. They know the repository, Redis, and queue semantics.
+    must_enable:
+      - Review behavior, invariants, remaining engineering risks, and API semantics
+      - Use project terms without re-teaching common concepts
+    common_failures:
+      - Generic background that maintainers already know
+      - A status-only summary with no mechanism or boundary
+
+  - id: audience-outsider
+    category: audience_adaptation
+    fixture: async_email_facts
+    prompt: |
+      Write an architecture overview for a capable engineer joining from another
+      team. They have no access to the earlier conversation and do not know what
+      the notification service owns.
+    must_enable:
+      - Understand module responsibility, old problem, new flow, and current status
+      - Read the overview without project history
+      - See a flow or sequence diagram if the Markdown renderer supports Mermaid
+    common_failures:
+      - Starting with component names before saying what the service does
+      - Recounting the entire migration history
+      - Drawing a decorative diagram that omits the API/worker boundary
+
+  - id: readme-first-success
+    category: readme
+    prompt: |
+      Draft the opening and quick-start portion of a README for mail-gateway.
+      A developer new to the repo needs Node 22, Redis, and a test provider token.
+      pnpm dev is ready when it logs "email worker ready". API 202 means accepted,
+      not delivered. Current DLQ replay is CLI-only.
+    must_enable:
+      - Decide whether the repo is relevant and reach a verifiable local success
+      - Notice the response-semantic and recovery limitations early
+    common_failures:
+      - Marketing claims
+      - A full architecture encyclopedia before quick start
+      - Commands with no expected success signal
+
+  - id: adr-evidence-levels
+    category: adr
+    prompt: |
+      Write an ADR excerpt. Verified facts: provider delay produced 2.4s p95 and
+      product permits eventual email delivery. Team decision: enqueue and return
+      202. Inference: this should reduce API worker occupancy, but no production
+      load test exists. Rejected options: keep synchronous; let clients call the
+      provider, which would expose provider credentials and bypass audit.
+    must_enable:
+      - Recover why the decision was reasonable under the known constraints
+      - Separate facts, inference, decision, and reconsideration conditions
+    common_failures:
+      - Describing expected latency improvement as measured production fact
+      - Listing fake alternatives
+      - Recording only the chosen architecture
+
+  - id: product-observable-behavior
+    category: requirements
+    prompt: |
+      Turn these decisions into product requirements for operations staff:
+      repeated request IDs within 24h create one send job; after an initial send
+      and three retries all fail, status is failed; staff can replay by job ID; replay obeys
+      idempotency; delivery receipts are out of scope.
+    must_enable:
+      - Validate user-visible states, permissions, edge paths, and non-goals
+      - Avoid locking the implementation to Redis unless behavior requires it
+    common_failures:
+      - Replacing acceptance behavior with implementation prose
+      - Omitting replay/idempotency interaction
+      - Hiding non-goals
+
+  - id: design-visualize-sequence
+    category: technical_design
+    prompt: |
+      Draft the core design section for a Markdown RFC. Show Client, Notification
+      API, Queue, EmailWorker, Provider, and DLQ. At-least-once delivery means the
+      worker must claim an idempotency key before calling the provider. Retries
+      happen at 10/30/90s. The renderer supports Mermaid.
+    must_enable:
+      - Understand the cross-component order, failure branch, and idempotency point
+      - See important invariants in text as well as the diagram
+    common_failures:
+      - No diagram despite a multi-party sequence
+      - Diagram-only semantics
+      - Diagram contradicts when the idempotency key is claimed
+
+  - id: terminal-no-forced-diagram
+    category: visual_judgment
+    prompt: |
+      In a terminal reply, explain this single rule: after the initial attempt and
+      three retries all fail, the task enters the DLQ and will not retry automatically.
+    must_enable:
+      - Understand the rule and consequence immediately
+    common_failures:
+      - Mermaid or a state diagram for one transition
+      - An extended explanation of queue architecture
+
+  - id: code-explain-race
+    category: code_explanation
+    prompt: |
+      Explain to the current user why claimIdempotencyKey uses Redis SET NX EX
+      instead of GET followed by SET. The user understands concurrency generally
+      but does not know this Redis command. The 24h TTL is a product duplicate
+      submission window, not a cache optimization.
+    must_enable:
+      - Build the race-condition mental model
+      - Explain SET NX EX once and preserve the product meaning of TTL
+    common_failures:
+      - A Redis command reference dump
+      - Calling TTL a cache setting
+      - Removing the real command name in favor of an analogy
+
+  - id: prose-preserve-boundaries
+    category: editing
+    prompt: |
+      Rewrite this for clarity without losing technical meaning:
+      "It is worth noting that the system now robustly puts failed work aside.
+      Overall, this pivotal change lays the foundation for resilience." Facts you
+      must preserve: one initial attempt plus three retries; then email-dlq; no automatic retry;
+      manual replay can duplicate mail if the request ID is older than 24h.
+    must_enable:
+      - Replace empty valuation with concrete behavior and risk
+    common_failures:
+      - A shorter sentence that omits thresholds or duplicate-send risk
+      - New promotional wording
+
+  - id: near-miss-source-verification
+    category: boundary
+    prompt: |
+      The user asks: "What retry delay does the current production worker use?"
+      The only provided design draft says 10/30/90s, but current code and production
+      configuration have not been inspected.
+    must_enable:
+      - State that the draft is evidence of intent, not verified production behavior
+      - Inspect authoritative sources when tools and scope permit, or clearly report the gap
+    common_failures:
+      - Answering 10/30/90s as a production fact
+      - Hiding uncertainty behind polished wording
