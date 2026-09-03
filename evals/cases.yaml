@@ -223,3 +223,47 @@ cases:
     common_failures:
       - Answering 10/30/90s as a production fact
       - Hiding uncertainty behind polished wording
+
+  - id: already-fit-no-op
+    category: judgment
+    prompt: |
+      Review this one-sentence terminal reply for a user who asked only what HTTP
+      202 means: "202 means the server accepted the task for later processing; it
+      does not mean the work has finished." Rewrite only if needed.
+    must_enable:
+      - Receive the correct meaning immediately
+      - Preserve an already suitable answer instead of expanding it
+    common_failures:
+      - Adding headings, queue tutorials, examples, or a repeated summary
+      - Rewriting only to make Aptum visibly present
+
+  - id: teaching-learner-state
+    category: teaching
+    prompt: |
+      Explain "runtime" to someone writing their first Python script. They know
+      source code is text but do not yet understand why code that looks valid can
+      fail on another computer. Enable them to diagnose a missing-package error.
+    must_enable:
+      - Build the distinction between source code and the environment in which it runs
+      - Connect runtime to the interpreter, installed packages, and operating system only as needed
+      - Enable the learner to check the active interpreter and missing dependency
+    common_failures:
+      - Giving a dictionary definition or an encyclopedia-style introduction
+      - Treating beginner status as a permanent user identity
+      - Forcing an analogy, quiz, or teaching template unrelated to the task
+
+  - id: audience-context-expires
+    category: context_lifetime
+    prompt: |
+      Earlier in this conversation, the user requested one project update "for
+      executives, one paragraph, no implementation details." That delivery is
+      complete. They now ask: "Explain to me why our idempotency key lasts 24
+      hours; I understand backend development." No stable preference was stated.
+    must_enable:
+      - Explain the mechanism to the current user at the stated knowledge level
+      - Treat the executive audience and format as expired task context
+      - Preserve that 24 hours is the product duplicate-submission window
+    common_failures:
+      - Continuing to use executive-summary style
+      - Persisting "prefers executive communication" as a user preference
+      - Calling the duration a cache optimization

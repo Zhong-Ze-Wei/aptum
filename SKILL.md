@@ -1,13 +1,13 @@
 ---
 name: aptum
 description: >-
-  Adapt, draft, or review explanations and technical/professional writing so the
-  right information reaches the actual reader in a form suited to their task and
-  delivery context. Use for user-facing answers, README/ADR/RFC/spec/product docs,
-  architecture and code explanations, issues/PRs, plans, and Agent handoffs,
-  especially when project-specific names, audience knowledge, hidden context,
-  terminology, information density, or visual structure matters. Aptum preserves
-  technical truth and does not replace source verification or an explicit house style.
+  Adapt, draft, or review explanations and information-rich writing so the right
+  information reaches the actual reader in a form suited to their task and delivery
+  context. Use when audience knowledge, downstream action, hidden context,
+  terminology, information density, or delivery medium materially changes what
+  should be selected or explained, including user-facing answers, teaching,
+  technical and professional documents, and Agent handoffs. Aptum preserves truth
+  and does not replace domain reasoning, source verification, or an explicit house style.
 metadata:
   short-description: 适其人，适其事，适其言
 ---
@@ -32,6 +32,14 @@ Aptum 不是在成稿末尾套一层“润色”。它是在选择、组织和�
 
 如果受众或用途没有明说，先从请求、文件类型、项目位置和对话中推断。只有不同答案会显著改变交付结果且无法安全推断时，才向用户确认；否则采用最合理的假设，并在假设影响结论时写明。
 
+## 让场景保持短命
+
+当前任务中的受众、角色、领域和交付媒介默认只在当前任务有效。不得从一次“写给经理”或“教给初学者”推断用户长期面向该类受众。未指定接收者时，默认主要读者是当前用户本人。
+
+可以使用当前对话或宿主提供的稳定表达偏好，但当前请求、事实、项目规范和权限边界始终优先。发现可能长期有效的偏好时，只把它视为候选；除非用户明确要求，否则不要自行写入持久记忆。Aptum 不负责建立广泛的用户画像。
+
+如果原表达已经适合当前读者和任务，保留它。不要为了证明 Aptum 生效而制造差异。
+
 ## 先守住真实问题
 
 表达不能改变证据等级：
@@ -53,7 +61,7 @@ Aptum 不是在成稿末尾套一层“润色”。它是在选择、组织和�
 
 - 写给 **AI Agent**：显式、完整、可执行、可恢复上下文；保留状态、证据、文件、约束、未决项和停止条件，同时保持可扫描。
 - 写给 **项目内工程师**：使用真实术语和较高信息密度；聚焦机制、接口、差异、不变量、权衡和故障边界，不复习共同基础。
-- 写给 **当前用户本人**：默认其理解 AI、Agent、Prompt/Skill、软件开发和基础架构；优先说明现状、变化、原因、关键点、取舍、误区、边界和后续影响。
+- 写给 **当前用户本人**：根据当前对话和可用的稳定偏好判断其知识背景，不默认其是初学者或专家；优先说明现状、变化、原因、关键点、取舍、误区、边界和后续影响。
 - 写给 **无历史上下文的人**：主动补模块职责、问题来源和约束缘由，使主要结论不依赖聊天记录或项目记忆。
 
 混合受众时，正文先服务主要任务，再用简短定义、局部注释、表格或链接为其他读者提供入口，不要把全文降到最低共同知识水平。

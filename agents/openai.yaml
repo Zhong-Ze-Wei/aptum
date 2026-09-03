@@ -1,4 +1,4 @@
 interface:
   display_name: "Aptum"
-  short_description: "让正确的信息以适合当前读者、任务与技术交付场景的方式抵达"
-  default_prompt: "Use $aptum to adapt this technical content for its actual readers and purpose."
+  short_description: "让正确的信息以适合当前读者与任务的方式抵达"
+  default_prompt: "Use $aptum to adapt this information for its actual reader, purpose, and delivery context."
