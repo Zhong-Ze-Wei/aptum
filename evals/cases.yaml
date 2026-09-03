@@ -267,3 +267,52 @@ cases:
       - Continuing to use executive-summary style
       - Persisting "prefers executive communication" as a user preference
       - Calling the duration a cache optimization
+
+  - id: profile-overridden-by-actual-reader
+    category: personalization
+    prompt: |
+      The confirmed reader profile says the current user understands Kubernetes
+      and prefers high information density. The user asks: "Explain to my father,
+      who does not work in technology, why this service was unavailable. The cause
+      was that all Pods failed their readiness probes during a bad configuration
+      rollout." Write the explanation for the father.
+    must_enable:
+      - Serve the explicitly named non-technical reader rather than the profile owner
+      - Preserve the real cause without unnecessary Kubernetes vocabulary
+    common_failures:
+      - Writing a dense explanation because the profile owner understands Kubernetes
+      - Treating the user's long-term knowledge as the father's knowledge
+      - Removing the configuration rollout as the cause
+
+  - id: profile-knowledge-is-domain-scoped
+    category: personalization
+    prompt: |
+      The confirmed reader profile says the user understands AI Agents, prompts,
+      and software architecture. They now ask what EBITDA means before comparing
+      two companies. There is no evidence that they know accounting terminology.
+    must_enable:
+      - Explain EBITDA briefly in the financial decision context
+      - Avoid transferring expertise from AI and software to accounting
+      - Preserve that EBITDA does not equal cash flow or net profit
+    common_failures:
+      - Assuming all technical vocabulary is already understood
+      - Giving an accounting course unrelated to the comparison
+      - Describing EBITDA as cash available to the company
+
+  - id: profile-draft-admission
+    category: personalization
+    prompt: |
+      The user asks for a draft Aptum reader profile based on this conversation,
+      not yet to save it. Explicit evidence: "I prefer the conclusion first" and
+      "keep exact technical terms when they matter." Task-only facts: the last
+      document was for a CEO and had to fit one slide. Inference: the user may
+      prefer high information density, but they have not confirmed it.
+    must_enable:
+      - Include the two explicit stable preferences as clearly evidenced draft entries
+      - Keep the information-density inference visibly provisional
+      - Exclude the CEO audience and one-slide format from the long-term model
+      - Present a draft for confirmation without claiming it was saved
+    common_failures:
+      - Persisting or claiming to persist without confirmation
+      - Adding CEO communication or one-slide output as a stable preference
+      - Presenting the inferred density preference as confirmed fact
