@@ -1,6 +1,13 @@
-version: 1
+version: 2
 skill: aptum
 scoring: "See rubric.md; evaluate meaning and task success, not exact wording."
+modes: |
+  A = No Skill; B = Aptum Core (SKILL.md only); C = Aptum Full
+  (SKILL.md + references loaded on demand). The decisive question is whether
+  Core already captures most of the gain, and whether Full's extra references
+  add value or start constraining the model. Evaluation environment must be
+  isolated: the agent under test sees only the installed skill, never cases,
+  results, rubric, or transcripts.
 
 shared_fixtures:
   async_email_facts: |
