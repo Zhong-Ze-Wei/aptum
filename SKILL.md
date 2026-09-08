@@ -1,13 +1,15 @@
 ---
 name: aptum
 description: >-
-  Adapt, draft, or review explanations and information-rich writing so the right
-  information reaches the actual reader in a form suited to their task and delivery
-  context. Use when audience knowledge, downstream action, hidden context,
-  terminology, information density, or delivery medium materially changes what
-  should be selected or explained, including user-facing answers, teaching,
-  technical and professional documents, and Agent handoffs. Aptum preserves truth
-  and does not replace domain reasoning, source verification, or an explicit house style.
+  Use when audience, downstream action, context transfer, or evidence
+  boundaries materially change what information should be selected or stated:
+  cross-role or cross-team communication, handoffs to the next engineer or
+  Agent session, summaries where simplization could drop facts, risks, states,
+  or boundaries, and explicit reader-adaptation requests. Works as a silent
+  pre-delivery audit on top of the model's native answer, not as a writing
+  SOP; ordinary answers with no real reader/context gap do not trigger it.
+  Aptum preserves truth and does not replace domain reasoning or source
+  verification.
 metadata:
   short-description: 适其人，适其事，适其言
 ---
@@ -16,95 +18,78 @@ metadata:
 
 **适其人，适其事，适其言。**
 
-Aptum 不是在成稿末尾套一层“润色”。它是在选择、组织和表达信息时持续回答：
+Aptum 不参与"答案怎么想出来"。它是交付前的一次静默审计：默认相信模型的原生能力先正常完成任务，然后只检查几类真实风险——接收方拿没拿到改变其下一步的信息、决策关键有没有被埋、证据等级有没有被表达改变、交接状态会不会丢。没有发现实质问题，就不改写。
 
-> 这个读者，在这个场景下，需要获得什么信息，才能正确理解或完成接下来的事情？
+## 何时介入
 
-不存在脱离场景的最佳表达。追求合适的信息密度：压缩表达，不压缩思想；简化理解成本，不简化真实问题。
+只在存在真实的信息适配问题时介入。以下任一因素会实质改变应该选择什么信息：
 
-## 让判断跟着内容发生
+- 接收方与当前作者掌握的上下文明显不同；
+- 信息要从一个团队或角色传给另一个角色；
+- 接收方拿到内容后需要做决定或执行动作；
+- 当前上下文要交给下一位工程师或下一次 Agent 会话；
+- 简化、总结、改写可能丢失重要事实、风险、状态或边界；
+- 用户明确要求针对某类读者适配。
 
-不要把 Aptum 执行为固定 SOP。写作和编辑时，同时感知三件事：
+普通问答（例如简单解释一个技术概念）没有明显 reader/context gap 时，让模型正常回答，不启动额外方法论。
 
-- **人**：谁会读，他们已经知道什么，不知道什么，可能误解什么。
-- **事**：这段内容为何存在；读完后要做决定、执行动作、建立理解，还是恢复上下文。
-- **言**：哪些事实、背景、术语、结构和媒介能以最低理解成本支持这件事。
+## 工作方式：先解题，后审计
 
-如果受众或用途没有明说，先从请求、文件类型、项目位置和对话中推断。只有不同答案会显著改变交付结果且无法安全推断时，才向用户确认；否则采用最合理的假设，并在假设影响结论时写明。
+默认信任模型自身能力完成任务。Aptum 不是生成答案的流程，不规定判断读者、判断任务、判断术语、选择结构、humanize、画图或 review 的步骤，没有 SOP。模型先正常解决问题，交付前只审计四件事：
 
-## 使用读者上下文
+1. 接收方的下一步是否被支持；
+2. 最可能改变决策的信息是否容易被漏掉；
+3. 证据等级是否被表达改变；
+4. 交接内容是否可安全续接（如适用）。
 
-当前明确要求、适用的项目约定和当前会话证据始终优先于长期读者信息。长期信息只是判断知识边界、信息密度、术语和解释方式的先验，不能作为当前事实，也不能覆盖这次任务的真实受众和用途。未指定接收者时，默认主要读者是当前用户本人。
+## 审计一：接收方的下一步
 
-当前任务中的受众、角色、领域和交付媒介默认只在当前任务有效。可能稳定的知识边界、表达偏好或纠偏需求可以成为候选，但未经用户明确确认不得持久化。Aptum 不建立描述身份、性格或生活经历的广泛用户画像。
+身份（管理者、工程师、测试、运营）只是弱先验。真正要判断的是：**这个接收者拿到信息后，要理解什么、判断什么、决定什么、执行什么？** 然后只补充会改变其行动的信息。
 
-面向当前用户时，若环境提供已确认的长期读者信息则使用它；本地文件系统可用时，默认位置是 `~/.config/aptum/reader-profile.md`。文件不存在时正常完成任务，不强制初始化，也不根据一次对话自动创建。需要建立、读取、修改或删除长期读者模型时，读取 [references/personalization.md](references/personalization.md)。
+- 测试同学需要的往往不只是"Redis 是什么"，而是怎么重置状态避免每轮干等 15 分钟；
+- 管理者需要的是哪个问题正在阻塞、需要他拍什么板；
+- 下一会话的 Agent 需要的是当前状态、已知差异、禁止事项和什么时候应该停下；
+- 分析师需要的是"金额单位是分"会怎样影响 SQL 和报表，而不是字段定义本身。
 
-如果原表达已经适合当前读者和任务，保留它。不要为了证明 Aptum 生效而制造差异。
+读者判断的优先顺序与弱先验用法见 [references/readers.md](references/readers.md)。
 
-## 先守住真实问题
+## 审计二：决策显著度
 
-表达不能改变证据等级：
+找出最可能改变接收方下一步决策、行动或风险判断的信息，让它不容易被漏掉。这是目标，不是格式规定。不同交付物有不同实现：周报里可能是"需要决策 / 阻塞项"，release note 里可能是"升级须知 / breaking change"，技术债清单可能通过优先级排序体现，汇报第一屏给风险和需要拍板的事，handoff 第一句就是下一步。形式由模型根据内容自行决定。
 
-- 代码、接口、日志、文档或数据已验证的内容可以写成事实，并保留必要来源或可复现依据。
-- 由事实得出的判断保持为推断；说明关键依据，不借流畅语气把它写成已证实事实。
-- Agent 提出的做法写成建议、选择或决策，并交代影响选择的约束。
-- 不确定、冲突或缺失的信息要可见。不能为了顺滑而补造因果、数字、动机、支持范围或完成状态。
+## 审计三：证据等级（硬约束）
 
-事实准确性高于文风。关键条件、边界、失败方式、接口约束、数据结构、状态、风险和决策理由只要会影响理解或行动，就不能在“简化”时消失。与当前判断无关的历史、重复解释和没有信息增量的句子则应删去。
+表达可以改变，证据等级不能改变。稳定区分：
 
-## 补最小充分上下文
+- 输入中明确提供或已经验证的事实；
+- 由事实做出的推断；
+- 模型提出的建议；
+- 仍未知、待确认或冲突的信息。
 
-警惕作者的 hidden context：模块是什么、当前状态如何、为什么有这个约束、前序方案为何失败、某个名字具体指什么。补到一个聪明但没参与此前讨论的人能理解当前判断为何成立即可，不必重讲完整历史。
+强模型可以利用通用知识帮助解释、分析和提出建议，但不能为了让交付物显得完整，把"通常如此""合理猜测"或"惯例"写成当前项目已经确认的事实。对操作性细节尤其严格：API schema 与响应字段、文件路径、启动命令、配置字段、环境版本、owner、日期、系统状态、权限、数值、测试结果、实际部署方式——输入没给，就不能静默补成事实。
 
-让文档和可转发回复尽量独立于此前 conversation context。链接可以承载延伸材料，但不要把理解当前结论所必需的事实只藏在链接后面。
+允许："可以采用……""例如……""字段名待接口确认"。
+不允许：因为看起来合理，直接写进正式文档。
 
-不同读者通常需要不同取舍。具体差异见 [references/readers.md](references/readers.md)：
+## 审计四：交接不变量
 
-- 写给 **AI Agent**：显式、完整、可执行、可恢复上下文；保留状态、证据、文件、约束、未决项和停止条件，同时保持可扫描。
-- 写给 **项目内工程师**：使用真实术语和较高信息密度；聚焦机制、接口、差异、不变量、权衡和故障边界，不复习共同基础。
-- 写给 **当前用户本人**：根据当前对话和可用的稳定偏好判断其知识背景，不默认其是初学者或专家；优先说明现状、变化、原因、关键点、取舍、误区、边界和后续影响。
-- 写给 **无历史上下文的人**：主动补模块职责、问题来源和约束缘由，使主要结论不依赖聊天记录或项目记忆。
+当内容交给下一位工程师、未来的自己、下一次 AI 会话或其他执行者时，压缩不得丢失：目标、当前状态、已完成、已验证、未完成、已知问题、关键决定及原因、有意的行为差异、风险、权限、禁止修改的范围、停止条件、下一步。
 
-混合受众时，正文先服务主要任务，再用简短定义、局部注释、表格或链接为其他读者提供入口，不要把全文降到最低共同知识水平。
+不设固定模板。核心目标只有一条：接手者不需要重新猜，也不会因为缺状态而重复工作、把有意的差异修回去，或越过权限边界。
 
-## 术语要降低歧义，不要抬高门槛
+## 最小干预
 
-术语不是信息本身。一个技术名词或内部代号只有在帮助读者定位代码、检索资料、执行操作、参与协作或保持精确语义时，才值得出现在正文里；删掉它不影响当前理解或行动，就用普通语言直接说明。
+Aptum 不要求每次使用都产生可见变化。原答案已经适合当前读者和任务时，保持它。不强行扩写、不强行换标题结构、不强行加术语解释、不强行加表格、不强行画 Mermaid、不强行 humanize，也不为了显示"适配过"而修改本来已经很好的表达。
 
-面向当前用户或项目外读者，先给可观察结果和因果，再按需落到真实术语，不要让组件名和缩写承担解释工作。例如先说“新实例启动时的缓存加载被误当成业务压力，触发了连锁扩容”，需要继续讨论配置时再引入 `HPA`。内部代号第一次出现时说明职责，如 `Atlas`（负责发票对账的内部服务）；后文不再使用的代号可以省略。
+## 按需读取
 
-真实术语若承载精确含义、接口名称或团队约定，就保留，并在目标读者可能陌生的第一次出现处顺手解释它在当前场景中的作用，例如：`DLQ`（死信队列，保存最终处理失败的任务）。随后正常使用 `DLQ`。通用表达不等于模糊表达：数字、条件、接口语义和失败边界仍需保留。
+默认只加载本文件，其余材料按需：
 
-不要把一次局部解释扩展成百科教学，也不要用同义词轮换真实名称。类比只用于快速建立 mental model；一句建立直觉后尽快回到真实组件、机制和限制。类比不能替代边界说明。
+- 需要读者判断的优先顺序或身份弱先验：[references/readers.md](references/readers.md)
+- 需要交付物的高风险遗漏提醒（ADR 复审条件、release note 迁移动作、handoff 停止条件、API 文档不得补造 schema 等）：[references/deliverables.md](references/deliverables.md)
+- 用户明确要求润色或自然化、输出已出现明显模板化重复、表达风格本身已阻碍理解时（默认不加载）：[references/prose.md](references/prose.md)
+- 用户明确需要视觉化，或图表能显著降低当前读者理解关系、流程、状态或比较的成本时：[references/visuals.md](references/visuals.md)
+- 需要建立、读取或修改长期读者模型时：[references/personalization.md](references/personalization.md)
+- 同一事实面向不同下游读者的信息选择对照：[examples/audience-variants.md](examples/audience-variants.md)
 
-## 让形式承担关系
-
-结构从信息关系中长出来，不从模板中长出来。结论、当前状态或读者下一步通常应先出现；背景放在它首次成为理解前提的位置。
-
-当交付媒介能稳定渲染，并且流程、架构、数据流、调用链、角色、状态、时序、前后变化或系统边界用图明显更清楚时，使用 Mermaid、表格或其他结构化表达。概要和结构说明尤其要主动考虑图。图必须减少理解成本，并由正文说明结论、边界和异常；不能只是装饰，也不能成为唯一事实载体。
-
-终端即时回复、无法可靠渲染图的界面或简单关系，使用紧凑文字、表格或 ASCII。图形选择与写法见 [references/visuals.md](references/visuals.md)。
-
-## 自然来自取舍，不来自伪装
-
-成熟表达有具体事实和真实判断，句子承担不同功能，篇幅随内容变化。相信读者：结论已经说清就不再换一种说法总结；一句话能说明就不写仪式性铺垫；标题、列表、粗体和“三点式”只在它们真的帮助定位或比较时使用。
-
-把过度铺垫、空泛强调、机械对称、连续反转句、咨询报告腔、宣传腔、翻译腔和同节奏句群当作诊断信号，不当作禁词表。被动语态、专业术语、类比、三项列表或“不是 X 而是 Y”在承担真实功能时可以保留。不要用错别字、网络语言、刻意口语化或故意不完整来伪装成人类写作。
-
-编辑已有文本时做最小有效修改，保留作者的事实、声音、有效结构和项目约定。需要审阅或处理明显 AI 模板感时，读取 [references/prose.md](references/prose.md)。
-
-## 按交付物读取细节
-
-保持主文件常驻原则简洁，只在任务需要时加载对应材料：
-
-- README、ADR、需求/产品文档、技术方案、Agent handoff、代码说明等：读取 [references/deliverables.md](references/deliverables.md)。
-- 需要判断或制作图、表、ASCII 结构：读取 [references/visuals.md](references/visuals.md)。
-- 需要去除 AI 模板感、审阅中文技术表达或解释具体改写：读取 [references/prose.md](references/prose.md)。
-- 需要查看同一事实如何适配四类读者：读取 [examples/audience-variants.md](examples/audience-variants.md)。
-- 需要常见交付物的局部示例：读取 [examples/deliverable-excerpts.md](examples/deliverable-excerpts.md)。
-- 需要理解原则来源与取舍：读取 [references/foundations.md](references/foundations.md)。
-
-## 交付前的最后一眼
-
-不要机械逐项展示检查过程，但在交付前确认：读者拿到了完成下一步所缺的信息；主要结论不依赖隐性上下文；术语没有制造无谓门槛；压缩没有删掉会改变判断的事实；形式确实让关系更清楚；事实、推断和建议没有混写；文字没有比内容更显眼。
+[references/foundations.md](references/foundations.md) 是维护者文档（原则来源与取舍），正常运行不读取。
