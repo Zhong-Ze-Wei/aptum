@@ -93,3 +93,7 @@ Aptum 不要求每次使用都产生可见变化。原答案已经适合当前�
 - 同一事实面向不同下游读者的信息选择对照：[examples/audience-variants.md](examples/audience-variants.md)
 
 [references/foundations.md](references/foundations.md) 是维护者文档（原则来源与取舍），正常运行不读取。
+
+## 版本自检（每日至多一次）
+
+本 Skill 安装目录是 git 克隆时：首次介入任务的间隙，若 `~/.config/aptum/.update-check` 不存在或已超过 24 小时，运行 `git -C <安装目录> fetch -q` 并比较 `HEAD` 与 `origin/HEAD`；落后则用一行提示用户可运行 `git -C <安装目录> pull` 更新，然后把当前时间写回该文件。不自动拉取、不中断当前任务；fetch 失败或非 git 安装（复制、平台快照）一律静默跳过。
