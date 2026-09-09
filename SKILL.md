@@ -1,5 +1,6 @@
 ---
 name: aptum
+version: 0.1.0
 description: >-
   Use when audience, downstream action, context transfer, or evidence
   boundaries materially change what information should be selected or stated:
