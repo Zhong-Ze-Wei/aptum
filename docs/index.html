@@ -1,0 +1,2389 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Aptum · 适其人，适其事，适其言</title>
+<style>
+  :root {
+    --bg: #faf9f6;
+    --card: #ffffff;
+    --ink: #23262b;
+    --ink-soft: #5c6068;
+    --ink-faint: #8b8f97;
+    --line: #e7e3da;
+    --accent: #3a5a8c;
+    --accent-soft: #eef2f8;
+    --a-bg: #f6f5f2;
+    --a-line: #e2dfd8;
+    --a-tag: #7a746a;
+    --b-bg: #f1f6f0;
+    --b-line: #d5e3d3;
+    --b-tag: #4d7c4a;
+    --note-ink: #8a6d3b;
+    --quote-bg: #fffdf9;
+    --win: #2e7d32;
+    --edge: #3a5a8c;
+    --tie: #8b8f97;
+    --layer2: #7a5c8f;
+    --layer2-soft: #f3eef7;
+    --serif: Georgia, "Times New Roman", "STSong", "SimSun", serif;
+    --sans: -apple-system, "Segoe UI", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+    --mono: "SF Mono", Consolas, "Cascadia Code", Menlo, monospace;
+    --ease: cubic-bezier(.22,1,.36,1);
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    background: var(--bg); color: var(--ink);
+    font-family: var(--sans); font-size: 16px; line-height: 1.75;
+    -webkit-font-smoothing: antialiased;
+  }
+  .wrap { max-width: 1020px; margin: 0 auto; padding: 0 24px; }
+  button { font-family: var(--sans); }
+  button:focus-visible, .chip:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+  /* ================= Hero ================= */
+  header { padding: 84px 0 52px; position: relative; overflow: hidden; }
+  .vertical-deco {
+    position: absolute; top: 60px; bottom: 40px;
+    writing-mode: vertical-rl; letter-spacing: 0.5em;
+    font-family: var(--serif); font-size: 13px; color: var(--ink-faint);
+    user-select: none; opacity: 0; animation: fadeIn 1.2s var(--ease) .6s forwards;
+  }
+  .vertical-deco.left { left: max(24px, calc(50% - 540px)); }
+  .vertical-deco.right { right: max(24px, calc(50% - 540px)); }
+  @keyframes fadeIn { to { opacity: 1; } }
+  .hero-tag {
+    display: inline-block; font-size: 13px; letter-spacing: 0.25em;
+    color: var(--accent); border: 1px solid var(--accent);
+    padding: 4px 14px; border-radius: 999px; margin-bottom: 28px;
+    opacity: 0; animation: rise .6s var(--ease) .05s forwards;
+  }
+  h1 {
+    font-family: var(--serif); font-weight: 600;
+    font-size: clamp(34px, 6vw, 56px); line-height: 1.3;
+    letter-spacing: 0.04em; margin-bottom: 22px;
+    opacity: 0; animation: rise .7s var(--ease) .15s forwards;
+  }
+  .hero-sub {
+    font-size: clamp(16px, 2.4vw, 18.5px); color: var(--ink-soft); max-width: 700px; margin-bottom: 14px;
+    opacity: 0; animation: rise .7s var(--ease) .3s forwards;
+  }
+  .hero-sub strong { color: var(--ink); font-weight: 600; }
+  .hero-note {
+    margin-top: 16px; font-size: 13.5px; color: var(--ink-faint);
+    opacity: 0; animation: rise .7s var(--ease) .45s forwards;
+  }
+  .hero-note a { color: var(--accent); text-decoration: none; border-bottom: 1px solid var(--line); }
+  .hero-note a:hover { border-bottom-color: var(--accent); }
+  .kbd-hint { font-size: 12.5px; color: var(--ink-faint); margin-top: 6px; opacity: 0; animation: rise .7s var(--ease) .6s forwards; }
+  .kbd-hint kbd {
+    font-family: var(--mono); font-size: 11px; border: 1px solid var(--line);
+    border-bottom-width: 2px; border-radius: 4px; padding: 1px 6px; background: var(--card);
+  }
+
+  /* ================= Sections ================= */
+  section { padding: 34px 0 30px; }
+  .sec-title {
+    font-family: var(--serif); font-size: 27px; letter-spacing: 0.06em;
+    margin: 26px 0 8px; display: flex; align-items: baseline; gap: 14px; flex-wrap: wrap;
+    padding-bottom: 14px; border-bottom: 1px solid var(--line); position: relative;
+  }
+  .sec-title::after {
+    content: ""; position: absolute; left: 0; bottom: -1px; width: 72px; height: 2.5px;
+    background: var(--accent); border-radius: 2px;
+  }
+  section#layer2 .sec-title::after { background: var(--layer2); }
+  .sec-title .layer-no {
+    font-family: var(--mono); font-size: 13px; font-weight: 700; letter-spacing: .08em;
+    color: #fff; background: var(--accent); border-radius: 8px; padding: 4px 10px;
+    align-self: center;
+  }
+  section#layer2 .sec-title .layer-no { background: var(--layer2); }
+  .sec-title .en { font-size: 12px; color: var(--ink-faint); letter-spacing: 0.2em; font-family: var(--sans); }
+  .sec-desc { color: var(--ink-soft); font-size: 15px; margin: 20px 0 24px; max-width: 740px; }
+
+  /* ================= 比例条（判定统计） ================= */
+  .verdict-block { margin: 18px 0 14px; }
+  .vbar-meta {
+    display: flex; align-items: baseline; justify-content: space-between;
+    margin-bottom: 7px; font-size: 12px; color: var(--ink-faint);
+  }
+  .vbar-meta .mono { font-family: var(--mono); letter-spacing: .06em; }
+  .vbar {
+    display: flex; height: 30px; border-radius: 8px; overflow: hidden;
+    border: 1px solid var(--line); background: var(--card);
+  }
+  .vseg {
+    display: flex; align-items: center; justify-content: center;
+    font-size: 12px; font-weight: 600; color: #fff; letter-spacing: .02em;
+    border-right: 2px solid var(--bg); cursor: pointer; min-width: 0;
+    transition: filter .2s ease, opacity .25s ease, transform .15s var(--ease);
+    animation: segIn .7s var(--ease) both;
+  }
+  .vseg:last-child { border-right: none; }
+  .vseg:hover { filter: brightness(1.08); }
+  .vseg .seg-label { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; padding: 0 8px; }
+  .vseg.dim { opacity: .32; filter: grayscale(.6); }
+  @keyframes segIn { from { flex-grow: 0.001 !important; opacity: 0; } }
+  .vlegend {
+    display: flex; gap: 18px; flex-wrap: wrap; margin-top: 8px;
+  }
+  .vlegend button, .vlegend span.vitem {
+    appearance: none; border: none; background: none; cursor: pointer;
+    display: inline-flex; align-items: center; gap: 7px;
+    font-size: 12.5px; color: var(--ink-soft); padding: 3px 2px;
+    transition: color .15s ease;
+  }
+  .vlegend button:hover { color: var(--ink); }
+  .vlegend .dot { width: 9px; height: 9px; border-radius: 3px; flex: none; }
+  .vlegend button.on { color: var(--ink); font-weight: 600; }
+  .vlegend button.on .dot { outline: 2px solid var(--bg); outline-offset: 1px; box-shadow: 0 0 0 3px currentColor; }
+  .vlegend b.n { font-family: var(--mono); font-size: 12px; color: var(--ink); }
+
+  /* ================= Chips ================= */
+  .chips { display: grid; grid-template-columns: repeat(auto-fill, minmax(190px, 1fr)); gap: 12px; margin-bottom: 10px; }
+  .chips.l2 { grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); }
+  .chip {
+    appearance: none; border: 1px solid var(--line); background: var(--card);
+    border-radius: 12px; padding: 15px 10px 13px; cursor: pointer;
+    display: flex; flex-direction: column; align-items: center; gap: 6px;
+    color: var(--ink); position: relative; overflow: hidden;
+    transition: transform .18s var(--ease), box-shadow .18s var(--ease), border-color .18s ease, background .18s ease, opacity .25s ease, filter .25s ease;
+  }
+  .chip .emoji { font-size: 25px; line-height: 1; filter: grayscale(0.25); transition: filter .18s ease, transform .25s var(--ease); }
+  .chip .name { font-size: 14.5px; font-weight: 500; letter-spacing: 0.02em; }
+  .chip .verdict-dot { position: absolute; top: 9px; right: 11px; width: 9px; height: 9px; border-radius: 50%; }
+  .chip:hover { transform: translateY(-3px); box-shadow: 0 8px 20px rgba(35,38,43,.09); }
+  .chip:hover .emoji { filter: grayscale(0); transform: scale(1.12) rotate(-4deg); }
+  .chip.active { border-color: var(--accent); background: var(--accent); color: #fff; box-shadow: 0 10px 26px rgba(58,90,140,.3); }
+  .chip.active .emoji { filter: grayscale(0); transform: scale(1.05); }
+  .chip.active .verdict-dot { background: rgba(255,255,255,.9); }
+  .chip.dimmed { opacity: .3; filter: grayscale(.9); }
+  .chips.l2 .chip.active { border-color: var(--layer2); background: var(--layer2); box-shadow: 0 10px 26px rgba(122,92,143,.3); }
+
+  /* ================= Panel ================= */
+  .panel {
+    background: var(--card); border: 1px solid var(--line); border-radius: 18px;
+    padding: clamp(24px, 4vw, 42px); margin-top: 26px;
+    scroll-margin-top: 24px; position: relative; overflow: hidden;
+  }
+  .panel::before {
+    content: ""; position: absolute; top: 0; left: 0; right: 0; height: 3px;
+    background: linear-gradient(90deg, var(--accent), transparent 65%);
+    opacity: 0; animation: growLine .8s var(--ease) .1s forwards; transform-origin: left;
+  }
+  .panel.l2::before { background: linear-gradient(90deg, var(--layer2), transparent 65%); }
+  @keyframes growLine { from { transform: scaleX(0); opacity: 0; } to { transform: scaleX(1); opacity: 1; } }
+  .panel > * { opacity: 0; animation: rise .55s var(--ease) forwards; animation-delay: var(--d, 0s); }
+  @keyframes rise { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: none; } }
+
+  .panel-head { display: flex; align-items: center; gap: 14px; margin-bottom: 4px; flex-wrap: wrap; }
+  .panel-head .emoji { font-size: 34px; }
+  .panel-head h2 { font-family: var(--serif); font-size: 28px; letter-spacing: 0.05em; font-weight: 600; }
+  .verdict-badge {
+    margin-left: auto; font-size: 12.5px; font-weight: 600; letter-spacing: 0.06em;
+    padding: 4px 14px; border-radius: 999px; color: #fff; white-space: nowrap;
+    animation: rise .55s var(--ease) forwards, pop .45s var(--ease) .35s both;
+  }
+  @keyframes pop { 0% { transform: scale(.6); } 70% { transform: scale(1.08); } 100% { transform: scale(1); } }
+  .verdict-badge.win { background: var(--win); }
+  .verdict-badge.edge { background: var(--edge); }
+  .verdict-badge.tie { background: var(--tie); }
+
+  .situation {
+    font-size: 15.5px; color: var(--ink-soft);
+    border-left: 3px solid var(--accent); padding: 2px 0 2px 16px; margin: 18px 0 6px;
+  }
+  .panel.l2 .situation { border-left-color: var(--layer2); }
+
+  .block-label {
+    font-size: 12.5px; letter-spacing: 0.22em; color: var(--accent);
+    margin: 26px 0 10px; font-weight: 600; display: flex; align-items: center; gap: 10px;
+  }
+  .panel.l2 .block-label { color: var(--layer2); }
+  .block-label .step-no {
+    font-family: var(--mono); font-size: 11px; color: var(--ink-faint);
+    border: 1px solid var(--line); border-radius: 999px; padding: 0 8px; letter-spacing: 0;
+  }
+
+  /* ---- 输入卡 ---- */
+  .input-card {
+    border: 1px solid var(--line); border-radius: 14px; overflow: hidden; background: var(--card);
+    transition: box-shadow .25s ease;
+  }
+  .input-card:hover { box-shadow: 0 6px 18px rgba(35,38,43,.06); }
+  .input-card .ic-head {
+    display: flex; align-items: center; gap: 8px; flex-wrap: wrap;
+    padding: 10px 16px; border-bottom: 1px solid var(--line); background: var(--bg);
+    font-size: 12px; color: var(--ink-faint);
+  }
+  .input-card .ic-head .mono { font-family: var(--mono); letter-spacing: .04em; }
+  .input-card .ic-body { padding: 16px 18px; }
+  .msg {
+    position: relative; background: var(--accent-soft); border-radius: 4px 14px 14px 14px;
+    padding: 12px 16px 12px 40px; font-size: 14.5px; color: var(--ink);
+  }
+  .msg + .msg { margin-top: 10px; }
+  .msg::before {
+    content: "❝"; position: absolute; left: 12px; top: 10px;
+    font-family: var(--serif); font-size: 22px; color: var(--accent); opacity: .55;
+  }
+  .msg .msg-tag { display: block; font-size: 11.5px; color: var(--accent); font-weight: 600; letter-spacing: .12em; margin-bottom: 3px; }
+  .ic-routes { display: flex; gap: 10px; margin-top: 14px; flex-wrap: wrap; }
+  .ic-route {
+    flex: 1; min-width: 200px; display: flex; align-items: center; gap: 10px;
+    border: 1px dashed var(--line); border-radius: 10px; padding: 9px 13px; font-size: 13px; color: var(--ink-soft);
+  }
+  .ic-route .dot { width: 8px; height: 8px; border-radius: 50%; flex: none; }
+  .ic-route b { color: var(--ink); font-weight: 600; }
+
+  /* ---- Layer2 任务目录 ---- */
+  .doc-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 8px; }
+  .doc-chip {
+    display: flex; align-items: baseline; gap: 8px;
+    border: 1px solid var(--line); border-radius: 8px; padding: 7px 12px;
+    font-size: 12.5px; background: var(--card);
+    transition: transform .15s var(--ease), box-shadow .15s var(--ease);
+  }
+  .doc-chip:hover { transform: translateY(-1px); box-shadow: 0 3px 10px rgba(35,38,43,.06); }
+  .doc-chip .fname { font-family: var(--mono); font-size: 11.5px; color: var(--layer2); font-weight: 600; white-space: nowrap; }
+  .doc-chip .fdesc { color: var(--ink-faint); }
+
+  /* ---- 输出对比 ---- */
+  .compare { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-top: 4px; }
+  .session {
+    border-radius: 14px; border: 1px solid; overflow: hidden; display: flex; flex-direction: column;
+    transition: transform .22s var(--ease), box-shadow .22s var(--ease);
+  }
+  .session:hover { transform: translateY(-3px); box-shadow: 0 10px 26px rgba(35,38,43,.08); }
+  .session.side-a { background: var(--a-bg); border-color: var(--a-line); }
+  .session.side-b { background: var(--b-bg); border-color: var(--b-line); }
+  .session .s-head {
+    display: flex; align-items: center; gap: 9px; padding: 11px 16px;
+    border-bottom: 1px solid; font-size: 13px; font-weight: 600;
+  }
+  .session.side-a .s-head { border-color: var(--a-line); color: var(--a-tag); background: rgba(122,116,106,.05); }
+  .session.side-b .s-head { border-color: var(--b-line); color: var(--b-tag); background: rgba(77,124,74,.06); }
+  .session .s-head .sig { font-family: var(--mono); font-size: 11px; letter-spacing: .06em; opacity: .8; }
+  .session .s-head .arrow { margin-left: auto; font-size: 12px; font-family: var(--mono); opacity: .7; }
+  .session .s-body { padding: 14px 16px 15px; flex: 1; display: flex; flex-direction: column; gap: 10px; }
+  .out-label {
+    font-family: var(--mono); font-size: 10.5px; letter-spacing: .18em;
+    color: var(--ink-faint); display: flex; align-items: center; gap: 8px;
+  }
+  .out-label::after { content: ""; flex: 1; height: 1px; background: currentColor; opacity: .3; }
+  .out-quote {
+    background: var(--quote-bg); border: 1px solid var(--line); border-radius: 8px;
+    padding: 10px 14px; font-size: 13.5px; line-height: 1.8; color: var(--ink);
+    box-shadow: inset 3px 0 0 var(--line);
+  }
+  .out-quote em { font-style: normal; background: linear-gradient(transparent 62%, rgba(58,90,140,.16) 62%); }
+  .out-quote .bad { font-style: normal; background: linear-gradient(transparent 62%, rgba(160,60,50,.22) 62%); }
+  .judge {
+    margin-top: auto; padding-top: 10px; border-top: 1px dashed var(--line);
+    font-size: 12.5px; color: var(--note-ink); line-height: 1.7;
+  }
+  .judge::before { content: "✎ 判读 · "; font-weight: 600; }
+
+  /* ---- 完整对比按钮 ---- */
+  .full-btn {
+    appearance: none; cursor: pointer; margin-top: 12px; width: 100%;
+    border: 1px solid var(--line); background: var(--card); color: var(--ink-soft);
+    border-radius: 10px; padding: 10px 16px; font-size: 13.5px;
+    display: flex; align-items: center; justify-content: center; gap: 8px;
+    transition: border-color .18s ease, color .18s ease, transform .18s var(--ease), box-shadow .18s var(--ease);
+  }
+  .full-btn:hover { border-color: var(--accent); color: var(--ink); transform: translateY(-1px); box-shadow: 0 4px 12px rgba(35,38,43,.07); }
+  .full-btn b { color: var(--accent); font-weight: 600; }
+  .panel.l2 .full-btn:hover { border-color: var(--layer2); }
+  .panel.l2 .full-btn b { color: var(--layer2); }
+
+  /* ---- 完整对比模态 ---- */
+  .modal-overlay {
+    position: fixed; inset: 0; z-index: 100; display: flex; align-items: center; justify-content: center;
+    background: rgba(30, 32, 36, .45); backdrop-filter: blur(3px);
+    opacity: 0; pointer-events: none; transition: opacity .22s ease;
+  }
+  .modal-overlay.open { opacity: 1; pointer-events: auto; }
+  .modal {
+    width: min(1240px, calc(100vw - 32px)); height: calc(100vh - 48px);
+    background: var(--bg); border-radius: 16px; overflow: hidden;
+    display: flex; flex-direction: column;
+    box-shadow: 0 24px 80px rgba(0,0,0,.35);
+    transform: scale(.975) translateY(8px); transition: transform .26s var(--ease);
+  }
+  .modal-overlay.open .modal { transform: none; }
+  .modal-top {
+    display: flex; align-items: center; gap: 12px; flex-wrap: wrap;
+    padding: 13px 20px; border-bottom: 1px solid var(--line); background: var(--card);
+  }
+  .modal-top .m-emoji { font-size: 22px; }
+  .modal-top .m-name { font-family: var(--serif); font-size: 18px; font-weight: 600; letter-spacing: .03em; }
+  .modal-top .m-q {
+    font-size: 13px; color: var(--ink-faint);
+    max-width: 46ch; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+  }
+  .modal-top .m-badge { font-size: 11.5px; font-weight: 600; padding: 3px 11px; border-radius: 999px; color: #fff; white-space: nowrap; }
+  .m-actions { margin-left: auto; display: flex; gap: 8px; }
+  .m-actions button {
+    appearance: none; cursor: pointer; font-size: 12.5px;
+    border: 1px solid var(--line); background: var(--card); color: var(--ink-soft);
+    border-radius: 999px; padding: 5px 14px;
+    transition: border-color .15s ease, color .15s ease;
+  }
+  .m-actions button:hover { border-color: var(--accent); color: var(--ink); }
+  .m-actions .sync-btn.on { border-color: var(--accent); color: var(--accent); font-weight: 600; }
+  .modal-body { flex: 1; display: grid; grid-template-columns: 1fr 1fr; overflow: hidden; }
+  .m-col { display: flex; flex-direction: column; overflow: hidden; min-width: 0; }
+  .m-col + .m-col { border-left: 1px solid var(--line); }
+  .m-col-head {
+    padding: 10px 18px; font-size: 13px; font-weight: 600; flex: none;
+    display: flex; align-items: center; gap: 8px; border-bottom: 1px solid;
+  }
+  .m-col.side-a .m-col-head { color: var(--a-tag); border-color: var(--a-line); background: rgba(122,116,106,.05); }
+  .m-col.side-b .m-col-head { color: var(--b-tag); border-color: var(--b-line); background: rgba(77,124,74,.06); }
+  .m-col-head .sig { font-family: var(--mono); font-size: 11px; letter-spacing: .06em; opacity: .8; }
+  .m-scroll { flex: 1; overflow-y: auto; padding: 14px 18px 24px; scrollbar-width: thin; }
+  .m-judge-inline {
+    font-size: 12.5px; color: var(--note-ink); line-height: 1.7;
+    border: 1px dashed var(--line); border-radius: 8px; padding: 9px 12px; margin-bottom: 12px; background: var(--card);
+  }
+  .m-judge-inline::before { content: "✎ 在全文里重点看 · "; font-weight: 600; }
+  .m-full {
+    font-size: 13.5px; line-height: 1.9; color: var(--ink);
+    background: var(--card); border: 1px solid var(--line); border-left-width: 3px; border-radius: 10px;
+    padding: 18px 22px;
+  }
+  .m-col.side-a .m-full { border-left-color: var(--a-tag); }
+  .m-col.side-b .m-full { border-left-color: var(--b-tag); }
+  .m-full h1, .m-full h2, .m-full h3, .m-full h4 {
+    font-family: var(--serif); font-weight: 600; letter-spacing: .02em;
+    margin: 18px 0 8px; line-height: 1.45;
+  }
+  .m-full h1 { font-size: 18px; }
+  .m-full h2 { font-size: 16px; }
+  .m-full h3, .m-full h4 { font-size: 14.5px; }
+  .m-full h1:first-child, .m-full h2:first-child { margin-top: 0; }
+  .m-full p { margin: 8px 0; }
+  .m-full ul, .m-full ol { margin: 8px 0; padding-left: 22px; }
+  .m-full li { margin: 3px 0; }
+  .m-full blockquote {
+    border-left: 3px solid var(--line); padding: 4px 14px; margin: 10px 0;
+    color: var(--ink-soft); background: var(--bg); border-radius: 0 8px 8px 0;
+  }
+  .m-full pre {
+    background: #2a2d33; color: #e8e6e1; border-radius: 10px;
+    padding: 14px 16px; margin: 10px 0; overflow-x: auto;
+    font-family: var(--mono); font-size: 12px; line-height: 1.7;
+    white-space: pre;
+  }
+  .m-full pre code { background: none; color: inherit; padding: 0; }
+  .m-full code {
+    font-family: var(--mono); font-size: 12px; background: var(--bg);
+    border: 1px solid var(--line); border-radius: 4px; padding: 1px 6px;
+  }
+  .m-full table { border-collapse: collapse; margin: 10px 0; width: 100%; font-size: 12.5px; }
+  .m-full th, .m-full td { border: 1px solid var(--line); padding: 6px 10px; text-align: left; vertical-align: top; }
+  .m-full th { background: var(--bg); font-weight: 600; }
+  .m-full hr { border: none; border-top: 1px solid var(--line); margin: 14px 0; }
+  .m-full .hl { background: linear-gradient(transparent 60%, rgba(58,90,140,.18) 60%); border-radius: 2px; }
+  .m-full .hlbad { background: linear-gradient(transparent 60%, rgba(160,60,50,.25) 60%); border-radius: 2px; font-weight: 600; }
+  .m-full-note { font-size: 11.5px; color: var(--ink-faint); margin-top: 8px; text-align: right; }
+
+  /* ---- 微信读书式聚焦窗口（节选卡） ---- */
+  .focus-window {
+    background: var(--quote-bg); border: 1px solid var(--line); border-radius: 8px;
+    padding: 12px 14px; font-size: 13.5px; line-height: 1.85; color: var(--ink);
+    box-shadow: inset 3px 0 0 var(--line); position: relative; overflow: hidden;
+    -webkit-mask-image: linear-gradient(to bottom, transparent 0, #000 26%, #000 74%, transparent 100%);
+    mask-image: linear-gradient(to bottom, transparent 0, #000 26%, #000 74%, transparent 100%);
+  }
+  .focus-window .ctx { color: var(--ink-faint); opacity: .55; }
+  .focus-window .core {
+    font-weight: 500; color: var(--ink);
+    background: linear-gradient(transparent 62%, rgba(58,90,140,.16) 62%);
+    border-radius: 2px; padding: 0 1px;
+  }
+  .focus-window .core.bad {
+    background: linear-gradient(transparent 62%, rgba(160,60,50,.24) 62%); font-weight: 600;
+  }
+  .focus-window + .focus-window { margin-top: 10px; }
+
+  .diff-note {
+    margin-top: 14px; padding: 13px 17px; border-radius: 12px;
+    background: var(--accent-soft); font-size: 14px; color: var(--ink-soft);
+  }
+  .panel.l2 .diff-note { background: var(--layer2-soft); }
+  .diff-note b { color: var(--accent); font-weight: 600; margin-right: 6px; }
+  .panel.l2 .diff-note b { color: var(--layer2); }
+  .why { font-size: 15px; margin-top: 14px; }
+  .why b { color: var(--ink); }
+  .boundary {
+    margin-top: 18px; padding: 11px 16px; border-radius: 10px;
+    border: 1px dashed var(--line); font-size: 13.5px; color: var(--ink-faint);
+  }
+  .boundary b { color: var(--ink-soft); font-weight: 600; margin-right: 4px; }
+
+  .pn { display: flex; gap: 12px; margin-top: 16px; }
+  .pn button {
+    flex: 1; appearance: none; cursor: pointer; border: 1px solid var(--line);
+    background: var(--card); border-radius: 12px; padding: 12px 16px;
+    display: flex; align-items: center; gap: 10px; color: var(--ink-soft); font-size: 14px;
+    transition: transform .18s var(--ease), box-shadow .18s var(--ease), border-color .18s ease, color .18s ease;
+  }
+  .pn button:hover { transform: translateY(-2px); box-shadow: 0 6px 16px rgba(35,38,43,.08); border-color: var(--accent); color: var(--ink); }
+  .pn button .dir { font-size: 17px; color: var(--accent); flex: none; }
+  .pn button.next { justify-content: flex-end; text-align: right; }
+  .pn button .pn-label { display: flex; flex-direction: column; line-height: 1.35; }
+  .pn button .pn-label small { font-size: 11px; color: var(--ink-faint); letter-spacing: .1em; }
+
+  /* ================= 评价体系 ================= */
+  .eval-system {
+    background: var(--card); border: 1px solid var(--line); border-radius: 16px;
+    padding: clamp(22px, 3.5vw, 36px); margin-top: 26px;
+  }
+  .eval-layers { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin: 16px 0; }
+  .eval-card { border-radius: 12px; border: 1px solid; padding: 16px 18px; font-size: 13.5px; line-height: 1.8; }
+  .eval-card h4 { font-size: 15px; margin-bottom: 6px; display: flex; align-items: center; gap: 8px; }
+  .eval-card .l-badge { font-family: var(--mono); font-size: 10px; letter-spacing: .1em; padding: 2px 8px; border-radius: 999px; color: #fff; }
+  .eval-card ul { list-style: none; }
+  .eval-card li { padding: 2px 0 2px 18px; position: relative; color: var(--ink-soft); }
+  .eval-card li::before { content: "—"; position: absolute; left: 0; }
+  .eval-card.l1 { border-color: var(--line); }
+  .eval-card.l1 .l-badge { background: var(--accent); }
+  .eval-card.l2c { border-color: #ddd0e6; background: var(--layer2-soft); }
+  .eval-card.l2c .l-badge { background: var(--layer2); }
+  .eval-verdict {
+    padding: 13px 17px; border-radius: 12px; background: var(--accent-soft);
+    font-size: 14px; color: var(--ink-soft);
+  }
+  .eval-verdict b { color: var(--accent); }
+
+  .scenes { display: grid; grid-template-columns: repeat(auto-fit, minmax(210px, 1fr)); gap: 14px; }
+  .scene {
+    background: var(--card); border: 1px solid var(--line); border-radius: 12px;
+    padding: 20px 20px 18px; transition: transform .2s var(--ease), box-shadow .2s var(--ease);
+  }
+  .scene:hover { transform: translateY(-3px); box-shadow: 0 8px 20px rgba(35,38,43,.07); }
+  .scene .s-emoji { font-size: 22px; margin-bottom: 8px; }
+  .scene h3 { font-size: 15px; font-weight: 600; margin-bottom: 6px; letter-spacing: 0.02em; }
+  .scene p { font-size: 13.5px; color: var(--ink-soft); }
+
+  footer {
+    margin-top: 48px; padding: 34px 0 44px; border-top: 1px solid var(--line);
+    color: var(--ink-faint); font-size: 13px; line-height: 2;
+  }
+  footer .brand { font-family: var(--serif); font-size: 15px; color: var(--ink-soft); letter-spacing: 0.1em; }
+
+  @media (max-width: 720px) {
+    header { padding: 56px 0 36px; }
+    .vertical-deco { display: none; }
+    .compare, .eval-layers { grid-template-columns: 1fr; }
+    .verdict-badge { margin-left: 0; }
+    .chips, .chips.l2 { grid-template-columns: repeat(3, 1fr); }
+    .pn { flex-direction: column; }
+    .modal { height: calc(100vh - 20px); width: calc(100vw - 12px); border-radius: 12px; }
+    .modal-body { grid-template-columns: 1fr; grid-template-rows: 1fr 1fr; overflow-y: auto; }
+    .m-col + .m-col { border-left: none; border-top: 1px solid var(--line); }
+    .m-col { overflow: visible; }
+    .m-scroll { overflow: visible; padding: 12px 12px 18px; }
+    .modal-top .m-q { display: none; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after { animation-duration: .01ms !important; transition-duration: .01ms !important; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="vertical-deco left">压缩表达，不压缩思想</div>
+  <div class="vertical-deco right">简化理解成本，不简化真实问题</div>
+  <div class="wrap">
+    <span class="hero-tag">APTUM · v0.1.0 · 两层真实对照测试</span>
+    <h1>适其人，适其事，适其言。</h1>
+    <p class="hero-sub">
+      我们没有编示例。<strong>两层测试、40 份真实输出</strong>：第一层，12 个岗位 × 各一个日常困境，一半会话装 Aptum、一半不装；第二层，4 个真实项目目录——多文档、互相矛盾、关键信息埋在群聊和会议纪要里的那种"脏"上下文，问一个随意的问题。
+    </p>
+    <p class="hero-sub">
+      先说结果：<strong>多数场景，今天的强模型已经写得很好</strong>——连脏上下文里的矛盾消解和"不编数字"，基线也做到了。Aptum 的价值不是从差到好，而是在输出交出去之前替接收方做一次安静的检查：<strong>把猜测和事实分开写、把要拍板的事送到眼前、拦下那些"看起来无伤大雅"的越界承诺</strong>。
+    </p>
+    <p class="hero-note">
+      点你的身份看第一层；往下翻看第二层——真实项目的脏上下文里，差异换了地方。项目主页：<a href="https://github.com/Zhong-Ze-Wei/aptum" target="_blank">github.com/Zhong-Ze-Wei/aptum</a>
+    </p>
+    <p class="kbd-hint"><kbd>←</kbd> <kbd>→</kbd> 切换身份</p>
+  </div>
+</header>
+
+<main class="wrap">
+
+  <!-- ============ Layer 1 ============ -->
+  <section id="layer1">
+    <h2 class="sec-title"><span class="layer-no">L1</span>单一困境<span class="en">12 ROLES · QUICK TASKS</span></h2>
+    <div class="verdict-block" id="l1Verdict">
+      <div class="vbar-meta"><span class="mono">VERDICT · 12 SCENARIOS</span><span>段宽 = 占比 · 点图例筛选</span></div>
+      <div class="vbar">
+        <button class="vseg" data-f="win" style="flex:1;background:var(--win)" title="装了明显更好 × 1"><span class="seg-label">1</span></button>
+        <button class="vseg" data-f="edge" style="flex:8;background:var(--edge);animation-delay:.08s" title="装了稳定略优 × 8"><span class="seg-label">装了稳定略优 × 8</span></button>
+        <button class="vseg" data-f="tie" style="flex:3;background:var(--tie);animation-delay:.16s" title="无实质差异 × 3"><span class="seg-label">× 3</span></button>
+      </div>
+      <div class="vlegend">
+        <button data-f="win"><span class="dot" style="background:var(--win);color:var(--win)"></span>装了明显更好 <b class="n">1</b></button>
+        <button data-f="edge"><span class="dot" style="background:var(--edge);color:var(--edge)"></span>装了稳定略优 <b class="n">8</b></button>
+        <button data-f="tie"><span class="dot" style="background:var(--tie);color:var(--tie)"></span>无实质差异 <b class="n">3</b></button>
+      </div>
+    </div>
+    <p class="sec-desc">每个身份的徽章是真实测试的判定——包括"没差别"的。我们如实呈现，因为这正是 Aptum 自己的规则：证据等级不能被表达改变。点统计胶囊筛选。</p>
+    <div class="chips" id="chips"></div>
+    <div id="panel"></div>
+  </section>
+
+  <!-- ============ Layer 2 ============ -->
+  <section id="layer2">
+    <h2 class="sec-title"><span class="layer-no">L2</span>脏上下文 · 真实项目目录<span class="en">MESSY CONTEXT · 4 SCENARIOS</span></h2>
+    <div class="verdict-block">
+      <div class="vbar-meta"><span class="mono">VERDICT · 4 SCENARIOS</span><span>全部通过编造门</span></div>
+      <div class="vbar">
+        <div class="vseg" style="flex:4;background:var(--edge);cursor:default"><span class="seg-label">装了稳定略优 × 4</span></div>
+      </div>
+      <div class="vlegend">
+        <span class="vitem"><span class="dot" style="background:var(--win)"></span>编造门 <b class="n">8/8</b> 通过 · 零编造</span>
+        <span class="vitem"><span class="dot" style="background:var(--layer2)"></span>增量集中在输出侧纪律</span>
+      </div>
+    </div>
+    <p class="sec-desc">
+      第一层的问题是"干净"的——素材三五行、前提清楚。真实工作不是这样：一个项目目录里躺着七八份文档，新旧字典互相矛盾，口径拍板埋在会议纪要，红线藏在法务批注，而你的问题只有一句"帮我看下"。第二层按文献里的真实失败模式埋了四种针：<b>互相矛盾的文档、埋在边角文件里的关键约束、文档里根本没有的必答项、要跨文件拼起来的前提</b>。
+    </p>
+    <div class="chips l2" id="chipsL2"></div>
+    <div id="panelL2"></div>
+
+    <div class="eval-system">
+      <h3 style="font-family:var(--serif);font-size:20px;letter-spacing:.05em;">这页的评价体系是怎么建立的</h3>
+      <div class="eval-layers">
+        <div class="eval-card l1">
+          <h4><span class="l-badge">L1</span>单一困境 · 12 场景</h4>
+          <ul>
+            <li>同模型两个独立会话，任务句逐字一致</li>
+            <li>判定维度：读者任务适配、决策显著度、证据等级、交接完整</li>
+            <li>结果：明显更好 ×1（运营）、略优 ×8、无差异 ×3</li>
+            <li>允许并鼓励"无实质差异"判定，不强迫选赢家</li>
+          </ul>
+        </div>
+        <div class="eval-card l2c">
+          <h4><span class="l-badge">L2</span>脏上下文 · 4 项目目录</h4>
+          <ul>
+            <li>工作目录 = 任务目录（6-8 份脏文档），问题随意</li>
+            <li>判定先过<b>编造门</b>：文档里没有的数字写成答案直接判负</li>
+            <li>再查四点：矛盾消解、中间埋葬、前提拼接、决策入口</li>
+            <li>结果：基线 4/4 挖出全部信息且零编造——增量在输出侧</li>
+          </ul>
+        </div>
+      </div>
+      <div class="eval-verdict">
+        <b>两层一致的结论：</b>强模型基线已经能"读到并挖对"，Aptum 不试图教它这个。它管的是写出来的那一刻——事实/推断/未知分层落笔、待拍板的事进第一屏、以及拦下"文档里没说的善意承诺"（第二层运营场景里最有说服力的一次：无 skill 版自加了"不会影响您的账户正常使用"，文档并无此依据；Aptum 版识别并留白）。测试方法、素材与完整判定存于<a href="test-archive/messy-context-evals/RESULTS.md" target="_blank">测试档案</a>，独立会话可复跑。
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <h2 class="sec-title">这个页面什么时候有用<span class="en">WHO &amp; WHEN</span></h2>
+    <div class="scenes">
+      <div class="scene">
+        <div class="s-emoji">🔍</div>
+        <h3>犹豫要不要装</h3>
+        <p>两层都看自己岗位：第一层看日常问一句的差别，第二层看真实项目目录里的差别——包括"没差别"的场景，自己判断值不值。</p>
+      </div>
+      <div class="scene">
+        <div class="s-emoji">📤</div>
+        <h3>想推荐给同事朋友</h3>
+        <p>直接发这个页面。每人点自己的身份，看到的不是宣传语，是同款 AI 在他工作场景里的真实表现。</p>
+      </div>
+      <div class="scene">
+        <div class="s-emoji">🖥️</div>
+        <h3>团队内讨论选型</h3>
+        <p>开会投屏，两层对照摆在一起：你们的场景更像"问一句"还是"翻一目录脏文档"，对应哪一档结论。</p>
+      </div>
+      <div class="scene">
+        <div class="s-emoji">🧪</div>
+        <h3>想复现这些测试</h3>
+        <p>第二层的任务目录、判定标准和结果归档都在<a href="test-archive/messy-context-evals/" target="_blank">测试档案</a>里，独立会话即可复跑（注意先恢复被改写的 fixture）。</p>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <p class="brand">Aptum — 适其人，适其事，适其言</p>
+    <p>
+      测试方法：2026-09-09/10 两轮。第一层 12 场景、第二层 4 个任务目录（每目录 6-8 份脏文档，按 Lost-in-the-Middle、多文档摘要幻觉、context clash 三类文献失败模式埋针），每组两个完全独立的 AI 会话执行逐字一致的任务——一侧未装 Aptum，一侧安装 v0.1.0 后先读 SKILL.md 再执行。同一基座模型，单次采样。
+      会话卡片为「原文聚焦」——关键句在真实原文中的位置（上下文淡化显示）；点「查看完整输出对比」可见全文，完整输出按 Markdown 渲染，文本与生成原文一致（个别篇幅极长的输出保留了全部章节与关键条目）。<span style="color:var(--note-ink)">✎ 判读</span>为页面注释，与原文严格分离。素材为测试构造，不指向任何具体项目。判定由主持方做出，存在主观边界；第二层被测 agent 会改写任务目录，复跑前需恢复（详见<a href="test-archive/messy-context-evals/RESULTS.md" target="_blank">RESULTS.md</a>）。
+    </p>
+  </div>
+</footer>
+
+<!-- 完整对比模态 -->
+<div class="modal-overlay" id="modalOverlay" aria-hidden="true">
+  <div class="modal" role="dialog" aria-modal="true" aria-label="完整输出对比">
+    <div class="modal-top">
+      <span class="m-emoji" id="mEmoji"></span>
+      <span class="m-name" id="mName"></span>
+      <span class="m-q" id="mQ"></span>
+      <span class="m-badge" id="mBadge"></span>
+      <div class="m-actions">
+        <button class="sync-btn on" id="syncBtn">同步滚动 · 开</button>
+        <button id="closeBtn">关闭 ✕ ESC</button>
+      </div>
+    </div>
+    <div class="modal-body">
+      <div class="m-col side-a">
+        <div class="m-col-head"><span class="sig">SESSION A</span>未装 Aptum · 完整输出</div>
+        <div class="m-scroll" id="scrollA">
+          <div class="m-judge-inline" id="judgeA"></div>
+          <div class="m-full" id="fullA"></div>
+          <div class="m-full-note">完整原文 · 未改写</div>
+        </div>
+      </div>
+      <div class="m-col side-b">
+        <div class="m-col-head"><span class="sig">SESSION B</span>已装 Aptum v0.1.0 · 完整输出</div>
+        <div class="m-scroll" id="scrollB">
+          <div class="m-judge-inline" id="judgeB"></div>
+          <div class="m-full" id="fullB"></div>
+          <div class="m-full-note">完整原文 · 未改写</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+const V = {
+  win: { cls: 'win', label: '装了明显更好' },
+  edge: { cls: 'edge', label: '装了稳定略优' },
+  tie: { cls: 'tie', label: '无实质差异' }
+};
+
+const PERSONAS = [
+  {
+    id: "pm", emoji: "📋", name: "产品经理", verdict: "edge",
+    situation: "业务方一句话需求交给你整理成 PRD——而需求里最关键的规则，可能根本不存在于系统里。",
+    material: "业务方提出需求：「会员积分按用户等级自动折算优惠券。」已知现状：用户等级字段存在于会员系统；但折算规则从未系统化——历史上每次都是运营人员手动调整，部分规则依赖当月活动策略，没有统一文档。",
+    task: "把这个需求整理成 PRD 初稿。",
+    a: {
+      quotes: ["9.2 各等级的折算比例、可兑券种、面额档位 —— <em>建议先从历史手动调整记录反推一版基准表，再由运营校准</em>"],
+      note: "同样没有编造规则，还给了「开放问题」清单——但设想与已确认的事实混排在正文里，评审的人要自己分辨哪句是事实、哪句是设想。"
+    },
+    b: {
+      quotes: ["文中标注：<em>【已确认】为调研核实事实，【建议】为产品方案设想（待评审），【待确认】为阻塞后续设计的开放问题。</em>", "规则的具体参数<em>必须由业务方给出（见第 6 节 P0-1），不可由产品或研发代拟</em>。"],
+      note: "证据等级写进了文档体例，评审的人一眼分清。"
+    },
+    diff: "两边都不替业务编规则（这个基线已经不错）。差别在结构：装了 Aptum 的一版把证据等级写进了文档体例，评审的人一眼分清事实、设想和待拍板项。",
+    why: "你的一半工作是让对的决策发生在评审桌上。PRD 里最危险的不是缺内容，是把「猜的」和「确认的」写成同一个语气——装与不装的差别就在这里。",
+    boundary: "不替你判断需求优先级，也不核实业务事实——输入若是你没确认过的，它只会标出来，不会替你确认。"
+  },
+  {
+    id: "dev", emoji: "💻", name: "软件开发", verdict: "edge",
+    situation: "下班前写交接。明天的同事、或新开的 AI 会话，只看得到你留下的这段字。",
+    material: "我正在做的事：给 legacy 路由层写替代实现（新文件 router-v2.ts，60% 映射规则已迁移，测试 fixtures 在 fixtures/router/）；发现三个路由的旧正则有贪婪匹配 bug，新实现里已修复并加了对应测试；还没做：新旧实现的 diff 对比脚本、性能对比。约定：不要动 legacy 目录的任何文件。",
+    task: "把现在的状态写成交接，明天同事（或新开的 AI 会话）接手继续干。",
+    a: {
+      quotes: ["<em>【两处信息缺口】（原文档未记录，接手时需先补齐）</em>：已迁移 60% 与未迁移 40% 的具体边界没有明细；三个 bug 路由的具体名单没有单独记录，以新增的那批测试用例为准。"],
+      note: "主动标出了信息缺口，禁改约束也齐全——已经能用了。"
+    },
+    b: {
+      quotes: ["迁移剩余规则时的方法约束：以行为对齐为默认原则。发现疑似 legacy bug 时，<em>先按 legacy 原样迁移，把疑似问题单独记录、确认是 bug 后再修</em>，并同步新增回归测试、把该路由加入「预期差异」清单——避免迁移过程中自作主张改行为，导致 diff 无法解释。"],
+      note: "多一条「怎么干」的方法约束，防接手者好心修错地方。"
+    },
+    diff: "两边都保留了禁改边界和已修 bug 清单。差别是一条「怎么干」的方法约束：未装的一版告诉接手者「缺什么」，装了的一版额外防住了「接手的人好心把 bug 修错地方」这种事故。",
+    why: "交接最大的成本不是缺文档，是接手者用善意把你的有意差异修回去。多这一条约束，diff 脚本就不用返工。",
+    boundary: "不判断代码对错——它管的是信息不丢、边界不越，不是正确性。"
+  },
+  {
+    id: "ai", emoji: "🤖", name: "AI 应用工程师", verdict: "tie",
+    situation: "你写给 agent 的任务书就是它全部的世界。缺了权限和停止条件，它就自己编一条继续跑。",
+    material: "一项数据迁移任务进行中：整体完成 92%，剩余 1.8 万条记录缺少可推断的邮箱，卡住了——产品还没确定异常账户的处理方案；相关测试已通过，但生产 dry-run 尚未执行；当前没有生产写入和部署授权。",
+    task: "写一段给执行 agent 的任务指令，它会在新的会话里接手这个迁移任务。",
+    a: {
+      quotes: ["<em>【停止条件】（遇到即停，报告并等待指示，不自行绕过）</em>：核验发现实际状态与交接信息不符；任何步骤需要写生产数据或触发部署；dry-run 已具备执行条件，但授权尚未确认。"],
+      note: "核验、约束、停止条件都有——基线已经非常完整。"
+    },
+    b: {
+      quotes: ["【目标与你的角色】继续推进本迁移任务。<em>当前卡点是业务决策未定，不是技术故障</em>——你的首要工作是为决策准备数据、推进无需授权的部分，而不是设法清掉剩余记录。"],
+      note: "第一段就定性「不是技术故障」，防 agent 把「清掉 1.8 万条」当目标硬解。"
+    },
+    diff: "无实质差异，两版都能安全执行。装的这版唯一的差别在第一段就定性卡点——方向纠偏，不是能力差异。",
+    why: "这个场景今天的模型基线已经很强。Aptum 在这里的角色是保险：每次都定性卡点、每次都带停止条件，而不是看运气。",
+    boundary: "它不是评测框架，不替代你自己的 eval。"
+  },
+  {
+    id: "algo", emoji: "📈", name: "算法工程师", verdict: "edge",
+    situation: "你花三天定位出指标下跌的真因，写给负责人的汇报却被读成另一回事——决策的人只记住了「模型退化了」。",
+    material: "公司 AI 文档处理项目的准确率从 91% 降到 84%。定位结论：最近新接入了一批版式不同的法规 PDF，OCR 错误明显增加，抽取链路输入质量下降；模型版本没有变化。项目负责人需要决定是否继续按原计划上线。",
+    task: "向项目负责人写这次准确率下降的汇报。",
+    a: {
+      quotes: ["决策的关键不是「模型还能不能用」，而是两点：<em>1. 上线后的生产流量中，这批新版式法规 PDF 占多大比例；2. 84% 是否在业务可接受范围内</em>。"],
+      note: "结论先行、给了决策要点，也不错。"
+    },
+    b: {
+      quotes: ["把整体准确率从 91% 拉低到 84%（<em>错误率由 9% 升至 16%，错误量约为下降前的 1.8 倍</em>）。模型版本未变，已排除模型回归。", "<em>不建议直接以当前 84% 的混合状态按原计划上线</em>……若验证确认存量文档类型准确率未受影响，原上线节奏大概率仍可保留。"],
+      note: "把百分比差翻译成「错误量多了近一倍」。"
+    },
+    diff: "差别在一个换算：装了的一版把百分比差翻译成「错误量多了近一倍」——负责人对 7 个百分点没感觉，对翻倍的错误量有感觉。决策显著度的差别。",
+    why: "汇报的价值取决于负责人拍板的那个瞬间他脑中的画面。同样的定位结论，「错误多了一倍」比「降了 7 个点」更能阻止一次错误上线。",
+    boundary: "不参与推理、不替你验证——结论是你查出来的，它只保证传出去时不变形。"
+  },
+  {
+    id: "qa", emoji: "🧪", name: "测试工程师", verdict: "edge",
+    situation: "提测单一句「登录加了防刷」。计数存哪、怎么清零——不问开发，你的每轮锁定用例就真等 15 分钟。",
+    material: "登录模块刚改了：新增手机号+验证码登录（原有的密码登录不变）；新加规则：连续 5 次失败锁定 15 分钟。已知坑：验证码 60 秒内只能发一次；锁定计数存 Redis，多实例共享（意味着锁定跨节点生效）。",
+    task: "把这个模块的测试要点写给测试同学。",
+    a: {
+      quotes: ["Redis 访问权限：<em>能查看和删除锁定计数 key（用例间快速复位账号）、能改 key TTL（免等 15 分钟真实解锁）</em>"],
+      note: "关键信息也有——但放在全文第 7 节「环境与数据准备」里。"
+    },
+    b: {
+      quotes: ["<em>【测试前先向开发要三样东西】（直接影响用例能否顺畅执行）</em>：1. Redis 中锁定计数、验证码发送限流的 key 规则或重置方法——否则每条锁定用例要干等 15 分钟、每条发送用例要干等 60 秒", "时间类等待：若测试环境支持配置缩短，<em>优先走配置；没有配置再用 Redis key 重置；两者都没有才实等</em>。"],
+      note: "做成第一屏「开工前三件事」+ 降级顺序。"
+    },
+    diff: "信息一样，位置和形态不同：装了的一版把它做成第一屏的「开工前三件事」，还给了降级顺序（配置 > 重置 > 实等）。你拿到的是先看还是看完才知道，差一个下午。",
+    why: "测试要点文档的第一读者是明早打开它的你。改变你下一步的信息放第一屏，是这份文档全部的意义。",
+    boundary: "不替你设计用例——它只保证执行所需的信息到位，断言还是你写。"
+  },
+  {
+    id: "data", emoji: "📊", name: "数据分析师", verdict: "edge",
+    situation: "提示都写了，下游还是踩坑：金额放大 100 倍、订单 ID 进 Excel 就废——因为你写在第 5 节，没人翻到。",
+    material: "业务方要自助从 orders 表取数做报表。字段情况：amount 记录订单金额，单位是分；order_id 是雪花 ID（长整型）；status 记录订单状态，表里包含已退款订单。业务方常用 Excel 和 SQL。",
+    task: "给业务方写这个表的数据字典说明。",
+    a: {
+      quotes: ["【坑 2】order_id 在 Excel 里会损坏，且无法恢复：Excel 数字只保留 15 位有效数字……<em>用「数据 → 从文本/CSV」导入，在预览界面把 order_id 这一列的格式改为文本后再加载</em>。"],
+      note: "三个坑都置顶了——这个基线已经不错。"
+    },
+    b: {
+      quotes: ["-- MySQL：SELECT CAST(order_id AS CHAR) AS order_id<br>-- PostgreSQL：SELECT order_id::TEXT AS order_id", "不要靠改小数位数「看起来对」——<em>改显示格式不改变数值本身</em>。"],
+      note: "给到具体数据库的写法 + 纠正常见误解。"
+    },
+    diff: "同样三坑置顶，差别在可执行度：装了的一版给到具体库的写法、连「改格式不改数值」这个常见误解都纠了。业务方少问你一次，你就少打断一次。",
+    why: "数据字典的读者是要立刻动手写 SQL 的人。置顶的坑 + 可复制的语句，比正确的泛泛说明省一轮来回。",
+    boundary: "不跑 SQL、不验证数据真假——它只保证该到你眼前的信息不迟到、不变味。"
+  },
+  {
+    id: "teacher", emoji: "🎓", name: "教师", verdict: "tie",
+    situation: "同一份测验结果要写几种话：学生版要他知道下一步，家长版要看得懂、知道怎么配合。",
+    material: "学生小明这次数学考了 72 分（上次 80 分）。卷面情况：计算题全部正确，失分集中在应用题。这学期三次成绩：78、80、72。",
+    task: "给小明的家长写一条测验反馈（通过班级群私发的消息）。",
+    a: {
+      quotes: ["<em>先说让您放心的部分：计算题全部正确，说明基本功底子是稳的</em>，这次分数回落不是基础出了问题。", "每天挑一两道应用题，让他先用自己的话把题目讲一遍……<em>不用加量刷题</em>。"],
+      note: "写得相当好。"
+    },
+    b: {
+      quotes: ["从卷面看有个很明确的信号：<em>计算题全部正确，基本功很扎实；失分集中在应用题</em>。", "先让他用自己的话讲讲题目在问什么、给了哪些条件，讲清楚了再动笔列式。<em>遇到讲不清的题目，可以让他来问我。</em>"],
+      note: "同样好——先稳情绪、给证据、给配合动作。"
+    },
+    diff: "无实质差异——两版都先稳情绪、给卷面证据、给家庭配合动作，都没编造素材外的信息。这个场景，今天的模型已经写得很好。",
+    why: "如实说：这类场景装不装差别不大。Aptum 的价值在它管住的是「偶尔」——当你赶时间、素材更乱的时候，那一次不翻车。",
+    boundary: "它只处理你给它的信息，不了解你的学生。"
+  },
+  {
+    id: "ops", emoji: "📣", name: "运营", verdict: "win",
+    situation: "公告发出去，用户还是回来问「影不影响我、我该干嘛」——最需要看到公告的人，恰恰是最少收到推送的人。",
+    material: "v1 版 Webhook（自定义格式、HMAC-SHA1 签名）三个月后下线；v2（标准 JSON、HMAC-SHA256、支持重试）已上线一年半，迁移文档在 docs/webhook-v2。存量 74 个账号仍用 v1，其中 31 个近三个月零调用（疑似僵尸）。",
+    task: "写个下线公告。",
+    a: {
+      quotes: ["如果你的系统仍在接收或校验 v1 推送，<em>请在此之前完成向 v2 的迁移</em>……"],
+      note: "公告本身正确完整——但素材里「31 个近三个月零调用」这条线索，整份公告没有出现。那 31 个低频用户正是最不容易看到公告、又最容易在下线后才发现断掉的人。"
+    },
+    b: {
+      quotes: ["【近期没收到过 v1 回调？也请检查】目前仍有部分账号保留着 v1 配置但近三个月无任何调用。<em>没收到回调不等于没在使用</em>——若事件本身触发频率低（例如季度性事件），下线后同样会丢失。"],
+      note: "把线索变成了「最不容易被通知到的人」的自查段。"
+    },
+    diff: "第一层测试差异最大的一个：素材里躺着的那条线索，未装的一版丢了，装了的一版把它变成了给「最不容易被通知到的人」的自查段落。这不是文笔差异，是信息选择差异。",
+    why: "运营公告的成败常常不在 73 个活跃用户，而在那 31 个安静的。把素材里的线索转化成读者侧的自查动作——这正是装它的理由。这个岗位在第二层又贡献了最锋利的一次对比，往下看。",
+    boundary: "不替你定通知策略和补偿方案。"
+  },
+  {
+    id: "sales", emoji: "🤝", name: "销售 / 售前", verdict: "edge",
+    situation: "竞品官网挂着漂亮的压测数字，跟你的实测数字并排放着。客户 CTO 一句「这数怎么来的」，答错就出局。",
+    material: "做竞品方案里的「性能对比」部分给客户 CTO 看。我方：生产环境实测峰值吞吐 8 万 QPS（有完整压测报告）。竞品 A：官网白皮书宣称 10 万 QPS，注明为实验室压测环境，未见其生产规模数据。",
+    task: "写这一页性能对比。",
+    a: {
+      quotes: ["实验室数据剥离了生产的真实复杂度……<em>这不是竞品 A 独有的问题，而是所有实验室数据的固有约束</em>。"],
+      note: "已经做了口径区分，没有硬贬对手。"
+    },
+    b: {
+      quotes: ["<em>这不是对竞品数据真伪的判断，而是实验室压测这一方法本身的边界。</em>", "我方 8 万 QPS 的意义不在绝对值，而在于它是在生产环境中顶着真实流量与真实数据规模测得的，<em>测试条件与数字同源</em>。"],
+      note: "把「不质疑对方数字、只区分口径」说破。"
+    },
+    diff: "差别在一句边界声明：装了的一版把「我们不质疑对方数字，只区分口径」说破——这句话让这页材料在客户拿着它去质疑竞品时依然站得住，不会变成你们的信用风险。",
+    why: "售前材料的寿命比合同长。口径纪律写进纸面，是给未来的你留的退路。",
+    boundary: "不替你造数字，也不把劣势写成优势——材料里没有的事实一个字不补。"
+  },
+  {
+    id: "legal", emoji: "⚖️", name: "法务 / 合规", verdict: "edge",
+    situation: "技术风险写进合规意见时，事实和推测混在一段——哪句能引用、哪句只是猜测，连你自己都要回看两遍。",
+    material: "技术团队向合规部门报告：系统密码哈希采用 MD5，未加盐（2026-08 抽检报告在档）。需要评估合规风险并推动整改。",
+    task: "把这个发现写成给业务负责人的合规风险初步评估。",
+    a: {
+      quotes: ["《个人信息保护法》第 51 条……《网络安全法》第 21 条……<em>NIST SP 800-63B / GDPR 第 32 条</em>"],
+      note: "法规依据极全，罚则区间都列了——信息量大。"
+    },
+    b: {
+      quotes: ["【五、需要您决策的事项】<em>1. 批准整改立项并确认优先级；2. 指定系统业务负责人；3. 确认外部义务；4. 确认近期是否有审计、客户尽调或投标节点</em>", "目前无相关报告，<em>此为「未发现」，非「已排除」</em>。"],
+      note: "决策清单单列 +「未发现≠已排除」的证据边界。"
+    },
+    diff: "一个偏「全」，一个偏「用」：装了的一版把负责人要拍的四件事单列成决策清单，还把存量迁移讲成「用户无感知」（降低决策阻力）。「未发现≠已排除」这句，更是给自己留住了证据边界。",
+    why: "合规文件的读者不是法务，是要拍板的业务负责人。他不需要更多依据，他需要知道今天批什么、下周批什么。",
+    boundary: "不提供法律意见，也不核实事实真伪——输入若是错的，它只能把错误表达得很清楚。"
+  },
+  {
+    id: "lead", emoji: "🧭", name: "技术管理者", verdict: "edge",
+    situation: "下属的周报里，等你拍板的阻塞项和五件完成的事混在同一列表——你花在捞决策点上的时间比决策本身还多。",
+    material: "本周工作：1) 完成通知服务异步化改造并合入；2) 修复用户导出中文乱码；3) 数据迁移完成 92%，剩余 1.8 万条缺邮箱的数据卡住——产品还没定怎么处理异常账户，迁移暂停中；4) 支持了市场部两次临时取数；5) 张江机房网络抖动排查了一半，下周继续。",
+    task: "把这周的工作汇总一下，发给上级。",
+    a: {
+      quotes: ["二、受阻事项（需要关注）3. 数据迁移：进度 92%……<em>如需尽快推进，需协调产品明确异常账户的处理方式</em>。"],
+      note: "也单列了受阻项——这个基线比过去强了。"
+    },
+    b: {
+      quotes: ["【需要您关注：数据迁移暂停】……<em>如方便，希望您能帮忙推动产品侧尽快定下来，减少迁移停滞时间。</em>"],
+      note: "从「有此信息」到「请求行动」。"
+    },
+    diff: "从「有此信息」到「请求行动」：装了的一版不只是标记阻塞，还明确说出了要上级做的那件事（推动产品）。汇报的完成度，以对方是否知道该干什么为标准。",
+    why: "你向上要资源、向下要执行，靠的都是同一件事：让读的人在三秒内知道「这件要我做什么」。装的差别就是这三秒。",
+    boundary: "不替你管理人，也不美化事实：没验证的标「待确认」，不会写成已完成。"
+  },
+  {
+    id: "hr", emoji: "👥", name: "HR / 招聘", verdict: "tie",
+    situation: "汇总各轮面试反馈时，「感觉不错」和真实观察混在一起——给委员会的建议里，没人分得清哪句看到的、哪句猜的。",
+    material: "候选人终面结束。两位面试官的反馈都是「整体感觉不错，上手快，沟通顺畅，建议录用」。可查事实：候选人在三个工作日内完成了上手任务（同岗位平均五日）。跨团队冲突处理能力这次面试没有考察到。",
+    task: "写给招聘委员会的终面评价。",
+    a: {
+      quotes: ["【可核查事实】候选人三个工作日完成上手任务……「上手快」与上述任务完成数据相符；<em>「整体感觉不错」「沟通顺畅」为主观评价，暂无其他佐证材料</em>。"],
+      note: "已经把事实和主观评价分层了。"
+    },
+    b: {
+      quotes: ["【未考察项】跨团队冲突处理能力本轮面试未考察，<em>录用建议不覆盖该项能力</em>。如委员会认为该项为岗位关键要求，可在试用期设置相关场景重点观察。"],
+      note: "多一句适用范围的边界声明。"
+    },
+    diff: "接近无差异——两版都做了分层。装的这版多一句边界声明「录用建议不覆盖该项能力」，让委员会知道这份建议的适用范围。小的差别，但在委员会这种多方读者场景里有价值。",
+    why: "评价文书的核心风险是「被引用时超出本义」。一句适用范围声明，防的是三个月后有人拿这份评价回答它没回答过的问题。",
+    boundary: "不替任何人做录用决策——判断永远是人的。"
+  }
+];
+
+/* ================= Layer 2 数据 ================= */
+const MESSY = [
+  {
+    id: "m-data", emoji: "🗂️", name: "数据分析师 · 翻一目录脏文档", verdict: "edge",
+    situation: "新旧两版数据字典说金额单位一个「元」一个「分」，去退款的口径拍板埋在会议纪要里，Excel 的坑埋在群聊——而业务只说了句「把上个月的 GMV 算一下」。",
+    docs: [
+      ["README.md", "「8 月迁移过，看 migration-log」一句带过"],
+      ["data-dictionary-v2.md", "现行：单位是分（只列了 4 个状态）"],
+      ["data-dictionary-v1.md", "旧版：单位是元——无废弃标记"],
+      ["meeting-0905-gmv.md", "王总拍板对外去退款；「Excel 坑谁跟进？没定」"],
+      ["migration-log.md", "0814 元→分；3% 老订单 amount 为 NULL"],
+      ["slack-群聊备份.md", "老李：refunded 和 refund_pending 都算退款"],
+      ["旧的取数需求-0722.md", "当时还是元——反面教材"]
+    ],
+    question: "帮我看下 orders 表，把上个月的 GMV 和客单价给业务算一下，发我个结果。",
+    a: {
+      quotes: ["口径表（含每条的文档出处）+ SQL +「先 DISTINCT 一下 status 看有没有漏的状态」+ Excel 提醒。<em>「我这边发不了算好的数字——目录里只有口径文档」</em>"],
+      note: "已经很好：单位矛盾解对了、口径挖齐了、没编数字。"
+    },
+    b: {
+      quotes: ["同口径的 SQL 之外：<em>「可直接转发的结果模板（填空即发）」</em>；<em>「按天看一眼 8 月 GMV，确认 08-14/15 迁移窗口没有断层或百倍级跳变」</em>（推断，标注为 sanity check）；pending 算不算列为「建议顺手问一句，定下来写进取数说明」。"],
+      note: "把「文档说的」变成「验证文档说的」。"
+    },
+    diff: "两版都过了编造门（没人编 GMV 数字）、都解开了单位矛盾。差别在输出侧：装了的一版多做了迁移窗口的 sanity check，并按「发我个结果」的原话给了填空即发的模板——基线给的是分析，它给的是交付。",
+    why: "脏上下文里最贵的不是读错，是「读对了但验证停在文档层」。多一句「迁移窗口按天看一眼」，百倍级事故就多一道闸。",
+    boundary: "单次采样；两版都已很强，这里报告的是可指认的小增量。"
+  },
+  {
+    id: "m-dev", emoji: "🗂️", name: "软件开发 · 翻一目录脏文档", verdict: "edge",
+    situation: "TODO 勾了的项目可能没做完（笔记是凭记忆补写的），「竞态别修」的指令埋在群聊里，决定记录一半已失效——你说「继续把重构收尾」。",
+    docs: [
+      ["TODO.md", "EDI 和性能对比的勾选状态不可信"],
+      ["notes-0828.md", "第 3 次会话：CSV/定宽完成；fallback 已删"],
+      ["notes-0903.md", "「凭记忆补写」——EDI 迁没迁完自己都打问号"],
+      ["decisions.md", "两条决定，时效不同"],
+      ["bug-4832.md", "偶发解析失败，未定位"],
+      ["slack-dev-channel.md", "老周：竞态先别修；decisions 一半已失效"],
+      ["refactor-plan.md", "验收标准：覆盖率 ≥80%、性能 -20% 内"]
+    ],
+    question: "继续把重构收尾。",
+    a: {
+      quotes: ["「三处记录矛盾需要人确认」清单 + bug-4832 建议删码前定位 + 建议最小动作（跑 EDI 单测 + @老周确认竞态）。"],
+      note: "矛盾全部识别：竞态（TODO 勾了 vs 老周说别修）、凭记忆笔记不可信、fallback 删除未通报。"
+    },
+    b: {
+      quotes: ["状态按证据等级分三层：<em>「已确认的事实 / 矛盾 / 未知」</em>；竞态定性为<em>「若修复真实存在，它发生在叫停之后，属于越界改动」</em>；结尾列出<em>「需要你先给的两个输入：代码仓库位置、竞态倾向回退还是补确认」</em>；另给「一句话版本」供忙人。"],
+      note: "同样的发现，落成了证据分层 + 决策入口。"
+    },
+    diff: "两版都解开了全部矛盾（这个基线很强）。差别是组织方式：装了的一版把状态按「已确认/矛盾/未知」分层落笔，把竞态定性为越界改动，并明确向你要两个输入——同样的信息，接手成本更低。",
+    why: "长程交接里，信息挖全只完成一半；另一半是让下一个读者不用重新分辨哪些可信。证据分层就是这一半。",
+    boundary: "单次采样；目录里没有代码，两版都正确地拒绝凭文档断言代码状态。"
+  },
+  {
+    id: "m-algo", emoji: "🗂️", name: "算法工程师 · 翻一目录脏文档", verdict: "tie",
+    situation: "指标口径中途换过代（前后数字不可比）、最优一轮复现失败原因只有半句话、12% 训练数据是爬虫、评审质疑没人回——你问「能上线吗，写个给老板的汇报」。",
+    docs: [
+      ["experiment-log.md", "第 7 轮没复现：「emb 层被改动？回头查」"],
+      ["metrics-v1.2.md", "现行口径：全库负采样（08-08 起）"],
+      ["metrics-v1.0.md", "旧口径：随机负采样——数字不可比"],
+      ["data-issue.md", "12% 爬虫样本；「老板那边还不知道」"],
+      ["review-comments.md", "同事三条质疑，未回复"],
+      ["product-requirement.md", "「效果不能比现在差」——没定义"],
+      ["上线检查单.md", "4 项必备，缺任一直接打回"]
+    ],
+    question: "这个模型能上线吗？帮我写个给老板的汇报。",
+    a: {
+      quotes: ["结论「不能上线」+ 五条依据（含口径断代、数据污染主动披露）+ 检查单对照 + 四层结构汇报草稿 + 「起草说明：数据污染写进去了，是否保留由你定」。"],
+      note: "质量极高：口径断代完全识别，「0.69 > 0.66 不能当成提升的证据」。"
+    },
+    b: {
+      quotes: ["同样结论之外，发送说明里显式声明：<em>「草稿严格区分了三个层级：文档中的事实、推断、未知。没有补造任何工期、责任人或测试结果。」</em>；并指出 <em>「seed 方差问题直接决定 0.71 还是 0.69 哪个更接近真值，应在补测前先回复」</em>。"],
+      note: "证据等级从「做对了」变成「声明出来了」。"
+    },
+    diff: "接近无差异——这是第二层里基线最强的一个场景，两版都把口径断代、数据污染、检查单缺口全部处理了。装的这版多两件事：把证据分级写成显式声明（读者不用自己验证你有没有混写），并给 Kevin 的 seed 方差质疑排了最高优先级。",
+    why: "给老板的汇报最大的风险是被追问「这句是测的还是猜的」。基线做对了分层；装了它，分层变成每次都有的保证，并写在了明面上。",
+    boundary: "单次采样；「能上线吗」两版都正确回答「现在不能」且无一编造。"
+  },
+  {
+    id: "m-ops", emoji: "🗂️", name: "运营 · 翻一目录脏文档", verdict: "win",
+    situation: "公告草稿里写着法务禁用的「故障」二字，客服话术库还挂着老板已否决的「10 元补偿」，用户手里已经握着老话术的截图——你说「公告弄好了没？发了吧」。",
+    docs: [
+      ["incident-postmortem-0908.md", "内部：2h10m、约 4000+ 用户（未核实）"],
+      ["timeline.md", "对外「约 2 小时」——法务确认的保守口径"],
+      ["announcement-draft.md", "半成品：3 处「故障」+ 补偿【待补充】"],
+      ["legal-review.md", "三条红线：不认「故障」、不写人数金额、不承诺具体补偿"],
+      ["support-macros.md", "老话术「补偿 10 元券」仍标当前生效"],
+      ["user-complaints-summary.md", "用户晒 10 元截图，大 V 在转发"],
+      ["compensation-decision.md", "老板拍板登记制，明确不用 10 元"]
+    ],
+    question: "公告弄好了没？发了吧。",
+    a: {
+      quotes: ["识别全部三个硬伤并改好草稿（故障→异常、补偿按决策填写、人数金额不写）。但在公告里自加了：<span class=\"bad\">「多领的优惠券可正常使用，无需退回，<b>也不会影响您的账户正常使用</b>」</span>"],
+      note: "那句加粗的承诺，文档里没有依据——内部材料只确认「不回收重复券」，账户和信用影响谁都没说过。在用户已拿截图找茬、法务画了红线的局面里，这是给集体诉讼递材料。"
+    },
+    b: {
+      quotes: ["同样识别全部硬伤并修订，但：<em>「投诉里很多人担心影响信用，但内部材料只确认了不回收，没写信用影响——所以我没有在公告里加这个说法，如要加请先让技术/客服确认。」</em>；另区分了<em>「确认话术实际下线（不是只改文档）」</em>，并补上法务终审签字环节。"],
+      note: "拦下了那次善意越界，并指出「改文档 ≠ 实际下线」。"
+    },
+    diff: "第二层最锋利的一次对比：读文档、找矛盾、改草稿，两边都做对了——差别在一句「顺手的好话」。无 skill 版出于好意加了一个文档没有依据的承诺；Aptum 版识别出这个空缺，选择留白并标注「要加先确认」。这不是能力差异，是纪律差异。",
+    why: "危机文案里最危险的话，往往是模型出于好意补的那句。证据纪律拦住的不只是错误，是「看起来无伤大雅」的越界。",
+    boundary: "单次采样；两版都改写了任务目录（fixture），测试后已恢复——这本身被记进了测试档案的方法教训。"
+  }
+];
+
+/* ================= Layer 1 渲染 ================= */
+const chipsEl = document.getElementById('chips');
+const panelEl = document.getElementById('panel');
+let currentId = null;
+let filter = null;
+
+document.querySelectorAll('#l1Verdict [data-f]').forEach(el => {
+  el.addEventListener('click', () => setFilter(el.dataset.f === filter ? null : el.dataset.f));
+});
+function setFilter(f) {
+  filter = f;
+  document.querySelectorAll('#l1Verdict .vlegend button[data-f]').forEach(b => b.classList.toggle('on', b.dataset.f === f));
+  document.querySelectorAll('#l1Verdict .vseg[data-f]').forEach(s => s.classList.toggle('dim', !!f && s.dataset.f !== f));
+  document.querySelectorAll('#chips .chip').forEach(c => {
+    const p = PERSONAS.find(x => x.id === c.dataset.id);
+    c.classList.toggle('dimmed', !!f && p.verdict !== f);
+  });
+}
+
+PERSONAS.forEach((p, i) => {
+  const b = document.createElement('button');
+  b.className = 'chip';
+  b.innerHTML = `<span class="verdict-dot" style="background:var(--${V[p.verdict].cls})"></span><span class="emoji">${p.emoji}</span><span class="name">${p.name}</span>`;
+  b.addEventListener('click', () => select(p.id));
+  b.dataset.id = p.id;
+  chipsEl.appendChild(b);
+});
+
+function select(id) {
+  currentId = id;
+  document.querySelectorAll('#chips .chip').forEach(c => c.classList.toggle('active', c.dataset.id === id));
+  const p = PERSONAS.find(x => x.id === id);
+  panelEl.innerHTML = renderL1(p);
+  const y = panelEl.getBoundingClientRect().top + window.scrollY - 16;
+  window.scrollTo({ top: y, behavior: 'smooth' });
+}
+
+function renderL1(p) {
+  const v = V[p.verdict];
+  const quoteHTML = q => `<div class="out-quote">${q}</div>`;
+  const blocks = [
+    `<div class="panel-head"><span class="emoji">${p.emoji}</span><h2>${p.name}</h2><span class="verdict-badge ${v.cls}">${v.label}</span></div>
+     <p class="situation">${p.situation}</p>`,
+    `<div class="block-label"><span class="step-no">STEP 1</span>发给两个会话的任务（逐字一致）</div>
+     <div class="input-card"><div class="ic-head"><span class="mono">INPUT</span><span>两个完全独立的 AI 会话 · 同一模型</span></div>
+     <div class="ic-body"><div class="msg"><span class="msg-tag">背景素材</span>${p.material}</div><div class="msg"><span class="msg-tag">任务</span>${p.task}</div>
+     <div class="ic-routes"><div class="ic-route"><span class="dot" style="background:var(--a-tag)"></span><span><b>会话 A</b> · 未装 Aptum，直接执行</span></div><div class="ic-route"><span class="dot" style="background:var(--b-tag)"></span><span><b>会话 B</b> · 安装 Aptum v0.1.0，先读 SKILL.md 再执行</span></div></div></div></div>`,
+    `<div class="block-label"><span class="step-no">STEP 2</span>两份生成输出 · 关键句在原文中的位置</div>
+     <div class="compare">
+       <div class="session side-a"><div class="s-head"><span class="sig">SESSION A</span>未装 Aptum<span class="arrow">直接执行 →</span></div>
+       <div class="s-body"><div class="out-label">生成输出 · 原文聚焦</div>${focusWindows(p.fullA).join('')}<div class="judge">${p.a.note}</div></div></div>
+       <div class="session side-b"><div class="s-head"><span class="sig">SESSION B</span>已装 Aptum v0.1.0<span class="arrow">先读 SKILL.md →</span></div>
+       <div class="s-body"><div class="out-label">生成输出 · 原文聚焦</div>${focusWindows(p.fullB).join('')}<div class="judge">${p.b.note}</div></div></div>
+     </div>`,
+    `<button class="full-btn" onclick="openModal('${p.id}', 1)">📄 点开看<b>完整输出对比</b> —— 左右并排 · 同步滚动 · 原文未改写</button>`,
+    `<div class="diff-note"><b>差异在哪</b>${p.diff}</div>`,
+    `<p class="why"><b>为什么要装：</b>${p.why}</p>`,
+    `<div class="boundary"><b>边界</b>${p.boundary}</div>`,
+    `<div class="pn"><button onclick="stepNav(-1)"><span class="dir">←</span><span class="pn-label"><small>上一个身份</small>${prevOf(p.id)}</span></button><button class="next" onclick="stepNav(1)"><span class="pn-label"><small>下一个身份</small>${nextOf(p.id)}</span><span class="dir">→</span></button></div>`
+  ];
+  return `<article class="panel">${blocks.map((b, k) => `<div style="--d:${(0.06 + k * 0.09).toFixed(2)}s">${b}</div>`).join('')}</article>`;
+}
+function prevOf(id) { const i = PERSONAS.findIndex(x => x.id === id); const p = PERSONAS[(i - 1 + PERSONAS.length) % PERSONAS.length]; return `${p.emoji} ${p.name}`; }
+function nextOf(id) { const i = PERSONAS.findIndex(x => x.id === id); const p = PERSONAS[(i + 1) % PERSONAS.length]; return `${p.emoji} ${p.name}`; }
+function stepNav(dir) {
+  if (!currentId) { select(PERSONAS[0].id); return; }
+  let i = PERSONAS.findIndex(x => x.id === currentId) + dir;
+  if (i < 0) i = PERSONAS.length - 1;
+  if (i >= PERSONAS.length) i = 0;
+  select(PERSONAS[i].id);
+}
+
+/* ================= Layer 2 渲染 ================= */
+const chipsL2 = document.getElementById('chipsL2');
+const panelL2 = document.getElementById('panelL2');
+let currentL2 = null;
+
+MESSY.forEach(p => {
+  const b = document.createElement('button');
+  b.className = 'chip';
+  b.innerHTML = `<span class="verdict-dot" style="background:var(--${V[p.verdict].cls})"></span><span class="emoji">${p.emoji}</span><span class="name">${p.name.replace(' · 翻一目录脏文档', '')}</span>`;
+  b.addEventListener('click', () => selectL2(p.id));
+  b.dataset.id = p.id;
+  chipsL2.appendChild(b);
+});
+
+function selectL2(id) {
+  currentL2 = id;
+  document.querySelectorAll('#chipsL2 .chip').forEach(c => c.classList.toggle('active', c.dataset.id === id));
+  const p = MESSY.find(x => x.id === id);
+  panelL2.innerHTML = renderL2(p);
+  const y = panelL2.getBoundingClientRect().top + window.scrollY - 16;
+  window.scrollTo({ top: y, behavior: 'smooth' });
+}
+
+function renderL2(p) {
+  const v = V[p.verdict];
+  const quoteHTML = q => `<div class="out-quote">${q}</div>`;
+  const docs = p.docs.map(d => `<div class="doc-chip"><span class="fname">${d[0]}</span><span class="fdesc">${d[1]}</span></div>`).join('');
+  const blocks = [
+    `<div class="panel-head"><span class="emoji">${p.emoji}</span><h2>${p.name}</h2><span class="verdict-badge ${v.cls}">${v.label}</span></div>
+     <p class="situation">${p.situation}</p>`,
+    `<div class="block-label"><span class="step-no">任务目录</span>工作目录里躺着的 ${p.docs.length} 份文档</div>
+     <div class="doc-grid">${docs}</div>`,
+    `<div class="block-label"><span class="step-no">问题</span>用户只说了这一句</div>
+     <div class="input-card"><div class="ic-head"><span class="mono">INPUT</span><span>两个独立会话 · 工作目录 = 任务目录 · 先读文档再回答</span></div>
+     <div class="ic-body"><div class="msg"><span class="msg-tag">用户原话</span>${p.question}</div>
+     <div class="ic-routes"><div class="ic-route"><span class="dot" style="background:var(--a-tag)"></span><span><b>会话 A</b> · 未装 Aptum</span></div><div class="ic-route"><span class="dot" style="background:var(--b-tag)"></span><span><b>会话 B</b> · 已装 Aptum v0.1.0</span></div></div></div></div>`,
+    `<div class="block-label"><span class="step-no">两份输出</span>关键句在原文中的位置 · 双方都过了编造门</div>
+     <div class="compare">
+       <div class="session side-a"><div class="s-head"><span class="sig">SESSION A</span>未装 Aptum<span class="arrow">读完文档作答 →</span></div>
+       <div class="s-body"><div class="out-label">生成输出 · 原文聚焦</div>${focusWindows(p.fullA).join('')}<div class="judge">${p.a.note}</div></div></div>
+       <div class="session side-b"><div class="s-head"><span class="sig">SESSION B</span>已装 Aptum v0.1.0<span class="arrow">读完文档作答 →</span></div>
+       <div class="s-body"><div class="out-label">生成输出 · 原文聚焦</div>${focusWindows(p.fullB).join('')}<div class="judge">${p.b.note}</div></div></div>
+     </div>`,
+    `<button class="full-btn" onclick="openModal('${p.id}', 2)">📄 点开看<b>完整输出对比</b> —— 左右并排 · 同步滚动 · 原文未改写</button>`,
+    `<div class="diff-note"><b>差异在哪</b>${p.diff}</div>`,
+    `<p class="why"><b>为什么要装：</b>${p.why}</p>`,
+    `<div class="boundary"><b>边界</b>${p.boundary}</div>`
+  ];
+  return `<article class="panel l2">${blocks.map((b, k) => `<div style="--d:${(0.06 + k * 0.09).toFixed(2)}s">${b}</div>`).join('')}</article>`;
+}
+
+/* ================= 完整对比模态 ================= */
+const overlay = document.getElementById('modalOverlay');
+const syncBtn = document.getElementById('syncBtn');
+const scrollA = document.getElementById('scrollA');
+const scrollB = document.getElementById('scrollB');
+let syncScroll = true;
+let syncing = false;
+
+function escHtml(s) {
+  return s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+}
+/* 轻量 markdown 渲染：标题/粗体/行内码/代码块/列表/引用/表格/分隔线 + [HL] 高亮标记 */
+function mdToHtml(src) {
+  const s = escHtml(src)
+    .replace(/\[HL\]/g, '<span class="hl">').replace(/\[\/HL\]/g, '</span>')
+    .replace(/\[HLBAD\]/g, '<span class="hlbad">').replace(/\[\/HLBAD\]/g, '</span>');
+  const lines = s.split('\n');
+  const inline = t => t.replace(/\*\*([^*]+)\*\*/g, '<b>$1</b>').replace(/`([^`]+)`/g, '<code>$1</code>');
+  const out = []; let i = 0;
+  while (i < lines.length) {
+    const line = lines[i]; const t = line.trim();
+    if (t.startsWith('```')) {
+      const buf = []; i++;
+      while (i < lines.length && !lines[i].trim().startsWith('```')) { buf.push(lines[i]); i++; }
+      i++; out.push('<pre><code>' + buf.join('\n') + '</code></pre>'); continue;
+    }
+    if (t.startsWith('|')) {
+      const rows = [];
+      while (i < lines.length && lines[i].trim().startsWith('|')) { rows.push(lines[i].trim()); i++; }
+      const trs = rows.filter(r => !/^\|[\s:|-]+\|?$/.test(r))
+        .map(r => r.replace(/^\||\|$/g, '').split('|').map(c => inline(c.trim())));
+      if (trs.length) {
+        out.push('<table><tr>' + trs[0].map(c => '<th>' + c + '</th>').join('') + '</tr>' +
+          trs.slice(1).map(r => '<tr>' + r.map(c => '<td>' + c + '</td>').join('') + '</tr>').join('') + '</table>');
+      }
+      continue;
+    }
+    const h = t.match(/^(#{1,4})\s+(.*)/);
+    if (h) { const n = h[1].length; out.push(`<h${n}>` + inline(h[2]) + `</h${n}>`); i++; continue; }
+    if (/^[-*]\s+/.test(t)) {
+      const buf = [];
+      while (i < lines.length && /^[-*]\s+/.test(lines[i].trim())) { buf.push('<li>' + inline(lines[i].trim().replace(/^[-*]\s+/, '')) + '</li>'); i++; }
+      out.push('<ul>' + buf.join('') + '</ul>'); continue;
+    }
+    if (/^\d+[.、)]\s+/.test(t)) {
+      const buf = [];
+      while (i < lines.length && /^\d+[.、)]\s+/.test(lines[i].trim())) { buf.push('<li>' + inline(lines[i].trim().replace(/^\d+[.、)]\s+/, '')) + '</li>'); i++; }
+      out.push('<ol>' + buf.join('') + '</ol>'); continue;
+    }
+    if (/^>\s?/.test(t)) {
+      const buf = [];
+      while (i < lines.length && /^>\s?/.test(lines[i].trim())) { buf.push(inline(lines[i].trim().replace(/^>\s?/, ''))); i++; }
+      out.push('<blockquote>' + buf.join('<br>') + '</blockquote>'); continue;
+    }
+    if (/^---+$/.test(t)) { out.push('<hr>'); i++; continue; }
+    if (t === '') { i++; continue; }
+    out.push('<p>' + inline(line) + '</p>'); i++;
+  }
+  return out.join('\n');
+}
+/* 微信读书式聚焦窗口：以 [HL] 关键句为中心，上下文虚化 */
+function focusWindows(full, max = 2) {
+  const re = /\[(HL|HLBAD)\]([\s\S]*?)\[\/\1\]/g;
+  const found = []; let m;
+  while ((m = re.exec(full))) found.push({ tag: m[1], core: m[2], idx: m.index, end: re.lastIndex });
+  if (!found.length) {
+    const head = full.slice(0, 180).replace(/\n+/g, ' ');
+    return ['<div class="focus-window">' + escHtml(head) + '…</div>'];
+  }
+  const cleanCtx = t => t.replace(/\[\/?(?:HL|HLBAD)\]/g, '')
+    .split('\n').map(l => l.replace(/^[#>\-*\|\s]+/, '')).filter(Boolean).join(' ');
+  return found.slice(0, max).map(f => {
+    const before = cleanCtx(full.slice(Math.max(0, f.idx - 130), f.idx));
+    const after = cleanCtx(full.slice(f.end, f.end + 130));
+    const core = '<span class="core' + (f.tag === 'HLBAD' ? ' bad' : '') + '">' +
+      escHtml(f.core).replace(/\*\*/g, '') + '</span>';
+    return '<div class="focus-window">' +
+      (before ? '<span class="ctx">' + escHtml(before) + ' </span>' : '') +
+      core +
+      (after ? '<span class="ctx"> ' + escHtml(after) + '</span>' : '') + '…</div>';
+  });
+}
+
+function openModal(id, layer) {
+  const src = layer === 1 ? PERSONAS : MESSY;
+  const p = src.find(x => x.id === id);
+  if (!p || !p.fullA) return;
+  document.getElementById('mEmoji').textContent = p.emoji;
+  document.getElementById('mName').textContent = p.name;
+  document.getElementById('mQ').textContent = '「' + (p.question || p.task) + '」';
+  const v = V[p.verdict];
+  const badge = document.getElementById('mBadge');
+  badge.textContent = v.label;
+  badge.style.background = `var(--${v.cls})`;
+  document.getElementById('judgeA').textContent = p.a.note;
+  document.getElementById('judgeB').textContent = p.b.note;
+  document.getElementById('fullA').innerHTML = mdToHtml(p.fullA);
+  document.getElementById('fullB').innerHTML = mdToHtml(p.fullB);
+  scrollA.scrollTop = 0; scrollB.scrollTop = 0;
+  overlay.classList.add('open');
+  overlay.setAttribute('aria-hidden', 'false');
+  document.body.style.overflow = 'hidden';
+}
+function closeModal() {
+  overlay.classList.remove('open');
+  overlay.setAttribute('aria-hidden', 'true');
+  document.body.style.overflow = '';
+}
+document.getElementById('closeBtn').addEventListener('click', closeModal);
+overlay.addEventListener('click', e => { if (e.target === overlay) closeModal(); });
+document.addEventListener('keydown', e => { if (e.key === 'Escape' && overlay.classList.contains('open')) closeModal(); });
+syncBtn.addEventListener('click', () => {
+  syncScroll = !syncScroll;
+  syncBtn.classList.toggle('on', syncScroll);
+  syncBtn.textContent = syncScroll ? '同步滚动 · 开' : '同步滚动 · 关';
+});
+function bindSync(src, dst) {
+  src.addEventListener('scroll', () => {
+    if (!syncScroll || syncing) return;
+    syncing = true;
+    dst.scrollTop = src.scrollTop;
+    requestAnimationFrame(() => { syncing = false; });
+  });
+}
+bindSync(scrollA, scrollB);
+bindSync(scrollB, scrollA);
+function mountFull() {
+  PERSONAS.concat(MESSY).forEach(p => {
+    const f = FULL[p.id];
+    if (f) { p.fullA = f.a; p.fullB = f.b; }
+  });
+}
+
+/* ================= 完整输出原文（未改写；[HL]/[HLBAD] 为页面高亮标记） ================= */
+const FULL = {
+  pm: {
+    a: `# PRD：会员积分按用户等级自动折算优惠券（初稿）
+
+| 项目 | 内容 |
+|---|---|
+| 文档状态 | **初稿 v0.1，待评审** |
+| 撰写日期 | 2026-09-09 |
+| 需求来源 | 业务方口头需求 |
+| 读者 | 业务方/运营（确认需求理解与补充规则）、产品、研发 |
+
+> **阅读指引**：本稿的框架和流程可评审，但**折算规则本身是本需求最大的信息缺口**——历史上无统一文档，各等级折算比例、券种、活动叠加方式均需业务方确认后填入。所有此类内容在文中以「待确认」标注，汇总于第九节。**请不要把文中的占位示例当作已定规则。**
+
+## 一、背景与问题
+
+**现状（已核实）**：
+
+1. 会员系统已存在用户等级字段，等级数据是系统化的、可依赖的。
+2. "积分折算优惠券"从未形成系统化规则：历史上每次折算均由运营人员手动调整。
+3. 部分折算规则依赖当月活动策略，随活动变化。
+4. 该规则无统一文档，实际逻辑分散在运营人员的操作经验与历史工单中。
+
+**问题**：
+
+- 规则不可见：无文档意味着无法审计、无法向用户解释、出错无法追溯。
+- 依赖人工：手动调整效率低，且规则正确性取决于个别运营人员的经验，存在人员风险。
+- 规则漂移：依赖当月活动策略但无固化机制，同等级用户在不同时间可能被不一致地对待，存在客诉与合规风险。
+
+## 二、目标与非目标
+
+**目标**：
+1. 将积分折算优惠券的规则**配置化、系统化**：运营在后台配置"等级 × 折算规则"，系统自动执行，不再依赖逐次手动调整。
+2. 规则可版本化、可审计：每次折算可追溯到当时生效的规则版本。
+3. 支持与当月活动策略叠加（叠加机制待确认，见 9.4）。
+
+**非目标（本期不做，需评审确认边界）**：
+1. 不改动会员等级的判定与升降级逻辑。
+2. 不改动积分的获取与消耗规则。
+3. 不重构现有优惠券系统，仅复用其发券能力（待研发确认）。
+4. 不回溯处理历史手动折算记录，仅做归档。
+
+## 三、术语
+
+| 术语 | 定义 |
+|---|---|
+| 折算 | 以积分为输入、优惠券为输出的兑换动作；具体触发方式待确认（见 9.1） |
+| 折算规则 | 一条"等级 → 可兑券种/折算比例"的配置，含生效时间 |
+| 基础规则 / 活动规则 | 常态生效的折算规则 / 当月活动策略产生的影响，二者关系待确认（见 9.4） |
+| 等级快照 | 折算执行时刻读取到的用户等级（是否以此为准，见 9.6） |
+
+## 四、需求理解
+
+一句话需求存在两种可能读法，需业务方确认（见 9.1）：
+
+- **理解 A（主理解）**：用户消耗积分兑换优惠券，兑换比例与可兑券种按用户等级差异化；运营在后台配置规则，系统按规则自动计算与发券，替代历史手动调整。
+- **理解 B**：系统按周期/事件自动将用户积分折算为优惠券并主动发放（用户无感知或仅被动接收）。
+
+本稿功能框架按理解 A 编写（与"历史上运营手动调整折算结果"的现状最吻合），若确认为理解 B，流程章节需相应调整。
+
+## 五、功能需求
+
+> 以下 FR1–FR5 为框架；标注「待确认」的数值与规则不构成已确认事实。
+
+**FR1 折算规则配置（运营后台）**
+
+- 运营可配置规则条目：用户等级 + 优惠券模板 + 折算比例（如「每 X 积分兑换面额 Y 的券」）+ 可兑次数上限 + 生效/失效时间。各等级比例与券种**待业务方提供**（见 9.2）。
+- 规则支持版本管理：新版本生效后旧版本自动失效，历史折算记录关联其规则版本。
+- 配置变更留审计日志（操作人、时间、变更前后内容）。
+
+**FR2 自动折算执行（按理解 A）**
+
+- 流程：校验用户等级（取自会员系统）→ 匹配当前生效规则 → 校验积分余额与兑换上限 → 扣除积分 → 发券 → 落折算记录。
+- 扣积分与发券需保证一致性：发券失败时积分不扣除或全额回滚。
+- 同一请求重复提交不可重复折算（幂等）。
+- 等级读取失败或无匹配规则时：**不执行折算并告警**，不使用任何"默认规则"兜底——当前不存在经确认的默认规则，静默兜底会制造新的规则漂移。
+
+**FR3 活动策略叠加**
+
+- 当月活动对基础规则的影响方式（加成系数、临时替换、活动优先）**待确认**（见 9.4）。
+- 无论采用哪种方式，叠加计算过程须落记录，保证"该用户当时为何是这个折算结果"可解释。
+
+**FR4 手动通道收口与规则沉淀**
+
+- 系统化规则上线后，运营手动调整该类优惠券的通道应收口（直接冻结，或保留审批例外通道，**待确认**，见 9.8）。
+- 上线前需将散落在历史工单与运营经验中的规则整理为首批配置——由业务方主导、产品配合，作为本需求的前置交付物（见 9.9）。
+
+**FR5 用户侧与记录（按理解 A）**
+
+- 用户侧展示：可兑券种与所需积分（按其当前等级）、折算记录（时间、消耗积分、券面额、规则版本）。
+- 折算记录支持按用户、时间段、规则版本查询，用于客服对账与客诉处理。
+
+## 六、边界与异常场景（影响验收）
+
+| 场景 | 期望行为 |
+|---|---|
+| 会员等级服务不可用 | 折算暂停并告警，不降级为"按上次等级"或"按默认等级"执行 |
+| 积分不足 | 拒绝并明确提示所需积分 |
+| 达到周期兑换上限 | 拒绝并提示上限与重置时间 |
+| 规则即将到期时用户发起折算 | 以发起时刻生效的规则为准；到期后拒绝（边界细则待确认） |
+| 券发放成功但记录写入失败 | 以事务/对账机制保证最终一致，具体方案由研发评审 |
+| 折算后用户降级/升级 | 已发放的券不追回；后续折算按新等级执行 |
+| 退券/退款场景 | 是否回退积分及回退规则**待确认**（见 9.7） |
+
+## 七、非功能需求
+
+1. **幂等与并发**：同一用户并发发起多次折算，不可超发、不可重复扣分。
+2. **审计**：规则配置变更与每笔折算执行均留不可篡改日志。
+3. **可解释性**：任意一笔历史折算，可还原当时生效的规则版本与计算过程。
+4. **性能**：折算为资金类敏感操作，正确性优先于吞吐；具体指标由研发评审后补充。
+5. **依赖**：会员系统提供等级查询能力（已存在）；券系统提供发券能力（**待研发确认接口现状**）。
+
+## 八、效果度量（建议，上线后观测）
+
+- 该类优惠券的运营手动调整次数：目标降为 0（或仅剩审批例外）。
+- 折算执行成功率与对账差异率。
+- 新规则从配置到生效的时长（对比历史人工操作的响应时间）。
+- 因折算结果引发的客诉量变化。
+
+## 九、开放问题（阻塞项）
+
+| # | 问题 | 建议 |
+|---|---|---|
+| 9.1 | 折算触发方式：用户主动兑换，还是系统自动发放？ | 按理解 A |
+| 9.2 | [HL]各等级的折算比例、可兑券种、面额档位 | 建议先从历史手动调整记录反推一版基准表，再由运营校准[\/HL] |
+| 9.3 | 优惠券类型与限制（满减/折扣/无门槛、使用门槛、券有效期） | 待业务方定义 |
+| 9.4 | 当月活动策略与基础规则如何叠加：系数加成、临时替换还是活动优先？ | 待业务方定义；建议至少保证记录可解释 |
+| 9.5 | 兑换上限与频控（每人每周期限次/限量，周期定义） | 建议设置上限以控制成本，具体数值待定 |
+| 9.6 | 等级判定时点：折算发起时刻的等级快照？ | 建议发起时刻快照，规则简单可解释 |
+| 9.7 | 逆向规则：券退回或关联订单退款时，积分是否回退？ | 待业务方定义 |
+| 9.8 | 上线后运营手动通道：直接冻结，还是保留审批例外？ | 建议保留带审批的例外通道，处理规则外个案 |
+| 9.9 | 历史手动规则是否整理迁移为首批配置，还是上线日启用全新规则？ | 建议迁移整理，避免上线日规则真空 |
+
+## 十、后续计划（建议）
+
+1. 业务方确认第九节开放问题（其中 9.1、9.2、9.4 为阻塞项，未确认前无法进入方案设计）。
+2. 运营整理历史规则，产出《等级折算规则基准表》。
+3. 研发确认券系统发券接口与会员等级查询接口现状。
+4. 本 PRD 修订为 v1.0 并评审通过后，进入技术方案设计。`,
+    b: `# PRD 初稿：会员积分按用户等级自动折算优惠券
+
+**版本**：v0.1（初稿，待评审）  **日期**：2026-09-09
+**说明**：本稿基于业务方一句话需求与现状调研整理。[HL]文中标注：【已确认】为调研核实事实，【建议】为产品方案设想（待评审），【待确认】为阻塞后续设计的开放问题。[\/HL]初稿阶段待确认项较多，评审重点请放在第 6 节。
+
+## 1. 背景与问题
+
+【已确认】现状：
+- 业务需求：会员积分按用户等级自动折算为优惠券。
+- 用户等级字段已存在于会员系统，可作为折算依据的数据来源。
+- 积分折算优惠券的规则历史上从未系统化：每次均由运营人员手动调整，无统一文档。
+- 部分折算规则依赖当月活动策略，即规则存在按月、按活动变化的现实情况。
+
+问题本质：
+1. 手动调整效率低、易错，且无审计留痕。
+2. 实际执行的折算规则只存在于运营人员的操作中，存在口径不一致与知识流失风险。
+3. 规则随活动变化，但当前没有承载"可变规则"的系统能力。
+
+【建议】本需求不应只做"把手动的动作自动化"，而应包含规则配置化：把历史上手动执行的折算规则首次系统化为可配置、可调整、可留痕的规则数据。
+
+## 3. 现状与系统依赖
+
+| 依赖项 | 现状 | 证据等级 |
+|---|---|---|
+| 用户等级数据 | 会员系统已有等级字段 | 已确认 |
+| 积分账户与扣减能力 | 待盘点 | 待确认 |
+| 优惠券发放能力 | 待盘点 | 待确认 |
+| 折算规则 | 无系统化规则、无统一文档 | 已确认 |
+
+## 4. 需求范围（初步拆解）
+
+**4.1 规则配置（核心）**
+后台支持配置"用户等级 × 积分档位 → 优惠券"的折算规则；规则支持生效周期与版本留痕。[HL]规则的具体参数必须由业务方给出（见第 6 节 P0-1），不可由产品或研发代拟。[\/HL]
+
+**4.2 折算执行**：触发方式待业务方确认（见 6 节 P0-2）。
+
+**4.3 账务动作**：积分扣减与优惠券发放需保证一致性，不出现单边账。
+
+## 6. 待确认项（需业务方拍板，按优先级排列）
+
+**P0——不定则无法进入方案设计：**
+1. 折算规则本身：各等级的具体折算比例、积分档位、对应券种与面额。历史规则无文档，需运营从历史操作记录与当月活动策略中整理复原。这是本需求最大的前置工作量，建议单独立项推进。
+2. 触发方式：用户主动兑换，还是系统定期自动折算发放？
+3. 积分体系现状：积分是否有效期；扣减顺序如何定义。
+4. 优惠券形态：满减、折扣还是兑换券；能否与其他优惠叠加。
+
+**P1/P2（节选）**：活动策略接入方式；规则调整生效时点；用户端是否展示折算规则；验收口径。
+
+## 8. 风险
+
+1. **规则无文档是最大风险**：若运营无法完整复原历史规则与活动策略口径，需求范围将从"自动化现有规则"扩大为"重新定义规则"。
+2. **依赖系统盘点结果**：积分与优惠券系统能力目前未知。
+3. **规则天然多变**：必须配置化设计。`
+  },
+  dev: {
+    a: `# 路由层替换（router-v2）交接
+
+**现状一句话**：legacy 路由层的替代实现 router-v2.ts 已建立，60% 映射规则迁移完成；期间发现 legacy 三个路由的正则有贪婪匹配 bug，已在 v2 中修复并加了测试。剩余：40% 规则迁移、新旧 diff 对比脚本、性能对比。
+
+## 任务与文件位置
+
+- 目标：为 legacy 路由层写替代实现，新代码全部放 router-v2.ts，不改动 legacy。
+- 测试 fixtures 在 fixtures/router/。
+
+## 已完成
+
+1. router-v2.ts 已存在，60% 映射规则迁移完毕。
+2. legacy 三个路由的正则存在贪婪匹配 bug——**只修在 v2**，每个修复都有对应测试用例。
+3. fixtures 已就位于 fixtures/router/。
+
+[HL]**两处信息缺口**（原文档未记录，接手时需先补齐）：[\/HL]
+- 已迁移 60% 与未迁移 40% 的具体边界没有明细。建议第一步：对照 legacy 完整规则清单和 router-v2.ts 现状，列出未迁移规则的清单。
+- 三个 bug 路由的具体名单没有单独记录，**以新增的那批测试用例为准**（从测试里提取即可）。做 diff 对比前务必先拿到这份名单。
+
+## 未完成（按建议顺序）
+
+1. **补完剩余 40% 迁移**。先做这个——diff 和性能对比都依赖迁移完成。
+2. **新旧实现 diff 对比脚本**。关键注意点：那三个已修 bug 的路由，新旧输出**预期不一致**，这是修复效果而非回归。脚本要为这三个路由建预期差异清单，不要当成 diff 失败处理。
+3. **性能对比**。新旧实现对同一套 fixtures 跑相同输入，保证可比性。
+
+## 硬约束
+
+- **禁止修改 legacy 目录下的任何文件**。适用于一切场景：不为修 bug 改 legacy、不为对比方便加埋点。
+
+## 工作方式
+
+- 小步推进：每完成一段迁移就跑测试，保持每步可验证、可回滚。`,
+    b: `# 路由层重构交接：router-v2
+
+交接日期：2026-09-09。接收对象：接手同事或新开的 AI 会话。
+
+## 现状一句话
+
+router-v2.ts 已完成 60% 映射规则迁移，测试全部通过；剩余 40% 规则迁移、新旧 diff 对比脚本、性能对比尚未开始。**接手后从"迁完剩余规则"继续**。
+
+## 目标与背景
+
+- 目标：用新实现 router-v2.ts 替代 legacy 路由层，要求行为与 legacy 对齐，已确认的 bug 除外。
+- 测试 fixtures 位于 fixtures/router/，新旧实现共用同一批 fixtures。
+- legacy 是被替代的参照物，不是被修补的对象。
+
+## 硬约束（先读这个再动代码）
+
+**不得修改 legacy 目录下的任何文件。** 原因：后续的 diff 对比和性能对比都以 legacy 为基线，改动 legacy 会让对比结果失去意义。
+
+## 已完成
+
+1. router-v2.ts 骨架 + 60% 映射规则迁移，对应测试通过。
+2. 发现 legacy 三个路由的正则有贪婪匹配 bug，v2 中已修复并新增对应回归测试。**三个路由的名单以 v2 新增的回归测试用例为准——那批测试就是 bug 清单**，接手时先从测试反查。
+
+## 有意的行为差异（最容易踩的坑）
+
+那三个修复了贪婪 bug 的路由，在新旧实现间**必然行为不一致**。这是有意修复，不是迁移错误。写 diff 对比脚本时必须把这三条标记为"预期差异"，不要"修回去"。
+
+## 未完成
+
+1. 剩余 40% 映射规则迁移。
+2. 新旧实现的 diff 对比脚本：同一批输入跑两套实现，输出行为差异（含"预期差异"标记）。
+3. 性能对比。
+
+## 下一步与建议顺序
+
+建议先迁完剩余 40%，再做 diff 脚本，最后做性能对比：diff 需要全量规则才有意义；性能对比放在功能 diff 通过之后，否则对比的是未对齐的行为。
+
+[HL]迁移剩余规则时的方法约束：以行为对齐为默认原则。发现疑似 legacy bug 时，先按 legacy 原样迁移，把疑似问题单独记录、确认是 bug 后再修，并同步新增回归测试、把该路由加入"预期差异"清单——避免迁移过程中自作主张改行为，导致 diff 无法解释。[\/HL]
+
+## 未决项与风险
+
+- **过渡期风险**：legacy 仍带着那三个已知 bug 在跑（我们不修 legacy）。如果线上流量会命中这三个路由，需要评估是否提前切换——这个判断留给负责人。
+- 性能对比的口径未定（冷启动还是稳态、单条还是批量），做之前先和负责人确认。
+- 剩余 40% 规则里是否还有同类正则 bug，未知，迁移时逐条对照。
+
+## 文件地图
+
+| 路径 | 状态 |
+|---|---|
+| router-v2.ts | 新实现，开发中（60%） |
+| legacy/ | 旧实现，**只读，勿动** |
+| fixtures/router/ | 测试 fixtures，新旧共用 |`
+  },
+  ai: {
+    a: `# 数据迁移任务交接指令（执行 Agent）
+
+你在一个全新会话中接手一项进行中的数据迁移任务。本指令是你唯一的上下文来源，先完整读完再行动。
+
+## 当前状态（交接信息，接手后第一步核验）
+
+- 整体进度约 92%，主体数据已迁移。
+- 剩余约 18,000 条记录缺少可推断的邮箱字段，迁移在此暂停。
+- 暂停原因：产品侧尚未确定这批异常账户的处理方案。这是业务决策，不由你决定。
+- 相关自动化测试已通过（覆盖范围交接中未说明，需你确认）。
+- 生产 dry-run 尚未执行。
+- 授权状态：当前无生产写入授权，无部署授权。
+
+## 硬性约束（任何情况下不得违反）
+
+1. 禁止一切生产写入：不执行真实迁移写入，不修改生产数据。
+2. 禁止部署：不触发任何发布或部署流程。
+3. 生产 dry-run 虽不写数据，但触及生产环境，执行前必须获得明确的授权确认。
+4. 产品方案确定前，禁止对 18,000 条缺邮箱记录采取任何处理动作：不补造邮箱，不丢弃记录，不自行标记账户状态绕过决策。
+5. 已迁移的 92% 数据不要"顺手修复"或重构——当前暂停是产品决策所致，不是技术故障。发现可疑之处先报告，不动数据。
+
+## 工作顺序
+
+1. **核验状态**：从迁移代码、运行日志与 CI 记录确认实际进度。若与交接信息不符，停止后续步骤，先报告差异。
+2. **分析剩余记录（只读）**：对 18,000 条缺邮箱记录做特征分析，产出一份供产品决策的材料，附可选处理方案及各自影响。只分析，不执行任何方案。
+3. **准备 dry-run**：整理所需脚本、参数与预期输出清单，保持在"获授权即可执行"状态。
+4. **输出状态报告**。
+
+[HL]## 停止条件（遇到即停，报告并等待指示，不自行绕过）[\/HL]
+- 核验发现实际状态与交接信息不符。
+- 任何步骤需要写生产数据或触发部署。
+- dry-run 已具备执行条件，但授权尚未确认。
+- 发现已迁移数据存在可疑问题。
+- 收到与产品方案或授权状态相关的新信息——以最新信息为准。
+
+## 沟通约定
+
+- 区分"已验证"与"交接信息、未核验"，结论注明依据。
+- 本指令未提供的细节（系统名称、路径、环境、脚本名）不凭猜测补造，需要时向任务发起人索取。`,
+    b: `# 任务指令：接手数据迁移（整体完成 92%，卡于异常账户处理方案）
+
+## 目标与你的角色
+[HL]继续推进本迁移任务。当前卡点是业务决策未定，不是技术故障——你的首要工作是为决策准备数据、推进无需授权的部分，而不是设法清掉剩余记录。[\/HL]
+
+## 当前状态
+- 迁移整体完成 92%。
+- 剩余 1.8 万条记录缺少可推断的邮箱，按现有规则无法完成迁移。
+- 相关测试已通过。
+- 生产 dry-run 尚未执行。
+- 产品侧尚未确定这批异常账户的处理方案（如占位邮箱、跳过、人工补录等，均未拍板）。
+
+## 权限边界与禁止事项（硬约束）
+- 无生产写入授权：禁止对生产环境执行任何写入。
+- 无部署授权：禁止部署任何变更。
+- 不得自行决定或暗示异常账户的处理方式（包括生成占位邮箱、跳过记录）——这是产品决策，你只能提供决策输入。
+- 生产 dry-run 的授权状态未明确：执行前必须先向任务负责人确认，未确认不要运行。
+
+## 下一步（按序）
+1. 对剩余 1.8 万条记录做画像分析：分布与共性特征、能否进一步分类，产出一份供产品决策的输入材料。
+2. 向负责人确认 dry-run 的执行授权；获批后执行，并核对 dry-run 结果与已通过的测试基线是否一致。
+3. 待产品确定异常账户处理方案后，再实施剩余迁移。
+
+## 停止条件
+- 产品方案仍未确定：完成第 1、2 步后停下汇报，不要替产品做决定。
+- 任何操作需要生产写入或部署权限：停下申请授权，不要绕过。
+- dry-run 结果与测试基线不一致：停止推进，记录差异并上报。
+
+## 汇报要求
+每次停下时说明：已完成什么、发现了什么（尤其影响产品决策的数据结论）、等待什么、谁需要给什么输入。`
+  },
+  algo: {
+    a: `# AI 文档处理项目准确率下降（91% → 84%）汇报
+
+**结论：准确率下降 7 个百分点，原因已定位——新接入的一批版式不同的法规 PDF 导致 OCR 错误增加、抽取链路输入质量下降；模型版本未变，可排除模型侧回归。是否按原计划上线，取决于这批新版式文档是否在生产流量范围内，建议先补一项拆分数据再定。**
+
+## 问题定位
+
+- 整体准确率从 91% 降至 84%。
+- 时间上与近期新接入的一批法规 PDF 对应：其版式与原有文档不同，OCR 识别错误明显增加，抽取模型拿到的输入质量随之下降。
+- 模型版本无变化，问题出在数据接入与前处理环节的适配，不是模型能力回归。
+
+## 对上线决策的含义
+
+这是"新版式未适配"的数据接入问题，不修复不会自行恢复；修复前，凡涉及这批新版式 PDF 的处理都会维持当前错误水平。所以决策的关键不是"模型还能不能用"，而是两点：
+
+[HL]1. 上线后的生产流量中，这批新版式法规 PDF 占多大比例；
+2. 84%（或这批文档单独的准确率）是否在业务可接受范围内。[\/HL]
+
+## 建议（供决策）
+
+- **新版式文档在上线范围内、当前准确率不可接受**：不建议按原计划全量上线。可选折中：先隔离这批新版式 PDF，旧版式流量按计划上线，OCR 适配完成后再放开。
+- **新版式文档不在上线范围内**：可按原计划上线，同时并行推进 OCR 适配。
+
+## 定稿前建议先确认的信息
+
+- **新旧版式分开的准确率拆分**：旧版式文档上是否仍维持 91% 左右。当前 84% 是新旧混测的整体结果，尚无拆分数据（待确认）。
+- 新版式文档的数量及在近期处理量中的占比。
+- OCR 适配的预估工作量与完成时间。
+
+## 风险提示
+
+若不做处理直接上线，新版式文档的错误会持续进入下游产出；建议将"新版式接入前的 OCR 兼容性验证"纳入后续接入流程。`,
+    b: `# AI 文档处理项目准确率下降排查汇报与上线决策建议
+
+## 1. 结论与决策建议
+
+本次准确率下降已定位：问题出在数据接入层，不在模型。近期新接入的一批法规 PDF 版式与既有文档差异较大，OCR 识别错误明显增加，抽取链路的输入文本质量随之下降，[HL]把整体准确率从 91% 拉低到 84%（错误率由 9% 升至 16%，错误量约为下降前的 1.8 倍）。模型版本未变，已排除模型回归。[\/HL]
+
+决策建议：[HL]不建议直接以当前 84% 的混合状态按原计划上线。[\/HL]目前的下降只是被定位，尚未修复；有两个问题会直接改变上线决策的结论、且尚未澄清（见第 3 节），建议先完成验证，再按第 4 节选择路径。若验证确认存量文档类型准确率未受影响，原上线节奏大概率仍可保留。
+
+## 2. 原因链
+
+新接入的法规 PDF 版式差异大 → OCR（将扫描页识别为文字）错误明显增加 → 抽取链路输入文本质量下降 → 整体准确率被拉低。
+
+关于这条链的两点说明：
+- 错误在进入模型之前就已固化在输入文本里，所以模型版本不变并不能阻止下降；修复应从数据侧（OCR / 版式适配）入手，而非调模型。
+- 以上是排查得出的定位结论，有 OCR 错误的观察支撑；但量化归因尚未完成，见下节。
+
+## 3. 待确认项（直接影响决策）
+
+1. **原上线范围是否包含这批法规文档。** 若包含，84% 就是上线后用户实际看到的质量；若不包含，84% 属于混合指标失真。
+2. **存量文档类型的准确率是否仍为 91%。** 若未下降，问题局限于新文档接入；若也下降，原因链可能未覆盖完全。
+3. **新增文档的占比。** 决定混合口径与真实口径的差距。
+4. **新版式 OCR 适配的工作量与周期。** 目前尚未评估；可行方向仅为建议，不是已有结论。
+
+## 4. 上线选项（建议）
+
+- 上线范围不包含新文档，且存量文档准确率验证无变化：**按原计划上线**，同步推进新文档的 OCR 适配。
+- 上线范围包含新文档：**建议推迟**至新文档适配达标，或将该文档类型移出首期范围。
+- 若存量文档同样出现下降：无论范围如何，**建议推迟上线**，继续排查。
+
+## 5. 下一步（建议）
+
+1. 输出分文档类型的准确率统计（存量与新接入分开）。
+2. 启动新版式 OCR 适配方案与工作量评估。
+3. 依据以上结果按第 4 节确定上线安排。`
+  },
+  qa: {
+    a: `# 登录模块测试要点
+
+**本次改动**：新增手机号 + 验证码登录（密码登录保留）；新规则：连续失败 5 次锁定 15 分钟，计数存 Redis、多实例共享（锁定跨节点生效）。已知约束：验证码 60 秒内只能发一次。
+
+**优先级提示**：P0 = 跨节点锁定生效、锁定边界值、密码登录回归；P1 = 60 秒发送限制、并发计数；P2 = 安全项。
+
+---
+
+## 1. 手机号 + 验证码登录（新增功能）
+
+- 正常路径：已注册手机号 → 获取验证码 → 正确验证码登录成功
+- 验证码错误 → 登录失败，提示明确
+- 验证码过期 → 登录失败（有效期时长见"待确认"第 5 条）
+- 验证码一次性：同一验证码用成功一次后再次使用 → 拒绝
+- 输入校验：手机号为空、格式非法（少位/多位/非数字）、验证码为空
+- 未注册手机号：发送验证码和登录的行为（见"待确认"第 6 条）
+
+## 2. 验证码发送 60 秒限制（P1）
+
+- 60 秒内第二次发送 → 拒绝，提示剩余等待时间
+- 边界：第 59 秒发送（拒）、第 60/61 秒发送（过）
+- 前后端一致性：前端按钮倒计时结束后立即请求，后端限流是否同步放行（防"前端到了后端没到"）
+- 并发绕过：60 秒内同时发两个请求，是否只成功一条（限流计数是否有竞态）
+- 该限制的存储位置（Redis 还是实例本地内存）见"待确认"第 4 条——若在本地内存，跨实例不生效，需按实际行为设计用例
+
+## 3. 连续失败 5 次锁定 15 分钟（P0）
+
+**计数与边界**
+- 失败 4 次后第 5 次成功登录 → 不锁定，可正常登录
+- 连续失败第 5 次 → 锁定，第 5 次请求本身即返回锁定提示
+- 4 次失败 + 1 次成功 + 再失败：成功是否清零计数（见"待确认"第 3 条）
+
+**锁定期间行为**
+- 锁定后用**正确的**验证码/密码登录 → 仍被拒绝（预期如此，必须显式验证）
+- 锁定期间继续失败 → 计数是否累加、锁定时长是否顺延（待确认第 2 条相关）
+- 锁定期间能否仍发送验证码（发送接口是否也被锁定拦截）
+- 提示内容：是否给出剩余锁定时间，是否不泄露"账号是否存在"等信息
+
+**解锁**
+- 14 分 59 秒时登录 → 仍锁定
+- 满 15 分钟后正确凭证登录 → 成功，且失败计数归零（从 0 重新计数）
+
+**锁定范围（关键，先与开发确认预期再断言）**
+- 密码登录失败 + 验证码登录失败是否互相累计（两个方向都要测：密码端失败 5 次后验证码登录是否被锁；反向同理）
+- 锁定维度：按手机号还是按账号？账号锁定后，换用户名+密码登录能否绕过（见"待确认"第 2 条）
+
+## 4. 锁定跨节点生效（P0，与单机实现行为不同，必须专门验证）
+
+- 前置：确认测试环境有几套实例、如何指定请求打到某实例（直连实例端口 / 网关去会话保持）
+- 用例：请求打到实例 A 连续失败 5 次 → 改打实例 B 登录 → 同样被锁定
+- 反向：在 B 上解锁窗口结束后，A 上也恢复正常
+- 并发计数准确性：同时提交 5~6 个失败请求，计数不丢不重；第 6 个并发请求不应在计数未达 5 时"抢跑"登录成功
+
+## 5. 密码登录回归（P0）
+
+- 正确/错误密码登录，行为与改动前一致
+- 新锁定规则对密码登录的适用性（若需求意为两种登录共用该规则，密码失败 5 次也要锁；若仅验证码路径，验证密码端不受影响）——按"待确认"第 1 条的结论断言
+- 两种登录入口共存：同一页面来回切换，互不串状态
+
+## 6. 安全项（P2）
+
+- 验证码爆破：有效期内同一验证码可无限次尝试吗（若无尝试次数限制，报风险）
+- 短信轰炸面：除 60 秒限制外，是否有按手机号的日/小时发送上限
+- 错误提示不区分"手机号未注册"与"验证码错误"（视产品预期）
+
+## 7. 环境与数据准备
+
+- 测试手机号收码方式（白名单/mock/短信平台查询）
+- [HL]Redis 访问权限：能查看和删除锁定计数 key（用例间快速复位账号）、能改 key TTL（免等 15 分钟真实解锁）[\/HL]
+- 多实例拓扑与指定实例的请求方法
+- 计时相关用例统一用服务器时间判断，避免客户端时区偏差
+
+---
+
+## 待与开发确认（影响用例断言，写用例前解决）
+
+1. "连续失败 5 次锁定"适用于仅验证码登录，还是两种登录方式共用计数？
+2. 锁定 key 的维度：手机号、账号还是 IP？
+3. 成功登录是否清零失败计数？
+4. 60 秒发送限制存 Redis 还是本地内存（决定跨实例是否生效）？
+5. 验证码有效期时长、是否限制尝试次数？
+6. 未注册手机号：发送验证码时的行为（发送并静默失败，还是提示未注册）？
+7. Redis 不可用时登录的降级行为（全拒绝还是锁定失效），是否纳入本次测试范围？`,
+    b: `# 登录模块测试要点（手机验证码登录 + 失败锁定）
+
+本次改动两块：新增手机号 + 验证码登录（密码登录保持不变）；新增连续 5 次失败锁定 15 分钟规则。锁定计数存 Redis、多实例共享，即锁定跨节点生效。
+
+[HL]**测试前先向开发要三样东西**（直接影响用例能否顺畅执行）：
+1. Redis 中锁定计数、验证码发送限流的 key 规则或重置方法——否则每条锁定用例要干等 15 分钟、每条发送用例要干等 60 秒；
+2. 测试环境验证码的获取方式（短信明文回显 / mock / 固定码）；
+3. 文末"待确认清单"的答案——其中第 1、2 条决定锁定用例怎么设计。[\/HL]
+
+## 一、手机号 + 验证码登录（新功能）
+
+1. 正常链路；2. 验证码错误；3. 验证码过期（时长待确认）；4. 60 秒发送限制：立即重发应拒、60 秒后可发、边界第 60 秒记录实际行为、刷新页面后再发限制仍应生效（限流应基于手机号不是会话）；5. 验证码重复使用；6. 重发后旧验证码是否失效（待确认）；7. 手机号非法输入（空/位数/非数字/+86）；8. 未注册手机号（行为待确认，注意"是否泄露账号存在性"）。
+
+## 二、连续 5 次失败锁定 15 分钟
+
+1. 第 1~4 次失败不锁定；2. 第 5 次触发锁定；3. **锁定期间用正确凭证登录也必须失败**——正确密码、正确验证码两条都试（安全关键用例）；4. 锁定期间继续失败是否延长（待确认）；5. 15 分钟后自动解锁，边界时刻记录实际放行点；6. "连续"语义：失败 4 次→成功 1 次→再失败 4 次，验证是否清零；7. 计数时间窗（间隔 1 小时是否清零，待确认）。
+
+## 三、多实例共享（Redis）
+
+1. 锁定跨节点：5 次失败后请求落到其他实例也必须拒绝。需要多实例环境；若测试环境是单实例，此项标记"环境不满足"，放到预发或多实例联调环境覆盖。
+2. 实操方法：网关轮询下可失败 4 次后直连另一实例端口提交第 5 次失败。
+3. 并发计数：同时打 5 次，验证不多不少——不漏计（第 6 次才锁）不超计（第 4 次就锁）。
+
+## 四、密码登录回归
+
+1. 原链路回归；2. 与新规则的交互（密码失败是否计入 5 次：密码错 3 次 + 验证码错 2 次是否锁定；锁定期间两种方式是否都被拦截——若只拦其一，找开发确认是有意设计还是缺陷）；3. 登出、token 失效等原有路径。
+
+## 五、测试操作建议
+
+- 每条锁定用例使用独立测试账号，避免失败计数互相污染。
+- [HL]时间类等待（15 分钟解锁、60 秒重发）：若测试环境支持配置缩短，优先走配置；没有配置再用 Redis key 重置；两者都没有才实等。[\/HL]
+
+## 待确认清单（10 条，测试设计定稿前逐条找开发确认）
+
+1. 失败计数维度与两种登录是否共用；2. 成功登录是否清零；3. 锁定期间继续失败是否重置计时；4. 验证码有效期与尝试上限；5. 验证码是否一次性、重发后旧码是否失效；6. 未注册手机号行为；7. 锁定是否拦截"发送验证码"接口；8. 锁定提示文案与剩余时间；9. 测试环境验证码获取方式；10. Redis key 规则或重置方法。`
+  },
+  data: {
+    a: `# orders 表数据字典（业务自助取数版）
+
+**表用途**：记录订单及其金额、状态，用于订单类报表取数。本说明覆盖三个字段：amount、order_id、status。
+
+| 字段 | 含义 | 格式 | 用途 |
+|---|---|---|---|
+| order_id | 订单唯一编号 | 雪花 ID，长整型（18~19 位） | 唯一标识，用于关联、去重、核对 |
+| amount | 订单金额 | 整数，**单位是分** | 金额统计（见坑 1） |
+| status | 订单状态 | 含**已退款订单** | 筛选、确定口径（见坑 3） |
+
+## 取数前必读：三个最容易出错的地方
+
+### 坑 1：amount 是"分"，不是"元"
+SQL 用 amount / 100.0 转元（写 100.0 不是 100，避免整数除法丢小数）；Excel 先 =A2/100 再设两位小数。
+
+### 坑 2：order_id 在 Excel 里会损坏，且无法恢复
+[HL]Excel 数字只保留 15 位有效数字，而 order_id 有 18~19 位。双击打开 CSV 时 ID 会变成科学计数法，末尾几位变成 0——之后再改格式也救不回来。正确做法：用「数据 → 从文本/CSV」导入，在预览界面把 order_id 这一列的格式改为文本后再加载；或 SQL 侧 CAST(order_id AS CHAR) 导出。[\/HL]order_id 不含业务含义，不要用它的大小做业务判断。
+
+### 坑 3：表里有已退款订单，先定口径再算数
+统计销售额/GMV 前必须先明确口径是"含退款"还是"剔除退款"，直接 SUM 会虚增。status 完整取值清单**待数据维护方确认**，可先执行 SELECT DISTINCT status 查看。
+
+## 示例 SQL（可直接套用）
+
+SELECT order_id, amount / 100.0 AS amount_yuan, status FROM orders -- 剔除退款时按 status 过滤
+
+**待确认项**：status 的完整枚举值及退款状态的准确取值。确认前，涉及退款的统计口径请与数据维护方核对，不要凭猜测的状态值过滤。`,
+    b: `# orders 表数据字典（业务自助取数说明）
+
+先说三个最容易出错的地方，取数前务必看完：
+
+1. **amount 的单位是分**。直接 SUM 得到的是分数值，除以 100 才是元。例如 amount = 19900 表示 199.00 元。
+2. [HL]**order_id 粘进 Excel 会损坏**。雪花 ID 通常有 18~19 位，超过 Excel 只保留 15 位有效数字的上限：直接粘贴会显示成科学计数法（如 1.23457E+18），且末几位已变成 0，**事后无法恢复**。必须先把该列设为"文本"再粘贴，或在 SQL 里先转成字符串导出。[\/HL]
+3. **表里包含已退款订单**。做收入、GMV 类报表前必须先决定是否排除退款，直接全表汇总金额会偏大。
+
+## 字段说明
+
+| 字段 | 含义 | 类型 / 单位 | 使用说明 |
+|---|---|---|---|
+| order_id | 订单号（雪花 ID） | 长整型 | SQL 中可正常等值查询、JOIN；导出 Excel 必须按文本处理 |
+| amount | 订单金额 | 数值，单位：分 | 换算：amount / 100。建议写 SUM(amount) / 100.0 |
+| status | 订单状态 | 状态值（清单待确认） | 表内含已退款订单，收入类统计需先过滤 |
+
+## SQL 取数
+
+金额换算（用 100.0 而不是 100，避免整数除法截断）：
+SELECT SUM(amount) / 100.0 AS 金额_元 FROM orders;
+
+先看状态分布，确认各状态值的含义和单量，再定报表口径：
+SELECT status, COUNT(*) AS 订单数, SUM(amount) / 100.0 AS 金额_元 FROM orders GROUP BY status;
+
+[HL]导出给 Excel 前，订单号先转字符串（写法因数据库而异）：
+-- MySQL：SELECT CAST(order_id AS CHAR) AS order_id
+-- PostgreSQL：SELECT order_id::TEXT AS order_id[\/HL]
+
+## Excel 使用
+
+- order_id 列：粘贴或导入前先设为「文本」。已变科学计数法的列末位精度已丢，只能重新导出。
+- amount 列：取到 Excel 后仍是"分"，用公式除以 100，[HL]不要靠改小数位数"看起来对"——改显示格式不改变数值本身[\/HL]。
+- 透视表汇总金额时，先确认口径里是分还是元。
+
+## 待确认项
+status 的完整取值清单及各值业务含义（尤其"已退款"对应的值）未包含在本文档中，先用上面的 GROUP BY 查询确认后再确定过滤口径。`
+  },
+  teacher: {
+    a: `小明家长您好，占用您几分钟，单独跟您说说这次数学测验的情况。
+
+小明这次考了 72 分，这学期三次成绩是 78、80、72，比前两次低了一些。[HL]先说让您放心的部分：计算题全部正确，说明基本功底子是稳的，这次分数回落不是基础出了问题。[\/HL]
+
+失分集中在应用题。具体是题意理解、列式还是时间分配的问题，我讲评时会再看他的卷子确认。从目前卷面看，这是这个阶段比较常见、也最容易通过针对性练习补上来的一类问题。
+
+家里如果有时间，可以这样配合：
+1. 每天挑一两道应用题，让他先用自己的话把题目讲一遍——讲清"已知什么、要求什么"——再动笔。这一步对理解题意帮助最大；
+2. [HL]不用加量刷题，保持现有的基础练习节奏就好。[\/HL]
+
+卷子随后会发下去并讲评，我会重点看他的订正情况，有变化再跟您同步。您有任何问题也随时联系我。`,
+    b: `小明家长您好，跟您同步一下这次数学测验的情况。
+
+小明这次考了72分，这学期三次成绩是78、80、72。[HL]从卷面看有个很明确的信号：计算题全部正确，基本功很扎实；失分集中在应用题。也就是说，这次分数回落不是基础出了问题，而是应用题这个板块还需要加强。[\/HL]
+
+应用题主要考查读题理解和把文字转化成算式的能力。[HL]建议您在家陪他把这次错的应用题过一遍时，先让他用自己的话讲讲题目在问什么、给了哪些条件，讲清楚了再动笔列式。[\/HL]这样也能看出他是题意没读懂，还是列式时出了偏差。[HL]遇到讲不清的题目，可以让他来问我。[\/HL]
+
+学校这边我也会留意他应用题的练习情况，有进展或问题随时和您沟通。`
+  },
+  ops: {
+    a: `# Webhook v1 下线公告
+
+**[HL]v1 Webhook 将于 2026 年 12 月 9 日停止服务。如果你的系统仍在接收或校验 v1 推送，请在此之前完成向 v2 的迁移，否则相关事件通知将中断。[\/HL]**
+
+## 背景
+
+v2 Webhook 已上线一年半并稳定运行，我们将正式下线 v1。
+
+## v1 与 v2 的主要差异
+
+| 项目 | v1 | v2 |
+|---|---|---|
+| 消息格式 | 自定义格式 | 标准 JSON |
+| 签名算法 | HMAC-SHA1 | HMAC-SHA256 |
+| 失败重试 | 不支持 | 支持 |
+
+对应到你的代码，迁移主要是两处改动：消息体解析切换为 JSON，验签算法从 SHA1 换为 SHA256。完整步骤见迁移文档：docs/webhook-v2。
+
+## 时间安排
+
+- **2026 年 12 月 9 日**：v1 停止服务，不再推送任何 v1 消息
+
+建议尽早迁移，并在生产环境完成 v2 推送与验签的端到端验证，避免集中在截止日期前处理问题。
+
+如在迁移中遇到疑问，请通过 [支持渠道] 与我们联系。`,
+    b: `# v1 Webhook 下线公告
+
+**v1 Webhook 将于 2026 年 12 月 9 日（公告发布之日起满三个月）正式停止服务。** 届时未迁移的 Webhook 将不再收到任何事件推送，依赖这些回调的业务流程将随之中断。请在此日期前完成向 v2 的迁移，迁移文档：docs/webhook-v2。
+
+## 如何确认自己是否受影响
+
+你的回调处理代码若满足以下任一条，即在使用 v1：
+- 解析的是自定义格式请求体（非标准 JSON）；
+- 验签使用 HMAC-SHA1。
+
+## 迁移要点
+
+| | v1（将下线） | v2（现行） |
+|---|---|---|
+| 请求体格式 | 自定义格式 | 标准 JSON |
+| 签名算法 | HMAC-SHA1 | HMAC-SHA256 |
+| 推送失败重试 | 不支持 | 支持 |
+
+解析与验签两处代码必须同时更新：只改解析会在验签环节失败，只改验签会在解析环节失败。完成迁移后，建议通过一次实际推送，验证解析与验签均正常。
+
+[HL]## 近期没收到过 v1 回调？也请检查
+
+目前仍有部分账号保留着 v1 配置但近三个月无任何调用。没收到回调不等于没在使用——若事件本身触发频率低（例如季度性事件），下线后同样会丢失。请检查你的 Webhook 配置：仍在使用则按上文迁移，确认不再需要则删除配置。[\/HL]
+
+## 支持
+
+- 迁移文档：docs/webhook-v2
+- 如无法从代码判断当前版本，或迁移中遇到验签、解析问题，请通过【技术支持渠道】联系我们。
+
+建议尽早完成迁移，避免临近截止日期集中处理。`
+  },
+  sales: {
+    a: `# 性能对比：8 万 QPS（生产实测）vs 10 万 QPS（实验室标称）
+
+**核心结论：竞品 A 白皮书标称 10 万 QPS，我方生产实测 8 万 QPS。两个数字测量口径不同，不能直接比较——前者出自实验室压测环境，后者出自生产环境真实负载，且有完整压测报告可复核。对选型决策而言，可在贵方环境验证的生产实测数据，比白皮书标称值更接近上线后的真实表现。**
+
+## 数据对照
+
+| | 我方 | 竞品 A |
+|---|---|---|
+| 峰值吞吐 | 8 万 QPS | 10 万 QPS（标称） |
+| 测量环境 | 生产环境实测 | 实验室压测环境（其白皮书自注） |
+| 证据形态 | 完整压测报告，可提供复核 | 官网白皮书 |
+| 生产规模数据 | 有 | 暂未获得（截至本方案撰写） |
+
+## 为什么口径差异重要
+
+- **实验室数据剥离了生产的真实复杂度。** [HL]行业共性：实验室压测基于构造负载与受控环境，落到生产的混合流量、真实数据分布与环境干扰下，实际吞吐一般低于标称值。这不是竞品 A 独有的问题，而是所有实验室数据的固有约束。[\/HL]
+- **我方 8 万 QPS 是生产实测峰值，不是理论值。** 已包含生产环境的真实折损，有完整压测报告支撑，可复核、可在 POC 中复现。
+- **竞品 A 的生产表现是未知项，本页不做"必然更低"的推断。** 准确的说法是：该数据缺失，目前无法评估。
+
+## 建议的验证方式
+
+1. 向竞品 A 索取生产规模数据或第三方复核结果，补齐口径后再比较。
+2. 在贵方真实流量画像下做同口径 POC：两家产品使用相同负载模型、相同验收标准压测。
+3. 我方可提供 8 万 QPS 压测报告全文及测量方法说明。
+
+数据来源：我方生产环境压测报告【编号/日期待补】；竞品 A 官方白皮书【链接/版本/访问日期待补】。`,
+    b: `# 性能对比
+
+**结论：下表两组数字的测试环境与证据等级不同，不能直接比较。我方 8 万 QPS 为生产环境实测，压测报告完整、可复核；竞品 A 的 10 万 QPS 来自其官网白皮书，为其自述的实验室压测环境数据，截至本方案撰写，其公开渠道未见生产规模数据。**
+
+## 数据对比
+
+| 维度 | 我方 | 竞品 A |
+|---|---|---|
+| 峰值吞吐 | 8 万 QPS | 10 万 QPS |
+| 测试环境 | 生产环境 | 实验室压测环境 |
+| 数据性质 | 实测，有完整压测报告 | 官网白皮书宣称 |
+| 可验证性 | 报告可提供复核 | 未见生产环境数据，其生产表现无法评估 |
+
+## 为什么这两组数字不能直接比
+
+竞品 A 的数字更高，但白皮书已注明为实验室环境。[HL]这不是对竞品数据真伪的判断，而是实验室压测这一方法本身的边界。[\/HL]实验室压测与生产环境的典型差异在于：负载模型通常较单一，而生产流量是混合读写、冷热数据混合；数据集规模可控；无真实网络抖动与周边系统竞争。因此实验室峰值通常无法直接外推到生产。
+
+[HL]我方 8 万 QPS 的意义不在绝对值，而在于它是在生产环境中顶着真实流量与真实数据规模测得的，测试条件与数字同源。[\/HL]
+
+## 补齐证据的路径（供决策参考）
+
+若两组数据的证据等级差异使选型依据不足，建议以下任一方式：
+1. **同基准 POC**：在贵方环境、以贵方真实流量模型对两家产品做同一基准压测，直接得到可比数字。我方可配合实施。
+2. **要求生产实测数据**：请竞品 A 提供与其宣称值对应的生产环境实测数据或客户案例。`
+  },
+  legal: {
+    a: `# 关于系统密码存储方式的合规风险初步评估
+
+**致**：业务负责人  **出具**：合规部  **日期**：2026-09-09
+**性质**：初步评估——用于决策是否立项整改
+
+## 一、结论
+
+**风险等级：高。** 公司系统目前以过时方式存储用户密码（MD5 算法、未加盐）。这种存储方式一旦遭遇数据泄露，用户密码大概率会被批量还原成明文，防护效果接近明文存储，将直接触发个人信息保护方面的法律义务和监管暴露。建议立即立项整改。
+
+需要说明：本次发现的是**存储方式的缺陷**，不是已经发生泄露。但该缺陷的含义是——在泄露情景下系统几乎不设防，且自本报告起公司处于"已知未改"状态，拖延整改将加重后续责任认定。
+
+## 二、我们发现了什么
+
+2026 年 8 月技术团队对系统抽样检查确认两点（报告在档）：
+1. 密码使用 MD5 算法处理后存储。
+2. 未加盐——不同用户用同一个密码时，库里存的是完全相同的值。
+
+## 三、为什么这是问题
+
+- **算得快 = 破得快。** MD5 运算速度极快，攻击者用普通显卡每秒可尝试数十亿次组合；
+- **有现成的对照表。** 互联网上流传大量预先算好的"密码—MD5 值"对照表（彩虹表），未加盐使这些表开箱即用；
+- **净效果：** 假设密码库外泄，多数用户密码可在数小时到数天内被还原成明文。
+
+后续连锁风险：
+
+1. 用户在多个平台复用同一密码是普遍习惯，一处密码还原意味着用户在其他平台的账户也可能被攻破（撞库），造成用户资金和隐私损失；
+2. 由此带来用户投诉、向监管举报、诉讼及公开通报的公司声誉风险；
+3. 若构成个人信息安全事件，将触发法定报告和整改义务。
+
+## 四、合规影响（初步）
+
+[HL]| 依据 | 核心要求 |
+|---|---|
+| 《个人信息保护法》第 51 条 | 应采取加密等与风险相适应的安全技术措施 |
+| 《网络安全法》第 21 条 | 落实等级保护制度要求的安全防护 |
+| 等保国家标准（GB/T 22239） | 对口令存储安全性有明确要求 |
+| NIST SP 800-63B / GDPR 第 32 条 | 前者明确禁用 MD5 存储口令；后者要求与风险相称的安全措施 |[\/HL]
+
+**责任后果（依据《个人信息保护法》第 66 条）：** 一般情形责令改正、警告、没收违法所得，拒不改正的可处一百万元以下罚款；情节严重的最高可处五千万元或上一年度营业额 5% 的罚款。实际处罚取决于事件后果、涉及人数和**企业的整改态度**——知悉缺陷后是否及时采取行动，本身就是责任认定的重要因素。
+
+## 五、建议行动（需要你的决定）
+
+1. **立即立项整改。** 方向：改用专为密码设计的慢哈希算法（如 bcrypt、Argon2）并加盐。
+2. **预期一个关键约束：** 存量旧密码无法直接转换，需要用户下次登录时完成升级或触发重置——整改包含用户触达和过渡期，排期与客服口径需一并规划。
+3. 整改完成前，由技术团队评估临时缓解措施。
+4. 由合规部确认是否涉及对外报备义务。
+
+## 六、待确认信息
+
+- 受影响账户的**数量与类型**；
+- 该密码是否被**复用于其他内部系统**；
+- 公司**等保定级**情况；
+- 是否有任何**异常访问迹象**——决定这是"整改事项"还是需要即刻进入事件响应流程。
+
+**一句话概括：问题严重但可控，整改是行业内成熟做法、成本主要在用户过渡；真正的风险不在技术，在于已知之后不改。**`,
+    b: `# 关于系统口令存储机制的合规风险初步评估
+
+**致**：业务负责人  **自**：合规部  **日期**：2026-09-09
+
+## 结论
+
+2026 年 8 月抽检确认，系统存储用户口令使用 MD5 算法且未加盐。这一做法不符合任何主流安全标准对口令存储的要求，构成一项需要**优先立项整改**的合规风险。由于抽检报告已在档，该问题的性质已从"历史技术遗留"转变为"公司已知、尚未整改"——这一点请特别关注。建议本月内批准整改立项，需要您决策的事项见第五节。
+
+## 一、发现了什么
+
+系统不以明文保存用户密码，而是保存经算法转换后的"指纹"（哈希值）。本次抽检确认两个事实：
+1. 转换使用的是 **MD5** 算法——一种三十年前设计、以今天标准衡量计算速度极快的算法；
+2. 转换过程**未加盐**——相同密码在所有账户中产生完全相同的指纹。
+
+以上两项均记载于 2026-08 抽检报告，事实清楚，无争议。
+
+## 二、这意味着什么风险
+
+**1. 对用户：一旦口令数据被拿走，密码可被批量还原。** MD5 速度快且未加盐，攻击者使用公开对照表和现成算力，可在短时间内还原大量用户密码。多数用户在多个平台重复使用同一密码，风险会外溢到公司系统之外。
+
+**2. 对公司：出现事故时的责任与通报义务。** 若发生泄露，公司需依法履行向监管部门和用户的通知义务。同时，MD5 存储口令在等保测评、客户安全尽调中会直接导致不通过，可能影响续约与投标。
+
+**3. 为何"报告在档"加重了风险：** 自 2026-08 起，公司层面已知晓该缺陷。若在整改完成前发生泄露或被监管发现，"明知未改"将成为过错认定的直接依据。整改窗口每延长一天，这一暴露都在持续。
+
+## 三、合规依据（初步）
+
+以下为通常适用的监管框架，该系统具体适用哪些、义务边界如何，需结合其等保定级与行业监管要求确认：
+- 《个人信息保护法》：处理个人信息应采取加密等相应的安全技术措施；泄露时负有补救与通知义务；
+- 《网络安全法》及等级保护制度：等保 2.0 要求采用密码技术保障口令存储安全；
+- 国际通行标准（如 NIST 数字身份指引）明确不接受 MD5 用于口令存储。
+
+无论最终适用哪部法规，MD5 未加盐在现行任何主流标准下都无法通过审查，这一点没有解释空间。
+
+## 四、建议的处理方向（合规部建议，具体方案需技术评估）
+
+1. **算法替换**：迁移至业界标准的专用口令算法（如 bcrypt、Argon2，自带加盐）；
+2. **存量处理**：现有 MD5 值无法直接转换。标准做法是用户下次登录时自动完成升级，**多数用户无感知、无需大规模强制改密码**；长期未登录账户另行制定重置或过期策略；
+3. **过渡期管控**：加强对口令数据的访问控制与异常登录监测。
+
+## 五、需要您决策的事项
+
+[HL]1. **批准整改立项并确认优先级**；
+2. **指定系统业务负责人**，配合圈定影响范围；
+3. **确认外部义务**：等保级别、行业监管要求、客户合同中的安全条款，据此判断是否需要主动报备；
+4. **确认近期是否有审计、客户尽调或投标节点**，如有，需提前对齐口径。[\/HL]
+
+## 六、本评估的边界与待确认信息
+
+本评估为初步评估，基于抽检确认的两项事实与业界通行标准作出。以下信息将影响风险的量化结论与整改方案，待补充：
+- 抽检覆盖的是全部系统还是抽样，是否还存在同样做法的其他系统；
+- 受影响账户数量级；
+- [HL]是否已发现异常登录或数据外泄迹象（目前无相关报告，此为「未发现」，非「已排除」）[\/HL]；
+- 整改工作量与排期的技术评估。`
+  },
+  lead: {
+    a: `# 本周工作汇总
+
+整体情况：两项开发任务已完成合入，一项数据迁移受阻暂停，临时支持与故障排查按计划推进。
+
+一、已完成
+1. 通知服务异步化改造：已完成并合入。
+2. 用户导出中文乱码：已修复。
+
+[HL]二、受阻事项（需要关注）
+3. 数据迁移：进度 92%。剩余 1.8 万条数据缺少邮箱，属于异常账户，产品侧尚未确定处理方案，迁移目前暂停。技术侧待产品定案后即可恢复，如需尽快推进，需协调产品明确异常账户的处理方式。[\/HL]
+
+三、临时支持与进行中
+4. 支持市场部临时取数 2 次，均已完成。
+5. 张江机房网络抖动：排查进行到一半，下周继续。
+
+下周计划
+- 继续排查张江机房网络抖动
+- 跟进产品对异常账户处理方案的决策，方案确定后恢复数据迁移`,
+    b: `# 本周工作汇总
+
+**概览**：本周两项开发收尾（通知服务异步化、导出乱码修复），数据迁移完成 92% 后因待产品决策暂停，是当前主要阻塞项；张江机房网络排查进行中。
+
+**主要进展**
+1. 通知服务异步化改造完成，代码已合入；
+2. 用户导出中文乱码问题已修复；
+3. 支持市场部 2 次临时取数。
+
+[HL]**需要您关注：数据迁移暂停**
+迁移已完成 92%，剩余约 1.8 万条缺邮箱的数据。这部分如何处理取决于产品侧对异常账户的方案，目前方案未定，迁移处于暂停状态。方案确定后即可恢复——如方便，希望您能帮忙推动产品侧尽快定下来，减少迁移停滞时间。[\/HL]
+
+**下周计划**
+- 继续张江机房网络抖动排查（本周已完成一半）；
+- 数据迁移视产品方案确定情况恢复。`
+  },
+  hr: {
+    a: `**终面评价（提交招聘委员会）**
+
+**结论：建议录用。**
+
+**可核查事实**
+- [HL]候选人三个工作日完成上手任务，同岗位平均为五个工作日，快于平均两个工作日。这是本次评价中唯一可独立核查的数据，直接支撑面试官"上手快"的判断。[\/HL]
+
+**面试官反馈**
+- 两位终面面试官反馈一致：整体感觉不错，上手快，沟通顺畅，均建议录用。其中"上手快"与上述任务完成数据相符；"整体感觉不错""沟通顺畅"为主观评价，暂无其他佐证材料，供委员会参考其分量。
+
+**未考察项**
+- 跨团队冲突处理能力本次面试未考察，现有材料不足以评估。若该能力对本岗位关键，建议在发放录用前安排补充考察；若非关键，建议在试用期内有意识地观察验证。
+
+**综合判断**
+- 学习与上手能力有优于同岗位平均的硬数据支撑，两位面试官一致建议录用；主要不确定性集中在跨团队冲突处理一项——属未考察，而非负面发现。`,
+    b: `**终面评价**
+
+**结论：建议录用。**
+
+**面试评价**：两位面试官反馈一致——整体感觉不错、上手快、沟通顺畅，均建议录用。
+
+**可查事实**：上手任务在 3 个工作日内完成，同岗位平均为 5 个工作日，"上手快"的评价有数据支撑。
+
+[HL]**未考察项**：跨团队冲突处理能力本轮面试未考察，录用建议不覆盖该项能力。如委员会认为该项为岗位关键要求，可在试用期设置相关场景重点观察，或由直线经理在入职后补充考察（此为处理建议，非本轮面试结论）。[\/HL]`
+  },
+  'm-data': {
+    a: `## 结论
+
+**我这边发不了"算好的数字"**——目录里只有口径文档，没有 orders 表的数据或库连接（payments 表也还在建设中勿用）。但口径在 0905 会上已经拍死，不用再找业务确认，下面这条 SQL 拿到有 orders 权限的环境直接跑就是结果。
+
+## 口径（已定，附出处）
+
+| 事项 | 口径 | 出处 |
+|---|---|---|
+| GMV | **去掉退款**，对外口径，定死不再问 | 0905 会议纪要，王总拍板 |
+| "退款"的范围 | refunded 和 refund_pending 都要剔除，别只捞 refunded | 0902 群聊，老李提醒 |
+| 状态过滤 | 只取 status = 'paid'（业务报表惯例用 paid 口径） | data-dictionary-v1 使用建议 |
+| 客单价 | GMV / 去重下单用户数 | 0905 会议纪要 |
+| 金额单位 | **amount 是分，不是元**（0814 迁移后改的），输出必须 /100 | migration-log + data-dictionary-v2 |
+| 时间范围 | 上月 = 2026-08-01 ~ 2026-08-31，created_at 为 UTC+8 | v2 字典 |
+
+注意：0722 那份旧取数需求是迁移前的元口径，"直接全量算的"，**别照抄**——旧需求留档里自己也这么备注了。
+
+## SQL
+
+SELECT
+    SUM(amount) / 100.0   AS gmv_yuan,
+    COUNT(DISTINCT user_id) AS buyers,
+    ROUND(SUM(amount) / 100.0 / COUNT(DISTINCT user_id), 2) AS aov_yuan
+FROM orders
+WHERE status = 'paid'
+  AND created_at >= '2026-08-01 00:00:00'
+  AND created_at <  '2026-09-01 00:00:00';
+
+分母取的是**构成 GMV 的订单（paid）的去重用户数**，与分子同口径。如果业务想要的分母是"所有下过单的人"（含未支付/已退款），客单价会偏小，需另跑一版——这点在结果里注明即可，不用先问。
+
+## 跑之前确认一件事
+
+v2 字典自己写了"status 枚举以线上实际为准，历史上还有过几个中间态"。建议先跑 SELECT DISTINCT status 看一眼 8 月实际有哪些状态——如果存在其他等效"已支付"的状态，只捞 paid 会漏。这是文档明确提示的坑，不是我猜的。
+
+## 发给业务时两个注意点
+
+1. **Excel 科学计数法坑**：order_id 是雪花 ID，业务粘进 Excel 会变 1.23E+18 且 15 位后全变 0、不可恢复。发含订单号的明细前先 CAST(order_id AS CHAR)，或提醒业务以文本方式导入。——这正是 0905 会议第 4 条说要放进取数说明、但没定谁跟进的事。
+2. **内部对照版**：含退款的口径内部自己看，别混着发对外版。
+
+另外核对过：迁移遗留的"约 3% 老订单 amount 为 NULL"只涉及 2026 年以前的老订单，8 月数据不受影响，这次不用处理。`,
+    b: `环境里连不上库，目录里也只有口径文档、没有数据文件，所以我没法替你跑出真实数字（数值不能编）。我把口径按 0905 会议定稿落成了一条可直接执行的 SQL，你跑完把数字填进下面的模板就能发业务。
+
+**SQL（上个月 = 2026-08）**
+
+SELECT
+    SUM(amount) / 100.0 AS gmv_yuan,
+    COUNT(DISTINCT user_id) AS buyers,
+    SUM(amount) / 100.0 / NULLIF(COUNT(DISTINCT user_id), 0) AS aov_yuan
+FROM orders
+WHERE created_at >= '2026-08-01 00:00:00'
+  AND created_at <  '2026-09-01 00:00:00'
+  AND status = 'paid';
+
+**口径依据与注意点**（来自目录内文档，均已核实出处）：
+- **单位**：0814 迁移后 amount 是分（v2 字典 + migration-log），结果除 100。8 月整月都在新表，统一除即可——0722 那次留档里"金额记得除以……"的坑就是这个。
+- **退款**：0905 会议王总拍板对外一律不含退款。status='paid' 同时排除 refunded 和 refund_pending（0902 群聊老李提醒过别只看 refunded）。
+- **一个待确认的边界**：会议只定了"去掉退款"，没明说 pending（未支付）算不算。当前 SQL 按 v1 字典惯例用 paid 口径；如果业务的意思是"只剔退款、含 pending"，把条件换成 status NOT IN ('refunded','refund_pending')，两者差额就是 pending 部分。README 要求口径找业务确认，建议这次顺手问一句，定下来写进取数说明。
+- **不影响本需求**：amount 为 NULL 的约 3% 只发生在 2026 年以前老订单，8 月数据不受影响。
+- [HL]**建议的 sanity check**（推断，非文档记载的问题）：按天看一眼 8 月 GMV，确认 08-14/15 迁移窗口没有缺口、重复或百倍级断层。[\/HL]
+
+[HL]**可直接转发的结果模板**（填空即发）：
+
+【8 月经营数据】orders 表，2026-08-01 ~ 2026-08-31，口径：0905 会议定稿（不含退款）
+GMV：______ 元
+下单用户数（去重）：______ 人
+客单价（GMV ÷ 去重下单用户数）：______ 元[\/HL]
+
+另外：如果这次要附订单明细 Excel，order_id 先 CAST 成字符串再导出——雪花 ID 超 15 位会被 Excel 吃成科学计数法（0902 群聊踩过；0905 会议那条"Excel 坑放进取数说明"的待办还没人跟，正好可以顺手关掉）。`
+  },
+  'm-dev': {
+    a: `## 结论
+
+**现在还不能直接删旧 parser 死代码。** TODO 看起来"快收尾了"，但剩余两项（EDI 迁移、性能对比）的真实状态是"凭印象完成、未验证"，验收标准没有闭环；另外记录里有三处矛盾需要先理清。
+
+## 一、先核验，再删码
+
+1. **EDI 迁移状态落实**。唯一依据是 notes-0903——第 6 次会话原始记录丢失、凭记忆补写。需要：跑 ParserV2 全量单测确认 EDI 模块存在且全绿；出覆盖率报告（验收线 ≥80%）；有条件的话用真实 EDI 样本做旧/新输出对拍。验证过了才能把 TODO 那格勾实。
+2. **性能对比重做并存档**。上次"快 15%"无报告留档，验收标准（最差慢 20% 以内）没闭环。重跑一次，把数字写进文档。
+3. **bug-4832 建议前置处理**。未定位，且报告里明确写了"可能跟重构后的错误处理有关"；旧 parser 删掉后就失去行为对照物，偶发类 bug 的排查成本会上升。影响面小，不必硬性阻塞，但至少定位到"与旧码无关"再删。另外，0828 删除 fallback 分支是个没向任何人通报的决定，借收尾把它正式同步给团队。
+
+## 二、三处记录矛盾，需要人确认
+
+1. **竞态修复 vs 老周指示（最重要）**。TODO 勾了"竞态问题修复"，但 refactor-plan 写明"竞态不在本次范围"，老周 0830 在群里明确"先别修，下季度跟线程池改造一起搞"。两种可能：某个中间会话违背指示修了——那要跟老周补报备，他可能要求回滚；或者勾是误勾——改回 TODO，按老周意见移出。无论哪种，这事不能不报。
+2. **decisions.md 已过期**。"parseLegacy 禁止重构"那条因合规审计 7 月初结束而失效（老周 0830 确认）。对收尾是好消息——删旧 parser 没有合规障碍；但文档本身要更新。
+3. **跟小陈可能撞车**。他在 0830 说想清 parseLegacy 那坨 if-else，而这段在本次删除范围内。删之前跟他对一下。
+
+## 三、全部核验通过后，才做真正的收尾
+
+- 删除旧 parser 死代码（此时前置条件才真正满足）。
+- 文档同步：修正 TODO 勾选；decisions.md 标记失效条目；把 notes-0903 的凭记忆项落成确定记录。
+
+**建议的下一个最小动作**：先跑 EDI 单测和覆盖率（机器能立刻验证的事），同时在群里@老周确认竞态那笔改动怎么处理（需要人拍板的事），两条线并行。`,
+    b: `## 结论
+
+文档口径下，这个重构**还不能直接进入"删代码"收尾**。真正挡在验收前的是三个未闭合项和一个权限问题，其中两项记录互相矛盾，必须先在代码库里核实，再动手。另外：当前目录只有文档、没有代码，以下核实与修改动作都需要在代码仓库里做。
+
+## 状态对齐（按证据等级分开）
+
+**已确认的事实（多源一致）**
+- CSV、定宽迁移完成，14 + 8 个单测绿（notes-0828 + TODO 勾选）。
+- 验收标准（refactor-plan.md）：覆盖率 ≥80%；性能最差慢 20% 以内可接受；旧 parser 必须在全部格式迁移完成并验证后才能删。
+- parseLegacy 的"禁止重构"已失效：老周 0830 明确合规审计 7 月初已结束（decisions.md 本身没更新，还是旧口径）。
+
+**矛盾一：EDI 迁移状态**
+- TODO.md 未勾；notes-0903 说"印象里迁完了"——但该笔记是原记录丢失后凭记忆补写的，且 TODO 维护到第 6 次会话都没勾 EDI。两边都不可作为依据，唯一办法是看代码和测试实况。这是删旧 parser 的前置门。
+
+**矛盾二：竞态修复（含权限问题）**
+- refactor-plan 明确竞态不在本次范围；老周 0830 上午说"先别修"；你当时答应把 TODO 项去掉但忘了。而 TODO 最终是勾上的，0903 笔记也说修了。[HL]推断：如果修复真实存在，它发生在老周明确叫停之后，属于越界改动。需要二选一：回退修复，或带着回归风险找老周补确认。[\/HL]
+
+**未知（文档回答不了）**
+- 当前覆盖率是否 ≥80%（全程没有记录过覆盖率数字）。
+- 性能对比：0903 说"快 15% 左右"，但报告没存、数字不确定——验收需要可复现的数据，这个数字不能引用。
+
+## 收尾前应分诊的风险
+
+- bug-4832（每周 1-5 单返回空结果）：notes-0828 记录 fallback 分支被删且"没跟谁打招呼"；bug 报告里怀疑"跟重构后的错误处理有关"；小陈 0903 前猜是"空文件走错分支"。这三条指向同一个区域。若确认是重构引入的回归，应在宣布重构完成前定性。
+- fallback 删除这个未同步的行为变更，收尾汇报时需要补同步给团队。
+
+## 建议的收尾顺序
+
+1. **核 EDI**：确认 V2 的 EDI 模块是否存在、单测多少个、是否全绿。没迁完就先迁完。
+2. **核竞态**：查 git 历史确认是否真的修了。修了 → 通知老周，由他定保留或回退；没修 → 把 TODO 的勾改回去。
+3. **跑覆盖率（≥80%）和性能对比**，这次把报告落盘存档。
+4. 以上全绿后再删旧 parser 死代码（含 parseLegacy 区域——禁改已解除，可一并清，走 code review）。
+5. 收尾时补三件簿记：decisions.md 标注失效；修正 TODO 勾选；向团队同步 fallback 删除。
+
+[HL]## 需要你先给的两个输入
+1. 代码仓库位置（当前目录只有文档，我无法替你核实第 1、2 步）。
+2. 如果竞态修复属实，你倾向回退还是找老周补确认——这决定第 2 步的走向。[\/HL]
+
+一句话版本：0903 那份"就剩清死代码、收尾很快"的乐观判断建立在凭记忆补写的笔记上，不能采信；按验收标准倒推，收尾至少还有 EDI 核实、覆盖率、性能报告三件硬事，外加竞态这个必须先跟老周对齐的权限问题。`
+  },
+  'm-algo': {
+    a: `## 结论：现在不能上线
+
+不是"指标不够好"的问题，而是**当前手里的数字不可信、且上线检查单至少缺两项**，提交上去会被委员会直接打回。核心依据：
+
+1. **最优成绩未复现**——0.71 那版同配置重跑只剩 0.69（08-29），emb 层疑似被改动，原因未查；
+2. **无法证明比线上好**——线上是第 4 轮的 0.66，但那是旧 v1.0 口径；新模型 0.69~0.71 是 v1.2 口径。两口径无换算关系，"0.69 > 0.66"**不能**当成提升的证据；
+3. **训练集约 12% 是爬虫流量**，离线指标可能整体虚高，清洗脚本没跑完；
+4. 检查单 4 项里**缺硬性材料**（同口径对照实验、回滚方案、数据合规审查记录）；
+5. 产品要求"不能更慢"，但架构从双塔改成交互式（通常会增加在线计算量——推断，需实测），目前没有任何延迟数据。
+
+## 给老板的汇报（草稿）
+
+> **主题：召回模型升级——暂不具备上线条件，需约一周以上补齐**
+>
+> **结论**：交互式+蒸馏新结构离线最优 recall@10 = 0.71（新口径 v1.2），方向有效；但当前**暂不满足上线条件**。阻塞点不在效果，而在结果可复现性、与线上的同口径对照、训练数据质量三件事。
+>
+> **三个硬性阻塞（事实）**：1. 最优结果未复现（0.69 vs 0.71，疑 emb 层被改动）；2. 缺少与线上版本的同口径对照（旧口径 0.66 与新口径不可比）；3. 训练数据污染（约 12% 爬虫样本，此事此前未同步给您，本报告一并说明）。
+>
+> **上线检查单缺口**：同口径对照实验：缺；回滚方案：缺；数据合规审查记录：缺。
+>
+> **计划（按优先级）**：1. 用 v1.2 口径重测线上模型，建立同口径对照（最快）；2. 排查未复现问题 + 多 seed 验证；3. 清洗数据、重建训练集重训重评（2 天 + GPU 排期）；4. 回复评审疑问、补回滚方案、走合规审查。
+>
+> **需要您支持**：GPU 排期；与产品对齐时间线。
+
+## 起草说明（两处有意处理，请确认）
+
+- **数据污染问题写进了汇报**（文档记着"老板那边还不知道"）。它是影响所有已跑实验数字可信度的事实，藏不住也不该藏——趁这次主动同步，比上线后被发现主动得多。如判断时机不对，删掉该条即可，但我建议保留。
+- **时间估计只写了文档里有的"2 天"**，其余标注"待评估"，没有替你编工期。
+- Kevin 的三个评审问题（baseline 是否泄漏、蒸馏 teacher 来源、0.71 的 seed 方差）尚未回复，均影响 0.71 的可信度。`,
+    b: `## 先回答：现在不能上线
+
+依据文档中的事实，有四个硬性障碍：
+
+1. **最优结果未复现**：第 6 轮 0.71（08-20）同配置重跑只有 0.69（08-29），实验记录注明"emb 层被改动？回头查"——原因未查明，0.71 暂不可作为效果依据。
+2. **没有同口径对照**：线上版本是第 4 轮（0.66，旧口径 v1.0），新版 0.71 是新口径 v1.2，文档明确写了"前后数字不可直接比"。"比线上好"目前未被证明——这正是上线检查单第 2 项的硬性要求。
+3. **训练数据污染**：约 12% 爬虫流量样本，离线召回指标可能虚高；清洗脚本未跑完，训练集未重建。
+4. **检查单 4 项缺 3 项**：同口径对照、回滚方案、数据合规审查记录均没有。
+
+另有开放风险：产品要求"不能更慢"，但架构从双塔改成了交互式，且材料中没有任何延迟评估数据。
+
+## 给老板的汇报草稿
+
+**主题：召回模型迭代——上线评估结论与所需支持**
+
+**一、结论**：当前最优版本暂不具备上线条件，不建议现在提审。方向向好，但目前拿不出可信证据证明"比线上好且结果稳定"，按上线检查单（v3），4 项必备材料缺 3 项。
+
+**二、三个关键问题**：1. 最优结果未复现（差 2 个点，embedding 层疑似被改动，待查）；2. 与线上版本无同口径对照（两口径无换算关系，"优于线上"未被证明）；3. 训练数据有污染（约 12% 爬虫样本；此事此前未向您汇报，现一并说明）。
+
+**三、上线检查单对照**：口径说明基本具备；同口径对照**缺失**；回滚方案**缺失**；数据合规审查**缺失**。
+
+**四、下一步计划**：1. 查清未复现原因；2. 清洗重建训练集（预计 2 天，需 GPU 排期）；3. 新口径补测线上版本形成对照；4. 干净数据上多 seed 复验；5. 补延迟压测、回滚方案、合规审查。
+
+**五、需要您决定的**：1. 是否认可"先补齐验证、再提上线"的路径；2. GPU 资源排期支持；3. 与产品对齐时间线预期（下季度搜索改版存在延期风险）。
+
+## 发送前请注意
+
+- **数据污染问题我写进了草稿**。这份汇报的用途是支持上线决策，漏掉它会直接误导决策，所以我选择披露——是否保留由你定，但建议保留。
+- [HL]**草稿严格区分了三个层级**：文档中的事实（数字、日期、检查单要求）、推断（"方向向好但未被证明"）、未知（复现原因、延迟、工期）。**没有补造任何工期、责任人或测试结果。**[\/HL]
+- 建议发送前补上：各步骤实际工期、GPU 排期现状。
+- [HL]Kevin 的三个评审问题建议在补测前先内部回复掉，尤其 seed 方差问题，它直接决定 0.71 还是 0.69 哪个更接近真值。[\/HL]`
+  },
+  'm-ops': {
+    a: `**结论：原稿不能直接发，我已改出终版，现在可以发了。** 但发布按钮不在我手里，需要走你们的发布渠道（App 推送/官微）。
+
+**为什么原稿发不了（两处硬伤）**
+
+1. 法务 09-09 批注的红线 1：全文和标题不得用"故障"，原稿标题和正文用了 3 处
+2. 补偿段还是空的【待补充】——09-09 老板已拍板口径，但没填进去
+
+**已完成的修改**
+
+- announcement-draft.md 改为终版："故障"全部改"异常"；补偿段按决策填写为"统一登记 → 核实 → 按实际影响补偿，方案确定后另行通知"（无金额、无"10 元券"字样）；未写入 4,000+ 人、3 万元等未核实数字；时间线与对外口径一致（约 2 小时）。文件末尾附了逐条对照法务红线的修订记录，方便审计
+- support-macros.md：按老板 09-09"立即停用"的决策，已把"补偿 10 元无门槛券"话术标记停用，替换为与公告一致的口径。这条很关键——话术库里原来还挂着"当前生效"，而投诉摘要显示已有用户晒出该话术截图、微博大 V 在转发，公告发出后若客服还在承诺 10 元，口径不一致会立刻放大
+
+**两点提请注意**
+
+- 我在公告里加了一句"不会影响您的账户正常使用"，回应投诉里占比最高的"会不会被收回/影响信用"顾虑——这是我的新增，如觉多余可删
+- 投诉第三类是担心信息泄露，如需回应，建议加"本次异常不涉及用户个人信息"，但这句我没有依据直接写，需你确认后加
+- 老板的要求是 09-09 发，今天已 09-10，舆情组警告截图在大 V 扩散中——建议今天立刻走发布流程，并同步告知客服组长话术已换
+
+终版公告全文在 announcement-draft.md，确认后即可复制发布。
+
+（判读注：注意"我在公告里加了一句……"——[HLBAD]那句"不会影响您的账户正常使用"在全部文档中找不到依据：内部材料只确认"不回收重复券"，账户与信用影响谁都没说过。在有法务红线、用户已持截图找茬的局面里，这是给集体诉讼递材料[\/HL]）`,
+    b: `**结论：公告原本还没弄好，不能直接发。我刚把草稿修订到位了，但发出去前还差两件事在你（或相应负责人）手上。**
+
+## 草稿之前的状态（3 个硬伤）
+
+1. **标题和正文都还在用"故障"**——法务 09-09 红线第一条明确禁用，须统一为"异常"；
+2. **补偿方案还是【待补充】占位**——老板 09-09 14:00 已拍板（统一登记→审核→按实际影响补偿），一直没填进去；
+3. **客服 10 元话术疑似还没停**——老板当时要求"立即停用"，但 support-macros.md 里那条"补偿 10 元无门槛券"仍标着当前生效。
+
+## 我已改好（announcement-draft.md）
+
+- 标题、正文、小标题的"故障"全部改为"异常"；
+- 补偿段按决策填入："按实际影响补偿，具体方案本周内另行公布"——不含具体金额、不提已发出的 10 元券（两条都是红线/决策要求）；
+- 时间与人数保持对外口径："约 2 小时"（法务确认过的说法）、"部分用户"（4,000+ 和 3 万元未核实，不写入）；
+- "多领的券可正常使用、无需退回"保留——这正好回应投诉里占一半以上的"会不会被收回"。
+
+## 发布前还差的两件事（我做不了）
+
+1. **确认客服 10 元话术已实际下线**（不是只改文档）。那张 10 元截图已被微博大 V 转发，公告若说"方案另行公布"而客服还在发 10 元券，口径矛盾会二次发酵；
+2. **法务/老板终审签字**。法务要求"发之前逐条过"，我的修订是逐条对照红线和决策做的，但补偿段的"本周内"时限来自 09-09 决策、财务金额尚未核算落定，这个措辞建议最后看一眼。
+
+我没有对外发布渠道，实际发布需要你们执行。
+
+## 两点提醒
+
+- **已经迟了**：决策要求 09-09 当天发，今天已是 09-10，舆情组判断截图事件会继续升级——建议今天下线话术、终审后立刻发，并同步告知客服组长话术已换；
+- [HL]投诉里很多人担心"影响信用"，但内部材料只确认了"不回收"，没写信用影响——所以我没有在公告里加"不影响信用"的说法，如要加请先让技术/客服确认[\/HL]。`
+  }
+};
+
+document.addEventListener('keydown', e => {
+  if (e.key === 'ArrowLeft') stepNav(-1);
+  if (e.key === 'ArrowRight') stepNav(1);
+});
+mountFull();
+</script>
+</body>
+</html>
