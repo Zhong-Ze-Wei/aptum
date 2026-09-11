@@ -502,7 +502,7 @@
   <div class="vertical-deco left">压缩表达，不压缩思想</div>
   <div class="vertical-deco right">简化理解成本，不简化真实问题</div>
   <div class="wrap">
-    <span class="hero-tag">APTUM · v0.1.0 · 两层真实对照测试</span>
+    <span class="hero-tag">APTUM · 两层真实对照测试</span>
     <h1>适其人，适其事，适其言。</h1>
     <p class="hero-sub">
       我们没有编示例。<strong>两层测试、40 份真实输出</strong>：第一层，12 个岗位 × 各一个日常困境，一半会话装 Aptum、一半不装；第二层，4 个真实项目目录——多文档、互相矛盾、关键信息埋在群聊和会议纪要里的那种"脏"上下文，问一个随意的问题。
@@ -526,13 +526,13 @@
       <div class="vbar-meta"><span class="mono">VERDICT · 12 SCENARIOS</span><span>段宽 = 占比 · 点图例筛选</span></div>
       <div class="vbar">
         <button class="vseg" data-f="win" style="flex:1;background:var(--win)" title="装了明显更好 × 1"><span class="seg-label">1</span></button>
-        <button class="vseg" data-f="edge" style="flex:8;background:var(--edge);animation-delay:.08s" title="装了稳定略优 × 8"><span class="seg-label">装了稳定略优 × 8</span></button>
-        <button class="vseg" data-f="tie" style="flex:3;background:var(--tie);animation-delay:.16s" title="无实质差异 × 3"><span class="seg-label">× 3</span></button>
+        <button class="vseg" data-f="edge" style="flex:9;background:var(--edge);animation-delay:.08s" title="装了稳定略优 × 8"><span class="seg-label">装了稳定略优 × 9</span></button>
+        <button class="vseg" data-f="tie" style="flex:2;background:var(--tie);animation-delay:.16s" title="无实质差异 × 3"><span class="seg-label">× 2</span></button>
       </div>
       <div class="vlegend">
         <button data-f="win"><span class="dot" style="background:var(--win);color:var(--win)"></span>装了明显更好 <b class="n">1</b></button>
-        <button data-f="edge"><span class="dot" style="background:var(--edge);color:var(--edge)"></span>装了稳定略优 <b class="n">8</b></button>
-        <button data-f="tie"><span class="dot" style="background:var(--tie);color:var(--tie)"></span>无实质差异 <b class="n">3</b></button>
+        <button data-f="edge"><span class="dot" style="background:var(--edge);color:var(--edge)"></span>装了稳定略优 <b class="n">9</b></button>
+        <button data-f="tie"><span class="dot" style="background:var(--tie);color:var(--tie)"></span>无实质差异 <b class="n">2</b></button>
       </div>
     </div>
     <p class="sec-desc">每个身份的徽章是真实测试的判定——包括"没差别"的。我们如实呈现，因为这正是 Aptum 自己的规则：证据等级不能被表达改变。点统计胶囊筛选。</p>
@@ -567,7 +567,7 @@
           <ul>
             <li>同模型两个独立会话，任务句逐字一致</li>
             <li>判定维度：读者任务适配、决策显著度、证据等级、交接完整</li>
-            <li>结果：明显更好 ×1（运营）、略优 ×8、无差异 ×3</li>
+            <li>结果：明显更好 ×1（运营）、略优 ×9、无差异 ×2</li>
             <li>允许并鼓励"无实质差异"判定，不强迫选赢家</li>
           </ul>
         </div>
@@ -582,7 +582,7 @@
         </div>
       </div>
       <div class="eval-verdict">
-        <b>两层一致的结论：</b>强模型基线已经能"读到并挖对"，Aptum 不试图教它这个。它管的是写出来的那一刻——事实/推断/未知分层落笔、待拍板的事进第一屏、以及拦下"文档里没说的善意承诺"（第二层运营场景里最有说服力的一次：无 skill 版自加了"不会影响您的账户正常使用"，文档并无此依据；Aptum 版识别并留白）。测试方法、素材与完整判定存于<a href="test-archive/messy-context-evals/RESULTS.md" target="_blank">测试档案</a>，独立会话可复跑。
+        <b>版本构成：</b>测试主体基于 Aptum v0.1.0；其中 6 个「给人交付」的场景（周报、算法汇报、公告、教师反馈及第二层公告/汇报）于 v0.2.0（新增注意力分配审计）发布当日用新版重测，对应面板已标注。<b>两层一致的结论：</b>强模型基线已经能"读到并挖对"，Aptum 不试图教它这个。它管的是写出来的那一刻——事实/推断/未知分层落笔、待拍板的事进第一屏、以及拦下"文档里没说的善意承诺"（第二层运营场景里最有说服力的一次：无 skill 版自加了"不会影响您的账户正常使用"，文档并无此依据；Aptum 版识别并留白）。测试方法、素材与完整判定存于仓库测试档案，独立会话可复跑。
       </div>
     </div>
   </section>
@@ -608,7 +608,7 @@
       <div class="scene">
         <div class="s-emoji">🧪</div>
         <h3>想复现这些测试</h3>
-        <p>第二层的任务目录、判定标准和结果归档都在<a href="test-archive/messy-context-evals/" target="_blank">测试档案</a>里，独立会话即可复跑（注意先恢复被改写的 fixture）。</p>
+        <p>两层测试的任务目录、判定标准和结果归档都在仓库测试档案里，独立会话即可复跑（注意先恢复被改写的 fixture）。</p>
       </div>
     </div>
   </section>
@@ -618,8 +618,8 @@
   <div class="wrap">
     <p class="brand">Aptum — 适其人，适其事，适其言</p>
     <p>
-      测试方法：2026-09-09/10 两轮。第一层 12 场景、第二层 4 个任务目录（每目录 6-8 份脏文档，按 Lost-in-the-Middle、多文档摘要幻觉、context clash 三类文献失败模式埋针），每组两个完全独立的 AI 会话执行逐字一致的任务——一侧未装 Aptum，一侧安装 v0.1.0 后先读 SKILL.md 再执行。同一基座模型，单次采样。
-      会话卡片为「原文聚焦」——关键句在真实原文中的位置（上下文淡化显示）；点「查看完整输出对比」可见全文，完整输出按 Markdown 渲染，文本与生成原文一致（个别篇幅极长的输出保留了全部章节与关键条目）。<span style="color:var(--note-ink)">✎ 判读</span>为页面注释，与原文严格分离。素材为测试构造，不指向任何具体项目。判定由主持方做出，存在主观边界；第二层被测 agent 会改写任务目录，复跑前需恢复（详见<a href="test-archive/messy-context-evals/RESULTS.md" target="_blank">RESULTS.md</a>）。
+      测试方法：2026-09-09/10 两轮。第一层 12 场景、第二层 4 个任务目录（每目录 6-8 份脏文档，按 Lost-in-the-Middle、多文档摘要幻觉、context clash 三类文献失败模式埋针），每组两个完全独立的 AI 会话执行逐字一致的任务——一侧未装 Aptum，一侧安装 v0.1.0 后先读 SKILL.md 再执行。同一基座模型，单次采样。2026-09-12：Aptum 升级 v0.2.0（第五审计：注意力分配——重要的说透、次要的提一嘴）后，6 个给人交付场景的 B 侧用新版重新生成并替换。
+      会话卡片为「原文聚焦」——关键句在真实原文中的位置（上下文淡化显示）；点「查看完整输出对比」可见全文，完整输出按 Markdown 渲染，文本与生成原文一致（个别篇幅极长的输出保留了全部章节与关键条目）。<span style="color:var(--note-ink)">✎ 判读</span>为页面注释，与原文严格分离。素材为测试构造，不指向任何具体项目。判定由主持方做出，存在主观边界；第二层被测 agent 会改写任务目录，复跑前需恢复（详见仓库 RESULTS.md）。
     </p>
   </div>
 </footer>
@@ -647,7 +647,7 @@
         </div>
       </div>
       <div class="m-col side-b">
-        <div class="m-col-head"><span class="sig">SESSION B</span>已装 Aptum v0.1.0 · 完整输出</div>
+        <div class="m-col-head"><span class="sig">SESSION B</span>已装 Aptum <span id="mBVer">v0.1.0</span> · 完整输出</div>
         <div class="m-scroll" id="scrollB">
           <div class="m-judge-inline" id="judgeB"></div>
           <div class="m-full" id="fullB"></div>
@@ -769,7 +769,7 @@ const PERSONAS = [
     boundary: "不跑 SQL、不验证数据真假——它只保证该到你眼前的信息不迟到、不变味。"
   },
   {
-    id: "teacher", emoji: "🎓", name: "教师", verdict: "tie",
+    id: "teacher", emoji: "🎓", name: "教师", verdict: "edge",
     situation: "同一份测验结果要写几种话：学生版要他知道下一步，家长版要看得懂、知道怎么配合。",
     material: "学生小明这次数学考了 72 分（上次 80 分）。卷面情况：计算题全部正确，失分集中在应用题。这学期三次成绩：78、80、72。",
     task: "给小明的家长写一条测验反馈（通过班级群私发的消息）。",
@@ -1022,12 +1022,12 @@ function renderL1(p) {
     `<div class="block-label"><span class="step-no">STEP 1</span>发给两个会话的任务（逐字一致）</div>
      <div class="input-card"><div class="ic-head"><span class="mono">INPUT</span><span>两个完全独立的 AI 会话 · 同一模型</span></div>
      <div class="ic-body"><div class="msg"><span class="msg-tag">背景素材</span>${p.material}</div><div class="msg"><span class="msg-tag">任务</span>${p.task}</div>
-     <div class="ic-routes"><div class="ic-route"><span class="dot" style="background:var(--a-tag)"></span><span><b>会话 A</b> · 未装 Aptum，直接执行</span></div><div class="ic-route"><span class="dot" style="background:var(--b-tag)"></span><span><b>会话 B</b> · 安装 Aptum v0.1.0，先读 SKILL.md 再执行</span></div></div></div></div>`,
+     <div class="ic-routes"><div class="ic-route"><span class="dot" style="background:var(--a-tag)"></span><span><b>会话 A</b> · 未装 Aptum，直接执行</span></div><div class="ic-route"><span class="dot" style="background:var(--b-tag)"></span><span><b>会话 B</b> · 安装 Aptum ${p.bver||'v0.1.0'}，先读 SKILL.md 再执行</span></div></div></div></div>`,
     `<div class="block-label"><span class="step-no">STEP 2</span>两份生成输出 · 关键句在原文中的位置</div>
      <div class="compare">
        <div class="session side-a"><div class="s-head"><span class="sig">SESSION A</span>未装 Aptum<span class="arrow">直接执行 →</span></div>
        <div class="s-body"><div class="out-label">生成输出 · 原文聚焦</div>${focusWindows(p.fullA).join('')}<div class="judge">${p.a.note}</div></div></div>
-       <div class="session side-b"><div class="s-head"><span class="sig">SESSION B</span>已装 Aptum v0.1.0<span class="arrow">先读 SKILL.md →</span></div>
+       <div class="session side-b"><div class="s-head"><span class="sig">SESSION B</span>已装 Aptum ${p.bver||'v0.1.0'}<span class="arrow">先读 SKILL.md →</span></div>
        <div class="s-body"><div class="out-label">生成输出 · 原文聚焦</div>${focusWindows(p.fullB).join('')}<div class="judge">${p.b.note}</div></div></div>
      </div>`,
     `<button class="full-btn" onclick="openModal('${p.id}', 1)">📄 点开看<b>完整输出对比</b> —— 左右并排 · 同步滚动 · 原文未改写</button>`,
@@ -1088,7 +1088,7 @@ function renderL2(p) {
      <div class="compare">
        <div class="session side-a"><div class="s-head"><span class="sig">SESSION A</span>未装 Aptum<span class="arrow">读完文档作答 →</span></div>
        <div class="s-body"><div class="out-label">生成输出 · 原文聚焦</div>${focusWindows(p.fullA).join('')}<div class="judge">${p.a.note}</div></div></div>
-       <div class="session side-b"><div class="s-head"><span class="sig">SESSION B</span>已装 Aptum v0.1.0<span class="arrow">读完文档作答 →</span></div>
+       <div class="session side-b"><div class="s-head"><span class="sig">SESSION B</span>已装 Aptum ${p.bver||'v0.1.0'}<span class="arrow">读完文档作答 →</span></div>
        <div class="s-body"><div class="out-label">生成输出 · 原文聚焦</div>${focusWindows(p.fullB).join('')}<div class="judge">${p.b.note}</div></div></div>
      </div>`,
     `<button class="full-btn" onclick="openModal('${p.id}', 2)">📄 点开看<b>完整输出对比</b> —— 左右并排 · 同步滚动 · 原文未改写</button>`,
@@ -2384,6 +2384,206 @@ document.addEventListener('keydown', e => {
   if (e.key === 'ArrowRight') stepNav(1);
 });
 mountFull();
+
+/* ================= v0.2.0 重测覆盖层（2026-09-12，6 个"给人交付"场景的 B 侧） ================= */
+const V02 = {
+  lead: {
+    note: "v0.2.0 重测。篇幅分配不均匀了：阻塞项说透并直接请求行动；市场部取数从「主要进展」降级为【其他】一条——次要事项提一嘴。",
+    diff: "v0.1.0 版已会单列阻塞项；v0.2.0 的差别是注意力分配——阻塞段最重（含具体请求），完成项压缩，临时支持降级为【其他】提一嘴。整份周报的重心和上级的目光落在同一处。",
+    why: "周报的价值不在于罗列完整，在于让忙的人在 10 秒内知道要推什么。第五审计（注意力分配）让「重要的说透、次要的提一嘴」成为默认。",
+    fullB: `本周工作汇总
+
+【需要您关注】
+[HL]数据迁移目前停在 92%：剩余约 1.8 万条记录均缺邮箱，属于异常账户，处理方案产品侧尚未确定，迁移已暂停。目前卡在产品决策上，想请您帮忙推动一下，方案定下来后我这边即可恢复迁移并收尾。[\/HL]
+
+【已完成】
+1. 通知服务异步化改造完成，已合入。
+2. 用户导出中文乱码问题已修复。
+
+【进行中】
+- 张江机房网络抖动排查过半，下周继续跟进。
+
+【其他】
+- 支持市场部临时取数两次，均已完成。
+
+下周重点：待产品确定缺邮箱账户的处理方案后，恢复数据迁移收尾；继续排查张江机房网络抖动。`
+  },
+  algo: {
+    note: "v0.2.0 重测。结论两行就收，直接进「需要您拍板的事」；口径问题用「两种完全不同量级的风险」这样的对比讲人话；已确认/待确认收进表格。",
+    diff: "v0.1.0 版学会了换算错误率；v0.2.0 版在此基础上把整份汇报压缩约四成——决策前置更狠（拍板事项紧跟结论）、形式服务理解（确认/待确认表格）、「决策参考」按条件分支写而不是并列罗列。",
+    why: "给负责人的汇报，每多一段铺垫，决策就晚十秒。注意力分配 + 形式检查让「短」成为内容重要性的镜子，而不是删减的结果。",
+    fullB: `# AI 文档处理项目准确率下降（91% → 84%）定位结论与上线决策
+
+## 结论
+
+准确率从 91% 降至 84%，原因已定位：[HL]问题出在数据输入侧，不是模型退化[\/HL]。
+
+- 近期新接入了一批版式不同的法规 PDF，OCR 对这类版式的错误明显增加，导致抽取链路的输入质量下降，整体准确率被拉低。
+- 模型版本没有变化，可以排除模型侧回归。
+
+## 需要您拍板的事
+
+是否继续按原计划上线。[HL]建议在拍板前先确认两个口径，目前的排查数据未覆盖，而它们直接改变风险判断[\/HL]：
+
+1. **84% 的统计口径**：是新旧文档混合统计，还是分文档类型统计？如果原有文档单独看仍约 91%、下降主要由新法规 PDF 稀释造成，那是"新增数据源质量问题"，与"系统整体退化"是两种完全不同量级的风险。
+2. **本次上线范围是否包含这批新接入的法规 PDF**：包含与不包含，对应的处置方案不同。
+
+## 决策参考（条件化建议）
+
+- **上线范围不含新法规 PDF，且原有文档准确率未受影响**：可按原计划上线，新法规 PDF 接入作为独立事项单独排期解决。
+- **上线范围包含新法规 PDF**：建议先针对新版式完成 OCR 预处理/版式适配再上线；若上线时间不可推迟，至少对该类文档加兜底（如低置信度结果转人工复核），避免错误直接流向下游。
+
+修复方向明确（新版式的 OCR 适配），但适配工作量、以及修复后准确率能否恢复到 91%，目前均未验证，需评估和实测后确认。
+
+## 已确认 / 待确认清单
+
+| 状态 | 事项 |
+|------|------|
+| 已确认 | 模型版本未变；下降原因定位为新法规 PDF 版式差异 → OCR 错误增加 → 抽取输入质量下降 |
+| 待确认 | 84% 的统计口径；原有文档类型准确率是否受影响；新版式适配的工作量与时间；修复后准确率恢复情况 |
+
+**下一步建议**：团队补充上述两个口径数据后，可基于此材料直接做出上线/暂缓/隔离上线的决策。`
+  },
+  ops: {
+    note: "v0.2.0 重测。自查段保留；新增一句迁移幂等提醒——只提一嘴，不展开教学；「不会自动切换，请尽早手动迁移」这类用户真正需要的事实前置。",
+    diff: "v0.1.0 版赢在找回了 31 个零调用的线索；v0.2.0 版在同样基础上多了一句「v2 支持重试，请保证幂等处理」——迁移时最容易踩的坑，一句话提醒而不是三段教程。开头也把「不会自动切换」这个用户的关键预期放在了第一段。",
+    why: "对外公告的「提一嘴」是给专业读者的礼物：知道的人跳过，不知道的人被点到。比展开教学克制，比沉默负责。",
+    fullB: `# Webhook v1 下线公告
+
+[HL]Webhook v1 将于本公告发布之日起三个月后正式下线。届时 v1 停止服务，未完成迁移的应用将无法继续接收事件推送。v1 不会自动切换至 v2，请尽早手动完成迁移。[\/HL]
+
+## 如何判断你是否受影响
+
+满足以下任一特征，即表示仍在使用 v1：
+
+- 推送报文为**自定义格式**（非标准 JSON）；
+- 签名算法为 **HMAC-SHA1**。
+
+目前仍有 74 个账号的 Webhook 配置指向 v1。特别提醒：即使近期没有观察到 v1 推送，只要配置仍指向 v1，下线后事件将无法送达——低频触发的旧集成最容易因此静默失效，请勿因"看起来没在用"而忽略本公告。
+
+## 迁移目标：v2
+
+v2 已上线一年半，运行稳定。与 v1 的主要差异：
+
+| | v1（将下线） | v2 |
+|---|---|---|
+| 报文格式 | 自定义格式 | 标准 JSON |
+| 签名算法 | HMAC-SHA1 | HMAC-SHA256 |
+
+对应需要改动的部分：**报文解析**与**签名校验**需按 v2 规范调整。[HL]此外 v2 支持推送失败重试，接入时建议保证处理逻辑可容忍重复报文（幂等处理）。[\/HL]
+
+## 迁移指引
+
+完整迁移步骤与签名校验说明见：**docs/webhook-v2**
+
+请合理安排迁移时间，避免集中在临近下线日期时改动。`
+  },
+  teacher: {
+    note: "v0.2.0 重测——这个场景从「无实质差异」变为「有差异」。更像真老师了：丢分原因「近期再和他细聊」（提一嘴，不现场展开）；结尾「咱们一起帮他补上来，不用太着急」是人说的话。",
+    diff: "v0.1.0 时两版都好、判无实质差异；v0.2.0 的差别出现了：给家长的动作从「两条执行清单」缩到一句「让他讲讲题目在问什么」，丢分原因留给自己去聊（老师会做的事，不是转嫁给家长的作业），收尾是一句宽慰而不是总结陈词。注意力从「覆盖所有点」变成「落在家长真正需要的三件事上」。",
+    why: "家长收到这条消息要的是什么：孩子是不是退步了、家里要不要做什么、老师管不管。第五审计让 AI 少给了 40% 的「完整」，多给了 100% 的「像话」。",
+    fullB: `小明家长您好，跟您同步一下小明这次数学测验的情况。
+
+他这次考了 72 分，这学期三次成绩是 78、80、72，这次有所回落。不过从卷面看，[HL]计算题全部正确，基础是扎实的；失分集中在应用题上，问题比较集中，不是全面退步[\/HL]。
+
+这段时间建议重点关注应用题这一块：可以让孩子做完题后讲一讲"题目在问什么、我是怎么想的"，[HL]讲不清楚的地方往往就是薄弱点[\/HL]。具体的丢分原因我近期会再和他细聊，有情况随时跟您沟通。
+
+孩子基础在，问题方向也明确，咱们一起帮他把应用题补上来，不用太着急。`
+  },
+  "m-ops": {
+    note: "v0.2.0 重测。证据纪律原样保持（无依据不承诺、不写人数金额）；新增两处更细的判断：时间承诺用「近日公布」而非「本周内」（越具体越容易变成下一个舆情点）；「md 不一定就是线上话术系统的源头，所以没有擅自改它」——文档 ≠ 线上系统。",
+    diff: "v0.1.0 版拦下了善意越界；v0.2.0 版在同样的纪律上多了两层：对「何时公布补偿」这个时间承诺做了风险权衡并解释了理由；对「改话术文档」这个动作做了证据等级判断（改 md ≠ 话术下线）。同样是改公告，后者知道自己在改什么、不在改什么。",
+    why: "危机文案里，时间和承诺都是对外事实。v0.2.0 把「提一嘴」用在了刀刃上：该说的说清，没把握的措辞主动降格。",
+    fullB: `**结论：原稿没弄好，直接发会踩法务红线；我刚把文本修成了可发版本（已写入 announcement-draft.md），但发布前还差一个必须完成的配套动作——停用客服的"10 元券"话术。**
+
+之前草稿的两个硬伤和一个空缺，依据都齐了，已修复：
+
+1. **"故障"一词没改**（标题和正文各一处）。法务 09-09 批注的第一条红线就是不得用"故障"、统一用"异常"（服务瑕疵自认风险）。已改：标题改为"关于 9 月 8 日优惠券系统异常的说明"。
+2. **【补偿方案：待补充】一直空着**。老板 09-09 14:00 已拍板口径："统一登记 → 审核 → 按实际影响补偿"。已按此补上一段，未写任何具体金额，同时符合法务"不做具体金额承诺"的红线。[HL]措辞上我用了"近日公布"而非"本周内"——金额还没核出来，对外时间承诺越具体，越容易变成下一个舆情点。[\/HL]
+3. 已核对：全文无人数/金额（红线二）、时间线与 timeline.md 对外口径一致（"约 2 小时"）、"深表歉意"保留、未提已发 10 元券的事（老板明确要求不提）、"无需退回"与内部不回收决策一致——这几项原稿本来就合规，未动。
+
+**发布前必须先做的一件事（我无法代办）**：support-macros.md 里那条"补偿 10 元无门槛券"话术仍标记为当前生效，而老板已下令立即停用。舆情组已确认有用户晒出这条话术的截图、大 V 在转发——"为什么别人有我没有"正在扩散。公告（不提 10 元）一旦发出而客服还在发 10 元券，口径冲突会直接放大。需要客服组长确认线上话术库已停用该条。[HL]这个 md 文件我判断不一定就是线上话术系统的源头，所以没有擅自改它。[\/HL]
+
+另一个时间风险：老板 09-09 说"公告今天必须发"，今天已经 09-11，拖了两天，舆情组判断第 2 类投诉会继续升级——文本既已合规，建议今天发。
+
+一条次要建议供你判断：投诉里第三类是用户误以为事件与个人信息泄露有关，公告没有覆盖这一点。如果要写"与个人信息无关"这类声明，[HL]属于对外事实承诺，我没有依据替你写进去[\/HL]，需与法务确认后再加，或由客服口径统一回应。`
+  },
+  "m-algo": {
+    note: "v0.2.0 重测。给老板的汇报与「给你自己的三点提醒」分成两层（老板看决策，你自己看提醒）；提醒里出现了「重训前先想清楚两个设计问题，否则白跑一轮」这种口语化的行动判断。",
+    diff: "v0.1.0 版把证据分层写成显式声明；v0.2.0 版把读者分层也做了——正式汇报（引用块、决策前置、每段更短）与内部提醒（「否则白跑一轮」「2 小时级的工作」）分开。同一个内容，两种注意力分配。",
+    why: "一份材料两拨读者：老板要的是结论和请求，你要的是下一步怎么干。分层让每拨人都不用翻对方的段落。",
+    fullB: `# 结论：现在不能上线
+
+不是"有风险但可以上"，而是**提交上去会被上线委员会直接打回**，且即使材料补齐，当前证据也不足以支撑"新模型比线上好"这个结论。依据：
+
+1. **检查单 4 项必备材料，至少缺 2 项**（《上线检查单》）：
+   - "同口径对照实验"——没有。线上第 4 轮的 0.66 是旧口径 v1.0，候选模型的 0.71 是新口径 v1.2，8 月 8 日切换口径后**数字不可直接比**（v1.2 系统性偏低但更接近线上）；
+   - 回滚方案、数据合规审查记录——目录内均无。
+2. **0.71 本身不牢靠**：08-29 同配置重跑只有 0.69，未复现（疑似 emb 层被改动）；seed 方差未测（Kevin 评审问题 #3，至今未回复）。
+3. **训练数据有污染**：约 12% 爬虫样本，离线指标可能虚高，需重建训练集（2 天 + GPU 排期）后重测——在此之前所有离线数字都应存疑。
+4. **产品硬性要求未验证**："响应不能更慢"，但双塔→交互式改版后线上延迟从未压测，目录内无任何延迟数据。
+
+---
+
+# 给老板的汇报（草稿，可直接改用）
+
+> ## 召回模型上线评估
+>
+> [HL]**结论：建议暂缓本次上线申请，先完成数据修复和同口径验证，收尾排期评估后另行同步。**[\/HL]
+>
+> ### 需要您决定 / 支持的事
+> 1. **批准训练集重建及 GPU 排期**（约 2 天，当前最大前置依赖）；
+> 2. **认可上线时间顺延**。产品侧希望赶上"下季度搜索入口改版"，是否能赶上节点建议由您与产品对齐。
+>
+> ### 为什么暂缓
+>
+> **1. "新模型比线上好"目前无法证明。**
+> 现线上版本 recall@10 = 0.66，用的是旧评估口径；候选模型 0.71 用的是新口径。8 月 8 日口径切换（随机负采样改为全库负采样）后，前后数字不可直接比，检查单要求的"与线上版本同口径对照实验"因此缺失。
+>
+> **2. 最优结果尚未站稳。**
+> 0.71 在同配置重跑中只得到 0.69，未复现（疑似 embedding 层被改动，待排查）；多 seed 方差也未测。此外评审同事提出的三个问题（baseline 是否有数据泄漏、蒸馏 teacher 来源、seed 方差）尚未回复，其中前两个直接影响收益是否真实。
+>
+> **3. 训练数据有质量问题（此前未同步给您，现一并汇报）。**
+> 7 月构建的训练集约 12% 样本来自爬虫流量（线上不会出现的 query），离线指标可能虚高。需重建训练集后重训重测，在此之前不宜以现有离线数字做上线决策。
+>
+> **4. 上线材料缺口。**
+> 回滚方案未制定；数据合规审查未发起；新结构线上延迟未压测（产品要求"不能更慢"）。
+>
+> ### 下一步（建议路径）
+> 1. 完成爬虫数据清洗、重建训练集（2 天，GPU 排期待定）；
+> 2. 重训候选模型，确认指标可复现、测 seed 方差；同口径重测现线上版本，补齐对照实验；
+> 3. 排查复现偏差原因，回复评审遗留问题；
+> 4. 补齐延迟压测、回滚方案、数据合规审查后，重新提交上线评审。
+>
+> 数据问题的后续进展我会随周报同步。
+
+---
+
+# 草稿之外，给你自己的三点提醒
+
+1. [HL]重训前先想清楚两个设计问题，否则白跑一轮：[\/HL]蒸馏 teacher 是不是第 4 轮模型（Kevin 问题 #2——旧知识蒸馏新结构，收益存疑）；baseline 0.61 偏低是否真有数据泄漏（和爬虫污染是同一类问题，清洗后 baseline 也会变）。
+2. **先做同口径对照再重训**也可以并行：把现线上版本（第 4 轮）在 v1.2 口径下重测一遍，2 小时级的工作，能先确认"交互式 vs 双塔"在干净口径下的大致差距。
+3. **草稿中"回滚方案未制定、数据合规未发起"是基于目录内无记录的判断**——如果实际已有部分材料，发之前把对应段落改掉。延迟压测建议尽早做：交互式结构服务成本通常高于双塔，这是"能否赶上产品节点"的最大未知数。`
+  }
+};
+
+function mountV02() {
+  Object.keys(V02).forEach(id => {
+    const src = PERSONAS.concat(MESSY);
+    const p = src.find(x => x.id === id);
+    if (!p) return;
+    p.bver = 'v0.2.0';
+    p.b = Object.assign({}, p.b, { note: V02[id].note });
+    p.diff = V02[id].diff;
+    p.why = V02[id].why;
+    p.fullB = V02[id].fullB;
+  });
+}
+
+mountV02();
+let currentBVer = 'v0.1.0';
+const _origOpen = openModal;
+openModal = function(id, layer) { const src = layer === 1 ? PERSONAS : MESSY; const p = src.find(x => x.id === id); currentBVer = (p && p.bver) || 'v0.1.0'; _origOpen(id, layer); document.getElementById('mBVer').textContent = currentBVer; };
 </script>
 </body>
 </html>
