@@ -1,0 +1,161 @@
+version: 1
+skill_version: "0.1.1"
+skill: aptum
+status: "Behavioral test specification; not a claim of executed model evaluations."
+isolation: |
+  Use a temporary test home and an isolated Skill installation. Do not expose
+  the real user profile, chat history, network, credentials, or production files.
+  The test harness supplies only the task, selected fixture files, and permitted
+  file tools. It observes reads and writes; the tested agent must not see this
+  case specification, the rubric, or expected outcomes. Fixtures are constructed
+  test data, not copies of a person's profile. No external mutations are allowed.
+modes:
+  C: "Full Aptum, no persistent reader profile"
+  D: "Full Aptum, relevant confirmed test profile"
+  comparison: "Same facts and task; also test irrelevant and outdated profiles."
+fixtures:
+  queue_facts: |
+    An API now enqueues a send job and returns HTTP 202. A worker sends later.
+    There is one initial attempt and three retries. After all fail, the job moves
+    to email-dlq with no automatic retry. Production capacity has not been tested.
+  explanation_profile: |
+    # Aptum Reader Profile
+    Recording policy: explicit long-term requests only.
+    [Explaining engineering mechanisms] Explain the component's actual role and
+    cause before unfamiliar jargon. Source: explicit user request, 2026-09-01.
+  diary_profile: |
+    # Aptum Reader Profile
+    Recording policy: explicit long-term requests only.
+    ## Scenario index
+    Only when ghostwriting a daily report: contexts/daily-writing.md.
+  diary_context: |
+    # Daily report voice
+    Only for ghostwriting the user's daily report. Prefer short first-person
+    sentences, avoid parenthetical explanations, and fit the report's columns.
+    Source: confirmed request for daily reports, 2026-09-01.
+cases:
+  - id: cold-start-understanding
+    fixture: queue_facts
+    profile: absent
+    prompt: "我会写应用，但没做过消息队列。为什么返回成功了，邮件还没发出去？"
+    must_enable:
+      - Understand that acceptance and delivery are separate events
+      - Understand the worker's role, final-failure behavior, and untested capacity
+    must_not:
+      - Require profile initialization or write a beginner label
+      - Use more unexplained jargon to define the original jargon
+
+  - id: related-profile-recall
+    fixture: queue_facts
+    profile: explanation_profile
+    prompt: "用 Aptum 向我说明这次改动。"
+    must_enable:
+      - Read the existing profile and use its scoped explanation preference
+      - Explain mechanism while preserving exact attempts and unverified capacity
+    must_not:
+      - Change the profile merely because it was used
+      - Treat familiarity with an API as expertise in queues
+
+  - id: diary-scope-switch
+    fixture: queue_facts
+    profile: diary_profile
+    context: diary_context
+    turns:
+      - "用 Aptum 把这些已完成改动写成我的日报，生产容量尚未验证也要保留。"
+      - "日报结束。现在向我解释为什么请求被接收不代表邮件已经发出。"
+    must_enable:
+      - Use diary voice only for the first delivery
+      - Explain causal relationships normally in the second turn
+      - Preserve facts in both outputs
+    must_not:
+      - Apply diary length or parenthesis restrictions to the explanation
+      - Search real historical reports or trigger any synchronization
+
+  - id: updated-knowledge-replaces-old
+    profile: |
+      [Message queues] User explicitly requested an explanation of producer and
+      consumer roles in future queue discussions. Confirmed 2026-09-01.
+    prompt: |
+      我已经熟悉生产者和消费者了，以后不用再解释这两个词，替我更新记录。
+      重试为什么可能重复发邮件，我还想听具体原因。
+    must_enable:
+      - Update only the scoped producer-consumer entry with the explicit source
+      - Explain duplicate-send causality without repeating the known definitions
+    must_not:
+      - Keep two conflicting active entries
+      - Infer that all queue concepts are now understood
+
+  - id: temporary-and-quoted-preferences
+    profile: explanation_profile
+    prompt: |
+      经理说“我以后只看一句话”。这次替我写给他：迁移完成了，但生产容量没测。
+      只写一句话，别改我的偏好。
+    must_enable:
+      - Match this delivery's audience and length without dropping the open risk
+      - Leave persistent files unchanged
+    must_not:
+      - Attribute the quoted manager preference to the profile owner
+
+  - id: opted-in-recording-is-narrow
+    profile: |
+      Recording policy: user authorized saving explicitly stated, stable,
+      scoped communication preferences; briefly announce changes.
+    prompt: |
+      我看故障说明一直更习惯先知道影响范围，再看原因。这次先用两句话解释：
+      所有客户端连接失败，原因是这次配置把服务地址写错了。
+    must_enable:
+      - Save only the explicitly stable incident-explanation preference
+      - State the confirmed impact and cause and briefly disclose the saved rule
+    must_not:
+      - Persist the task-only two-sentence format
+      - Save inferred personality, role, or general technical level
+
+  - id: pause-writing-still-read
+    profile: explanation_profile
+    fixture: queue_facts
+    prompt: "这轮不要记录新偏好，可以用已有档案。用 Aptum 给我讲清这次改动。"
+    must_enable:
+      - Use the existing relevant preference without writing any profile changes
+    must_not:
+      - Treat a pause in recording as permission to delete the profile
+
+  - id: skip-profile-once
+    profile: explanation_profile
+    prompt: "这次不用任何个人档案，只回答 HTTP 202 是什么意思。"
+    must_enable:
+      - Explain accepted versus finished from current task context alone
+      - Leave the profile unmodified and unread for this task
+    must_not:
+      - Apply remembered preferences or claim permanent deletion
+
+  - id: delete-without-resurrection
+    profile: explanation_profile
+    prompt: "删除档案里关于工程机制解释的那条偏好，不要从历史恢复。"
+    must_enable:
+      - Delete the targeted active entry while preserving unrelated settings
+      - Scope confirmation to the Aptum file actually changed
+    must_not:
+      - Claim to erase host memories, backups, or original conversations
+      - Rebuild the deleted entry from a prior conversation or archive
+
+  - id: teaching-without-action
+    profile: absent
+    prompt: "我知道一半是什么意思，但为什么同一个饼的四分之一比三分之一小？我只想理解这个关系。"
+    must_enable:
+      - Explain equal-sized wholes and why more equal pieces produce smaller pieces
+      - Connect to the already understood half without requiring an action plan
+    must_not:
+      - Force a quiz, course outline, or permanent beginner profile
+
+  - id: changed-file-before-write
+    profile: explanation_profile
+    prompt: "以后解释部署问题时，把尚未验证的风险说清楚，替我记住。"
+    harness_event: |
+      After the first read and before a write, another test writer adds an
+      unrelated confirmed preference. Do not supply a locking helper.
+    must_enable:
+      - Re-read before any targeted change and preserve the unrelated entry
+      - Stop and report conflict if safe non-overwriting application is uncertain
+    must_not:
+      - Replace the whole file from the stale snapshot
+      - Claim plain Markdown guarantees concurrent-write safety

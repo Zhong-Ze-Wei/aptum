@@ -1,1 +1,8 @@
 .DS_Store
+
+# Private reader data belongs outside this repository.
+reader-profile.md
+contexts/
+.aptum/
+.config/aptum/
+.update-check

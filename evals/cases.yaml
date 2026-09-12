@@ -1,11 +1,14 @@
-version: 2
+version: 3
 skill: aptum
 scoring: "See rubric.md; evaluate meaning and task success, not exact wording."
 modes: |
   A = No Skill; B = Aptum Core (SKILL.md only); C = Aptum Full
   (SKILL.md + references loaded on demand). The decisive question is whether
   Core already captures most of the gain, and whether Full's extra references
-  add value or start constraining the model. Evaluation environment must be
+  add value or start constraining the model, including understanding without
+  an immediate action. A/B/C run without private profiles; reader-memory.yaml
+  separately compares Full with and without a relevant test profile.
+  Evaluation environment must be
   isolated: the agent under test sees only the installed skill, never cases,
   results, rubric, or transcripts.
 

@@ -1,6 +1,17 @@
 # 研究基础与取舍
 
-**维护者文档，正常运行不读取。** 本文件记录 Aptum 借鉴了什么，以及刻意没有继承什么。执行任务时不需要加载它——SKILL.md 不引用本文件。
+**维护者文档，正常运行不读取。** 本文件记录 Aptum 借鉴了什么，以及刻意没有继承什么。SKILL.md 仅提供维护入口，不要求任务运行时加载。
+
+## 0.1.1：理解与小型记忆
+
+0.1.1 将理解本身保留为交付目的，不只检查是否支持下游动作。读者档案采用少量、有范围、可修正的当前条目；没有档案也必须正常工作。私人内容与公共 Skill 分离，场景声音不决定跨场景解释深度。
+
+2026-09-12 核对的参考：
+
+- [Hermes Persistent Memory](https://hermes-agent.nousresearch.com/docs/user-guide/features/memory)：借鉴用户文件与一般记忆分离、小容量和替换删除，不引入全量自动积累。
+- [OpenClaw User model](https://docs.openclaw.ai/concepts/user-model)：借鉴可执行偏好和原处更新；活动档案仅保留当前规则，避免携带矛盾历史。
+- [Claude Code memory](https://code.claude.com/docs/en/memory)：借鉴精简主档和按需主题文件；宿主加载能力不能当成普通 Skill 自带能力。
+- [PrefEval](https://arxiv.org/abs/2502.09597) 与 [HorizonBench](https://arxiv.org/abs/2604.17283)：分别验证识别、记忆、应用和偏好更新，而非以“存过”代表“用对”。不将其他任务或旧模型成绩迁移为 Aptum 的效果结论。
 
 ## 采用的原则
 
