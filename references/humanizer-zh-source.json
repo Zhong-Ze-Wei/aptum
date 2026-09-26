@@ -1,0 +1,40 @@
+{
+  "repository": "https://github.com/op7418/Humanizer-zh",
+  "commit": "f4518a8eab97b8bfebc66a89d34320a89bef6930",
+  "revision": "2026-09-23",
+  "checked_at": "2026-09-26",
+  "license": "MIT",
+  "policy": "All listed files are verbatim copies. Aptum-specific routing lives in references/humanizing.md. Update only after reviewing upstream changes; no runtime downloads.",
+  "files": [
+    {
+      "upstream": "SKILL.md",
+      "path": "references/humanizer-zh.md",
+      "sha256": "95627fd4437d886f98032ccc62d79136e6310f1fc04e354bb86431795ff206df"
+    },
+    {
+      "upstream": "LICENSE",
+      "path": "references/humanizer-zh.LICENSE",
+      "sha256": "aa00e74769e1b9d8e7fa7094dbfcca9b129a0ded6dce1cf4da050b99146d2fa7"
+    },
+    {
+      "upstream": "tests/README.md",
+      "path": "evals/humanizer-zh/upstream/README.md",
+      "sha256": "ece3c1f808c4ef2ad8ac7ccb0977138cbc6f842455c725703b5bf780ae3cc36c"
+    },
+    {
+      "upstream": "tests/check_structure.py",
+      "path": "evals/humanizer-zh/upstream/check_structure.py",
+      "sha256": "82ba1f91aab7a70abf039e79009fb1b77c036aa892925e5e3df5c2550d20230a"
+    },
+    {
+      "upstream": "tests/fixtures/cases.json",
+      "path": "evals/humanizer-zh/upstream/fixtures/cases.json",
+      "sha256": "6a62586ee93dd9695976cd45271036f2a92be4f74e1b3b9b6c21a411c8497c0e"
+    },
+    {
+      "upstream": "tests/fixtures/structure.md",
+      "path": "evals/humanizer-zh/upstream/fixtures/structure.md",
+      "sha256": "d2d0c2740d28c44b7aac88e81aed8d50dc6ad90cc08f93a5a00c6ada1d6368e2"
+    }
+  ]
+}

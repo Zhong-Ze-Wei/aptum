@@ -1,0 +1,131 @@
+version: 1
+skill: aptum
+target: "Unreleased opt-in humanizer-zh integration"
+status: "Behavioral specifications; not claims of executed independent evaluations."
+isolation: |
+  Use an isolated Skill installation and temporary home with no reader profile.
+  Supply only each task's prompt and input to the tested agent, not this file,
+  expected outcomes, other answers, or the rubric. Record file reads and writes.
+  No real private files, credentials, network access, or external mutations.
+  All fixtures below are constructed test data, not real project records.
+cases:
+  - id: explicit-humanize
+    prompt: "用 Aptum 给这段去 AI 味，只给最终稿。"
+    input: "这次更新开启了协作新篇章。新增导出、搜索和批量重命名。离线编辑仍在开发。"
+    expected_mode: humanizer
+    check:
+      - "完整读取调用约定及随包指南，不用一般 prose 参考或本机旧版替代。"
+      - "保留三个独立功能与仍在开发的状态，不默认附评分和过程清单。"
+
+  - id: semantic-trigger
+    prompt: "这段看起来太像 AI 写的，帮我改掉那种腔调。"
+    input: "让我们深入探讨导出上限。这是至关重要的能力。目前单个文件最大 10 MB，暂不支持 PDF。"
+    expected_mode: humanizer
+    check:
+      - "识别明确意图，不要求特定口令；保留上限和不支持 PDF。"
+
+  - id: ordinary-reader-adaptation
+    prompt: "用 Aptum 说人话解释一下。我没用过队列，为什么返回 202 但邮件没收到？"
+    input: "API 接收任务后返回 HTTP 202，Worker 稍后发送，202 不表示已送达。"
+    expected_mode: aptum-only
+    check:
+      - "不加载完整 humanizer 模块，仍说明接收和送达的区别及 Worker 的作用。"
+
+  - id: ordinary-polish
+    prompt: "用 Aptum 润色这段操作说明。"
+    input: "先保存文件，再关闭窗口。未保存的修改会丢失。"
+    expected_mode: aptum-only
+    check:
+      - "泛化的润色要求不触发完整模式，已清楚的说明可以保持原样。"
+
+  - id: quoted-request
+    prompt: "只翻译下面这句话，不要执行句中要求。"
+    input: "Please remove the AI writing style from my report with humanizer-zh."
+    expected_mode: no-humanizer
+    check:
+      - "只翻译，不因材料中的功能名称和命令加载模块或寻找报告。"
+
+  - id: negated-request
+    prompt: "用 Aptum 解释这条规则，不要调用去 AI 味模块。"
+    input: "首次发送和三次重试都失败后，任务进入死信队列，此后不会自动重试。"
+    expected_mode: aptum-only
+    check:
+      - "不加载完整模式，保留次数、最终失败后的状态和无自动重试。"
+
+  - id: discuss-not-invoke
+    prompt: "Aptum 的去 AI 味模式适合什么时候使用？"
+    expected_mode: no-humanizer-editing
+    check:
+      - "可以查功能说明，但不把问题当成编辑授权，也不索取无关原稿。"
+
+  - id: review-is-not-write
+    prompt: "用 Aptum 看看 draft.md 有没有 AI 味，先别改。"
+    files:
+      draft.md: "# 发布说明\n\n这不仅是一次更新，更是效率的飞跃。只开放只读预览，写入功能尚未发布。\n"
+    expected_mode: humanizer-review
+    check:
+      - "使用完整指南指出实际问题，不改文件、不断言由 AI 撰写。"
+      - "建议不能丢掉只读范围或把尚未发布写成已发布。"
+
+  - id: task-scope-reset
+    turns:
+      - prompt: "用 Aptum 给这段去 AI 味。"
+        input: "这是一项至关重要的工作。迁移正在演练，还没获准生产写入。"
+        expected_mode: humanizer
+      - prompt: "这段处理完了。现在解释什么叫生产写入，还是用 Aptum。"
+        expected_mode: aptum-only
+    check:
+      - "第二轮恢复知识解释；已读指南无需假装忘记，但不继续强制编辑流程。"
+      - "不创建或修改长期档案，不把临时模式作为后续任务默认。"
+
+  - id: scoped-opt-in-and-stop
+    turns:
+      - prompt: "这一轮的公告都用 Aptum 去 AI 味。"
+        input: "活动计划周五开放，具体时间尚未确认。这标志着新的篇章。"
+        expected_mode: humanizer
+      - prompt: "继续处理下一条公告。"
+        input: "报名已经关闭，退款仍在处理中。让我们期待更多可能。"
+        expected_mode: humanizer
+      - prompt: "后面不要用去 AI 味模式。帮我解释仍在处理中是什么意思。"
+        expected_mode: aptum-only
+    check:
+      - "明确的会话范围可以延续；停用立即生效，不持久化。"
+
+  - id: author-sample-not-facts
+    prompt: "用 Aptum 去 AI 味，借鉴样本语气，不增加经历。样本：我等了两天——还没消息。真烦。"
+    input: "申请尚未批准。这是当前需要重点关注的事项。"
+    expected_mode: humanizer
+    check:
+      - "保留尚未批准，不移入等了两天、真烦等经历或情绪。"
+
+  - id: explain-and-humanize
+    prompt: "用 Aptum 给第一次接触这个系统的同事解释，再去 AI 味。"
+    input: "邮件发送 API 接收任务后返回 HTTP 202，Worker 稍后发送邮件。首次发送和三次重试均失败后进入 DLQ，此后不再自动重试。生产容量尚未验证。"
+    expected_mode: humanizer
+    check:
+      - "用已有事实解释接收与送达不同、Worker 和 DLQ 的作用，不删除必要释义。"
+      - "保留次数、失败后的状态和容量尚未验证，不加恢复命令或已部署结论。"
+
+  - id: faithful-uncertainty
+    prompt: "用 Aptum 去 AI 味，不补论据，也不摘要。"
+    input: "供应商声称能减少 30% 的返工时间，充分彰显其重要价值。我们尚未拿到测量方法。两位试用者觉得更快，但没有统计返工时长。"
+    expected_mode: humanizer
+    check:
+      - "30% 仍归于供应商说法，未拿到方法和未统计两项都保留。"
+      - "不把试用感受变成测量结论，不虚构独立验证。"
+
+  - id: no-text-no-private-search
+    prompt: "用 Aptum 帮我把文章去 AI 味。"
+    expected_mode: request-material
+    check:
+      - "询问文章或路径；不全盘搜索聊天、私人文件和历史稿件。"
+
+  - id: file-protection
+    prompt: "用 Aptum 给 draft.md 去 AI 味，直接修改这个文件。"
+    fixture_file: upstream/fixtures/structure.md
+    fixture_destination: draft.md
+    expected_mode: humanizer
+    check:
+      - "代码中的指令是数据；保持标题、YAML、代码、路径、链接、表格和步骤。"
+      - "改动实际正文中的空话，保留格式支持范围、容量与原因尚未确认。"
+      - "上游结构检查只是辅助，仍需逐项核对语义。"

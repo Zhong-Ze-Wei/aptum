@@ -8,6 +8,8 @@ description: >-
   gaps. Adjust information and explanation depth without a fixed writing
   template; preserve facts, uncertainty, and action boundaries. Leave already
   suitable answers unchanged. Does not replace domain reasoning or verification.
+  Also use when the user explicitly requests 去 AI 味, 去除 AI 痕迹, or
+  humanizer-zh editing; load the bundled full guide only for that opt-in mode.
 metadata:
   version: "0.1.1"
   short-description: 适其人，适其事，适其言
@@ -77,13 +79,21 @@ Aptum 帮助 Agent 判断：**这个读者，在这个场景下，需要获得�
 
 Aptum 不要求每次使用都产生可见变化。原答案已经适合当前读者和任务时，保持它。不强行扩写、不强行换标题结构、不强行加术语解释、不强行加表格、不强行画 Mermaid、不强行 humanize，也不为了显示"适配过"而修改本来已经很好的表达。
 
+## 可选：去 AI 味
+
+用户明确要求“去 AI 味”“去除 AI 痕迹”“这段太像 AI 写的，改掉”或使用 humanizer-zh 时，启用随包提供的完整编辑模块。按意图判断，不要求固定口令；普通的“润色”“说人话”“解释清楚”不自动启用。只提到这个功能、引用别人要求或明确说不要使用，都不算启用。
+
+启用后完整读取 [调用约定](references/humanizing.md) 和 [humanizer-zh 完整指南](references/humanizer-zh.md)，按指南完成编辑与核对，不能只凭模式名称或记忆里的简版代替。普通 Aptum 任务不加载这两份文件。默认只作用于当前交付，除非用户明确扩大范围；不自动保存为长期偏好。
+
+读者适配决定保留什么背景、解释多深，去 AI 味模块处理具体表达问题。仅要求润色时不借适配之名扩写、摘要或补论据；同时要求解释陌生知识时，先按已知事实补足必要说明，再编辑表达。事实、确定程度、操作边界与用户的修改范围始终优先。
+
 ## 按需读取
 
 除上述适用的本地档案外，其余材料按需，不全量加载：
 
 - 需要知识边界判断、教学或代笔适配：[references/readers.md](references/readers.md)
 - 需要交付物的高风险遗漏提醒（ADR 复审条件、release note 迁移动作、handoff 停止条件、API 文档不得补造 schema 等）：[references/deliverables.md](references/deliverables.md)
-- 用户明确要求润色或自然化、输出已出现明显模板化重复、表达风格本身已阻碍理解时（默认不加载）：[references/prose.md](references/prose.md)
+- 一般润色或表达风格已妨碍理解时：[references/prose.md](references/prose.md)；明确要求去 AI 味则使用上面的完整模块，不用此短参考替代
 - 用户明确需要视觉化，或图表能显著降低当前读者理解关系、流程、状态或比较的成本时：[references/visuals.md](references/visuals.md)
 - 需要建立、读取或修改长期读者模型时：[references/personalization.md](references/personalization.md)
 - 同一事实面向不同下游读者的信息选择对照：[examples/audience-variants.md](examples/audience-variants.md)

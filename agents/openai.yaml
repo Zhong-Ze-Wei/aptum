@@ -1,4 +1,4 @@
 interface:
   display_name: "Aptum"
-  short_description: "根据读者已有知识与当前任务，让解释更容易理解并保留关键事实"
+  short_description: "适配读者与任务，让解释更容易理解；明确要求时启用完整去 AI 味模式"
   default_prompt: "Use $aptum to explain this for the actual reader, bridging missing knowledge while preserving facts and boundaries."

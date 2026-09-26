@@ -2,7 +2,7 @@
 
 **适其人，适其事，适其言。**
 
-Version: `0.1.1`
+最新发布版：`0.1.1`；本地开发改动见 [Unreleased](CHANGELOG.md#unreleased)。
 
 Aptum 让 AI 根据谁在读、要理解或完成什么，判断该说什么、解释到什么程度、用什么方式表达。它是面向 Claude Code / Codex 的表达判断 Skill。
 
@@ -59,6 +59,18 @@ Agent 可在出现知识或上下文缺口时选择 Aptum；也可以直接点�
 用 Aptum 把当前工作写成新 Agent 能接手的说明，保留未验证事项和禁止部署的边界。
 ```
 
+### 可选：去 AI 味
+
+普通使用只做读者适配。明确要求去 AI 味时，Aptum 才加载内置的完整 [humanizer-zh](references/humanizer-zh.md)：31 类检查点、作者声音、改写与保留示例、事实核对及文件保护规则，不需要再装一个 Skill。
+
+```text
+用 Aptum 给下面这段去 AI 味，保留事实、语气和技术边界，只给我最终稿：
+```
+
+默认只处理本次内容，不把技术文档强行改成聊天，也不把一次要求记成长期偏好。模块固定于[上游 2026-09-23 修订](https://github.com/op7418/Humanizer-zh/commit/f4518a8eab97b8bfebc66a89d34320a89bef6930)，全文随包提供并保留 MIT 许可证。它是 Agent 按需读取的编辑方法，不是后台钩子，也不保证通过 AI 检测器。
+
+若另装了独立 humanizer-zh，它仍按自己的规则被宿主选择；这里的开关只管理 Aptum 内置模块。点名“用 Aptum 去 AI 味”可明确指定入口。
+
 ## 可选：让它记住怎样向你解释
 
 首次使用无需配置，不默认生成画像。需要跨会话记住时，可以说：
@@ -71,7 +83,7 @@ Agent 可在出现知识或上下文缺口时选择 Aptum；也可以直接点�
 
 ## 示例与验证
 
-[同一事实面向不同读者](examples/audience-variants.md) · [行为评估](evals/rubric.md) · [读者记忆用例](evals/reader-memory.yaml)
+[同一事实面向不同读者](examples/audience-variants.md) · [行为评估](evals/rubric.md) · [读者记忆用例](evals/reader-memory.yaml) · [去 AI 味验证](evals/humanizer-zh/README.md)
 
 [在线对照页](https://zhong-ze-wei.github.io/aptum/)保留的是 0.1.0 阶段的测试展示，不代表 0.1.1 的效果。当前不指定最低模型型号，也不保证每次使用都有提升；判断依据应是读者能否理解、关键事实是否保留，而非哪版更像某种文风。
 
