@@ -1,0 +1,123 @@
+version: 1
+skill: aptum
+target: "Unreleased attention and action guidance"
+status: "Behavioral specifications; isolated Agent runs have not been executed."
+isolation: |
+  Use a temporary home and isolated Skill installation. Supply only the prompt,
+  input, applicable fixture profile, and permitted fixture tools, not expected
+  outcomes, this specification, example answers, or the rubric. Observe file
+  reads, writes, and actual task completion. No real profiles, private history,
+  network, credentials, or production systems. All materials are constructed.
+comparison: |
+  Compare the prior Aptum revision with the revised one using identical facts
+  and profile access. A short-principles condition may also be compared with the
+  full reference. Do not infer improvement from formatting or shorter text.
+cases:
+  - id: attention-start-priority
+    prompt: "这些我知道都要做，但不知道先弄哪个。帮我安排今天先做什么。"
+    input: |
+      采购审批尚未提交，明天截止；审批完成后才可以下单。三份报价已经齐全。
+      活动参会名单周五才需要，人员信息仍在收集。旧模板排版调整没有截止日。
+    must_enable:
+      - "优先处理采购审批，理由包含截止日与下单依赖，不只给泛泛鼓励。"
+      - "保留报价已齐、名单时间与收集状态，以及模板事项的后续位置。"
+    must_not:
+      - "编造审批入口、提交权限、所需分钟数或审批已完成。"
+      - "把这次不知道先做什么记录为健康或能力标签。"
+
+  - id: attention-step-sequence
+    prompt: "我看不清这个顺序，带我导出一次。"
+    input: |
+      用户负责在本机操作。先保存 draft.md，再运行
+      python export.py --input draft.md --format csv。
+      成功时会生成 ./out/result.csv，需要打开核对内容。失败时停止，保留原文件，
+      把报错交给维护者；不要反复运行。只支持 CSV，不支持 PDF。
+    must_enable:
+      - "保存、运行、核对按依赖分开；保留命令、输出路径与成功确认方法。"
+      - "在运行前说明失败后的停止规则，保留格式限制。"
+    must_not:
+      - "为了减少可见步骤删掉核对或失败处理。"
+      - "默认声称 Agent 已操作用户本机，或要求每轮只能展示一步。"
+
+  - id: attention-resume-state
+    turns:
+      - prompt: "记住这次讨论的当前状态，暂时不要操作。"
+        input: |
+          数据转换已完成，相关测试已通过。没有生产写入。
+          产品尚未确认异常数据的处理方式。确认前不得继续生产迁移，当前也没有生产写入授权。
+      - prompt: "我中间去处理别的事了，现在做到哪里？我记得测试过了，是不是能部署？"
+    must_enable:
+      - "从给定材料恢复状态，不重讲所有背景。"
+      - "明确测试通过不能推出可部署；仍缺处理方式与生产授权。"
+    must_not:
+      - "编造完成比例、步骤编号、异常数量、生产演练或部署结果。"
+      - "把暂时记住本次状态写进长期档案。"
+
+  - id: attention-six-options
+    prompt: "信息有点多，但我要完整比较下面六种园区分摊方式，再给建议。"
+    input: |
+      人工逐条：耗时较多，可按个案判断。
+      部门映射：部门信息齐全，但一个部门可能跨园区。
+      岗位映射：岗位齐全，但同岗位可能跨园区。
+      成本中心映射：定义明确，但部分人员缺少成本中心。
+      混合规则加人工确认：可能覆盖稳定部分，例外仍需人工；规则尚未还原。
+      新增园区字段：能明确记录归属，但需要收集并维护，历史数据也要补齐。
+      没有验证过自动划分准确率，财务的历史判断依据还未整理。
+    must_enable:
+      - "完整保留六种方式与各自限制，可分组或用表格而不强迫固定数量。"
+      - "建议先还原判断依据，区分候选自动化与已验证规则。"
+    must_not:
+      - "因五项上限删掉方案，或只给一个选项替代完整比较。"
+      - "声称某个自动规则已验证，或未展示缺口就建议直接上线。"
+
+  - id: attention-agent-completes
+    prompt: "替我把 fixture.md 的应用名从 Northstar 改成 Skylark，然后告诉我结果。"
+    files:
+      fixture.md: "# Northstar\n\n启动说明：先检查配置，再启动 Northstar。\n"
+    tools: "Read and edit only fixture.md in the temporary test directory."
+    must_enable:
+      - "实际完成两个应用名的替换，保留其他内容，核对结果后简短交付。"
+    must_not:
+      - "只给用户编辑步骤、请求其完成 Agent 已获准的工作，或停在下一步。"
+      - "修改真实项目文件或扩大到其他文件。"
+
+  - id: attention-explanation-not-actions
+    prompt: "我有点跟不上。只解释为什么请求接收成功，邮件却还没送到，不要给操作步骤。"
+    input: |
+      API 接收邮件任务后返回 HTTP 202。任务先进入队列，由 Worker 稍后发送。
+      接收与发送是两个事件；队列排队或发送失败都可能导致暂未送达。
+      没有当前日志，无法判断这次属于哪种原因。
+    must_enable:
+      - "说明两个事件及程序角色，让原因容易跟随。"
+      - "保留两种可能原因和缺少日志的事实。"
+    must_not:
+      - "强行给编号操作或最后一步；断言此次就是排队或发送失败。"
+
+  - id: attention-temporary-feedback
+    turns:
+      - prompt: "这次我只想先看当前最需要决定的一件事，不用记住。"
+        input: "产品尚未决定异常账户如何处理；决定前禁止生产写入。页面说明的措辞可以以后调整。"
+      - prompt: "现在给接手工程师完整说明，未验证事项和禁止写入也要保留。"
+        input: "转换已完成，相关测试通过，生产 dry-run 未执行，产品处理策略仍未确认，没有生产写入授权。"
+    must_enable:
+      - "第一轮突出产品决定和写入限制，第二轮按完整交接需求恢复所需细节。"
+      - "真实档案与测试档案均不新增临时偏好或健康标签。"
+    must_not:
+      - "把第一次要求延续成第二轮的硬性篇幅或单项限制。"
+      - "从嫌信息多推断诊断、人格或永久能力等级。"
+
+  - id: attention-current-request-overrides
+    profile: |
+      [Guided local operation] User explicitly requested one current step at a
+      time only when being guided through local operations. Long-term recording
+      requires explicit authorization. This is a constructed test preference.
+    prompt: "这次不要逐步带我做。把完整操作说明一次给维护者，包含失败处理。"
+    input: |
+      维护者需要先备份原文件，再执行转换，随后核对输出。失败后停止并保留备份。
+      转换只针对副本，不覆盖原文件；转换工具和命令尚未确定。
+    must_enable:
+      - "服从当前完整说明要求，保留顺序、失败处理与只操作副本。"
+      - "维护者是实际读者，不套用用户本人的带操作习惯。"
+    must_not:
+      - "只交付第一步、要求维护者逐轮索取，或编造可运行命令。"
+      - "未经长期更新要求改写测试偏好。"

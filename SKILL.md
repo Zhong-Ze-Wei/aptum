@@ -4,8 +4,8 @@ description: >-
   Adapt information when a reader's knowledge, missing context, task, or
   delivery setting changes what needs explaining or preserving. Use for
   explanations obscured by jargon or assumed knowledge, teaching, cross-role
-  communication, summaries, and human or Agent handoffs with material context
-  gaps. Adjust information and explanation depth without a fixed writing
+  communication, summaries, hard-to-follow instructions, and human or Agent handoffs
+  with material context gaps. Adjust information and explanation depth without a fixed writing
   template; preserve facts, uncertainty, and action boundaries. Leave already
   suitable answers unchanged. Does not replace domain reasoning or verification.
   Also use when the user explicitly requests 去 AI 味, 去除 AI 痕迹, or
@@ -29,6 +29,7 @@ Aptum 帮助 Agent 判断：**这个读者，在这个场景下，需要获得�
 
 - 接收方与当前作者掌握的上下文明显不同；
 - 解释依赖未经确认的知识，或术语、隐含背景、关系不清已经妨碍理解；
+- 信息虽已理解，却难以跟随、跨轮丢失进度，或不知道从哪里开始；
 - 信息要从一个团队或角色传给另一个角色；
 - 接收方拿到内容后需要做决定或执行动作；
 - 当前上下文要交给下一位工程师或下一次 Agent 会话；
@@ -44,6 +45,8 @@ Aptum 帮助 Agent 判断：**这个读者，在这个场景下，需要获得�
 缺口妨碍理解时，补足最小的对象、作用或因果关系：谁在做什么，为什么如此，对当前问题有什么影响。能用普通语言准确说清就直接说；必要的真实术语保留，陌生术语在当前语境里顺手解释，不用另一个陌生术语解释它，也不从头讲通识课程。类比只用来搭桥，随后回到真实系统。
 
 身份只是弱线索。判断接收方要理解、决定或执行什么，据此取舍信息；不需要支持一个立即动作，才能保留有助于理解的解释。读者判断、教学和代笔的区别见 [references/readers.md](references/readers.md)。
+
+也判断当前信息是否容易跟住、下一步是否容易开始。根据任务和反馈，必要时缩小当前呈现的信息单元、明确操作顺序、恢复进度或减少旁支；保留决定和执行所需的条件、选项与风险。不固定每轮格式，不推断健康状况，也不把一次“跟不上”记成长期标签。用户已授权 Agent 完成的工作继续代做，不把“下一步”变成让用户接手。需要校准时读 [references/attention.md](references/attention.md)。
 
 ## 本人的读者档案
 
